@@ -28,7 +28,7 @@
 
     * { box-sizing: border-box; }
     html { min-width: 320px; background: var(--night); }
-    body { margin: 0; min-height: 100dvh; overflow-x: hidden; color: var(--moon); background: var(--night); font-family: "STKaiti", "KaiTi", "STSong", serif; }
+    body { margin: 0; min-height: 100dvh; overflow-x: hidden; color: var(--moon); background: transparent; font-family: "STKaiti", "KaiTi", "STSong", serif; }
     button { font: inherit; }
     [hidden] { display: none !important; }
 
@@ -40,51 +40,50 @@
     .vignette,
     .wave-1,
     .wave-2,
-    .wave-3 { position: fixed; inset: 0; pointer-events: none; }
+    .wave-3 { position: fixed; inset: 0; pointer-events: none; will-change: transform, opacity; backface-visibility: hidden; }
 
     .sky {
-      z-index: -6;
-      inset: -6%;
-      background: var(--night) url("images/eastern-night-bg_001.jpg") center 18% / cover no-repeat;
-      animation: sky-drift 40s ease-in-out infinite alternate;
+      z-index: 1;
+      inset: -8%;
+      background: url("images/eastern-night-bg_001.jpg") center / cover no-repeat;
       transform: translate3d(calc(var(--px) * -6px), calc(var(--py) * -4px), 0) scale(1.08);
-      transition: transform 1.2s var(--ease);
+      transition: transform 1.8s var(--ease), filter 1.2s ease;
     }
 
     .silk-veil {
-      z-index: -5;
+      z-index: 2;
       inset: -20% -12%;
-      opacity: .28;
+      opacity: .38;
       background: url("images/purple-silk.jpg") center / 620px repeat;
       mix-blend-mode: screen;
       animation: veil-drift 30s ease-in-out infinite alternate;
     }
 
     .wave-1 {
-      z-index: -4;
+      z-index: 3;
       background:
-        radial-gradient(ellipse 60% 40% at 20% 30%, rgb(166 91 208 / .14), transparent 60%),
-        radial-gradient(ellipse 50% 45% at 80% 70%, rgb(214 179 106 / .08), transparent 55%);
+        radial-gradient(ellipse 60% 40% at 20% 30%, rgb(166 91 208 / .22), transparent 60%),
+        radial-gradient(ellipse 50% 45% at 80% 70%, rgb(214 179 106 / .14), transparent 55%);
       animation: wave-slow 16s ease-in-out infinite;
     }
     .wave-2 {
-      z-index: -4;
+      z-index: 3;
       background:
-        radial-gradient(ellipse 45% 35% at 70% 25%, rgb(65 106 134 / .12), transparent 60%),
-        radial-gradient(ellipse 55% 40% at 30% 75%, rgb(166 91 208 / .1), transparent 55%);
+        radial-gradient(ellipse 45% 35% at 70% 25%, rgb(65 106 134 / .18), transparent 60%),
+        radial-gradient(ellipse 55% 40% at 30% 75%, rgb(166 91 208 / .16), transparent 55%);
       animation: wave-mid 22s ease-in-out infinite;
     }
     .wave-3 {
-      z-index: -4;
+      z-index: 3;
       background:
-        radial-gradient(ellipse 70% 50% at 50% 50%, rgb(214 179 106 / .05), transparent 65%);
+        radial-gradient(ellipse 70% 50% at 50% 50%, rgb(214 179 106 / .08), transparent 65%);
       animation: wave-gentle 28s ease-in-out infinite;
     }
 
-    #starfield { z-index: -3; width: 100%; height: 100%; opacity: .6; }
-    .vignette { z-index: -2; background: radial-gradient(ellipse at center, transparent 40%, rgb(10 5 18 / .55) 100%); }
+    #starfield { z-index: 4; width: 100%; height: 100%; opacity: .6; }
+    .vignette { z-index: 5; background: radial-gradient(ellipse at center, transparent 40%, rgb(10 5 18 / .45) 100%); }
 
-    @keyframes sky-drift { from { background-position: 46% 58%; } to { background-position: 54% 52%; } }
+    @keyframes sky-drift { from { transform: translate3d(calc(var(--px) * -6px), calc(var(--py) * -4px), 0) scale(1.06); } to { transform: translate3d(calc(var(--px) * -6px + 2%), calc(var(--py) * -4px - 1.5%), 0) scale(1.12); } }
     @keyframes veil-drift { from { transform: translate3d(-3%, -2%, 0) rotate(-1deg); } to { transform: translate3d(3%, 2%, 0) rotate(1deg); } }
     @keyframes wave-slow {
       0%, 100% { opacity: .7; transform: translate(0, 0) scale(1); }
@@ -100,14 +99,14 @@
       50% { opacity: .85; transform: scale(1.06); }
     }
 
-    body.is-shuffling .sky { animation-duration: 12s; filter: saturate(1.2) brightness(1.05); }
-    body.is-shuffling .silk-veil { animation-duration: 6s; opacity: .36; }
-    body.is-shuffling .wave-1 { animation-duration: 4.5s; opacity: 1; }
-    body.is-shuffling .wave-2 { animation-duration: 5.5s; opacity: 1; }
-    body.is-shuffling .wave-3 { animation-duration: 6.5s; opacity: 1; }
-    body.is-shuffling #starfield { opacity: .8; }
+    body.is-shuffling .sky { filter: saturate(1.1) brightness(1.03); }
+    body.is-shuffling .silk-veil { animation-duration: 10s; opacity: .42; }
+    body.is-shuffling .wave-1 { animation-duration: 7s; opacity: .9; }
+    body.is-shuffling .wave-2 { animation-duration: 9s; opacity: .85; }
+    body.is-shuffling .wave-3 { animation-duration: 11s; opacity: .8; }
+    body.is-shuffling #starfield { opacity: .7; }
 
-    .shell { width: min(1280px, calc(100% - 44px)); min-height: 100dvh; margin: 0 auto; display: grid; grid-template-rows: auto 1fr auto; padding: 28px 0 max(28px, env(safe-area-inset-bottom)); gap: 20px; }
+    .shell { position: relative; z-index: 10; width: min(1280px, calc(100% - 44px)); min-height: 100dvh; margin: 0 auto; display: grid; grid-template-rows: auto 1fr auto; padding: 28px 0 max(28px, env(safe-area-inset-bottom)); gap: 20px; }
     .topbar { display: flex; align-items: center; justify-content: space-between; min-height: 46px; border-bottom: 1px solid rgb(214 179 106 / .28); color: var(--muted); font-family: "STKaiti", "KaiTi", serif; font-size: 13px; }
     .brand { color: var(--gold); letter-spacing: .2em; }
     .status { display: flex; align-items: center; gap: 10px; }
@@ -154,7 +153,7 @@
     .positions::before { content: ""; position: absolute; left: 10%; right: 10%; top: 52%; height: 1px; background: linear-gradient(90deg, transparent, rgb(214 179 106 / .62), transparent); opacity: .42; }
     .position { position: relative; text-align: center; }
     .position:nth-child(2) { transform: translateY(12px); }
-    .position-label { min-height: 31px; margin-bottom: 8px; color: var(--muted); font-family: "STKaiti", "KaiTi", serif; font-size: 12px; }
+    .position-label { display: inline-block; min-height: 36px; margin-bottom: 12px; padding: 4px 14px; border-radius: 12px; color: var(--gold); background: rgb(18 9 29 / .55); backdrop-filter: blur(6px); font-family: "STKaiti", "KaiTi", serif; font-size: 17px; letter-spacing: .06em; text-shadow: 0 0 14px rgb(214 179 106 / .35); box-shadow: 0 2px 12px rgb(5 1 10 / .3); }
     .slot { position: relative; width: min(100%, 142px); aspect-ratio: 2 / 3; margin: 0 auto; border: 1px solid rgb(214 179 106 / .24); border-radius: var(--card-r); background: rgb(25 10 39 / .28); box-shadow: inset 0 0 36px rgb(166 91 208 / .06); transition: box-shadow .4s ease, border-color .4s ease; }
     .slot::after { content: ""; position: absolute; inset: 7px; border: 1px solid rgb(214 179 106 / .14); border-radius: calc(var(--card-r) - 5px); }
     .slot-card { position: absolute; inset: 0; overflow: hidden; border: 1px solid var(--gold); border-radius: var(--card-r); background: #160c24; box-shadow: 0 22px 52px rgb(5 1 10 / .5), 0 0 28px rgb(214 179 106 / .12); animation: settle .72s var(--ease) both; transform-style: preserve-3d; }
@@ -206,7 +205,8 @@
     .code-panel { display: none; width: min(620px, 100%); margin-top: 8px; padding: 24px 28px; border: 1px solid rgb(214 179 106 / .58); border-radius: calc(var(--btn-r) + 4px); background: rgb(31 13 45 / .82); box-shadow: inset 0 0 40px rgb(166 91 208 / .08), 0 24px 60px rgb(5 1 10 / .45); text-align: center; }
     .code-panel.is-visible { display: grid; gap: 12px; animation: code-arrive .7s var(--ease); }
     @keyframes code-arrive { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
-    .code-label, .code-note { color: var(--muted); font-size: 13px; }
+    .code-label { color: var(--gold); font-size: 20px; letter-spacing: .08em; text-shadow: 0 0 16px rgb(214 179 106 / .3); }
+    .code-note { color: #e2d8ea; font-size: 17px; line-height: 1.7; }
     .draw-code { width: 100%; border: 0; padding: 8px 0; color: var(--moon); background: transparent; font-family: ui-monospace, "SFMono-Regular", Menlo, monospace; font-size: clamp(15px, 2.5vw, 22px); text-align: center; letter-spacing: .08em; }
     .footer { display: flex; justify-content: space-between; gap: 16px; padding-top: 13px; border-top: 1px solid rgb(214 179 106 / .2); color: #9c8ca8; font-size: 11px; }
 
@@ -223,7 +223,7 @@
       .draw-card { scroll-snap-align: center; }
       .positions { gap: 7px; }
       .position:nth-child(2) { transform: translateY(8px); }
-      .position-label { font-size: 10px; }
+      .position-label { font-size: 14px; padding: 3px 10px; }
       .slot { width: min(100%, 96px); }
       .card-caption { min-height: 49px; font-size: 13px; }
       .footer { display: block; }
