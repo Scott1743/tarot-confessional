@@ -45,7 +45,7 @@
     .sky {
       z-index: -6;
       inset: -6%;
-      background: var(--night) url("images/eastern-night-bg_001.jpg") center 58% / cover no-repeat;
+      background: var(--night) url("images/eastern-night-bg_001.jpg") center 18% / cover no-repeat;
       animation: sky-drift 40s ease-in-out infinite alternate;
       transform: translate3d(calc(var(--px) * -6px), calc(var(--py) * -4px), 0) scale(1.08);
       transition: transform 1.2s var(--ease);
@@ -120,7 +120,7 @@
     .seal { align-self: start; justify-self: center; margin-top: 34px; width: 68px; min-height: 94px; display: grid; place-items: center; padding: 10px 8px; border: 1px solid rgb(214 179 106 / .62); border-radius: 8px; color: var(--gold); background: rgb(55 19 72 / .4); font-family: "STKaiti", "KaiTi", serif; font-size: 12px; line-height: 1.7; text-align: center; box-shadow: inset 0 0 0 4px rgb(214 179 106 / .08), 0 8px 24px rgb(5 1 10 / .3); transition: box-shadow .4s ease, transform .4s var(--ease); }
     .seal:hover { transform: translateY(-2px); box-shadow: inset 0 0 0 4px rgb(214 179 106 / .12), 0 12px 32px rgb(5 1 10 / .4); }
 
-    .ritual { min-width: 0; display: grid; grid-template-rows: minmax(178px, .7fr) auto auto; gap: 14px; align-items: center; }
+    .ritual { min-width: 0; display: grid; grid-template-rows: minmax(178px, .7fr) auto auto; gap: 20px; align-items: center; }
     .table { position: relative; min-height: 190px; display: grid; place-items: center; transform: translate3d(calc(var(--px) * 5px), calc(var(--py) * 3px), 0); transition: transform 1s var(--ease); }
     .table::before { content: ""; position: absolute; width: min(720px, 78vw); aspect-ratio: 2.8 / 1; border: 1px solid rgb(214 179 106 / .28); border-radius: 50%; transform: perspective(850px) rotateX(68deg); box-shadow: inset 0 0 80px rgb(166 91 208 / .12), 0 0 46px rgb(84 38 111 / .18); }
     .table::after { content: ""; position: absolute; width: min(440px, 54vw); height: 1px; background: linear-gradient(90deg, transparent, var(--gold), transparent); opacity: .56; }
@@ -168,9 +168,9 @@
     .card-caption { min-height: 42px; padding-top: 9px; font-size: 15px; }
     .card-caption span { display: block; color: var(--gold); font-family: "STKaiti", "KaiTi", serif; font-size: 11px; }
 
-    .actions { display: grid; justify-items: center; gap: 12px; min-height: 96px; }
-    .command, .quiet-command { position: relative; min-height: 46px; cursor: pointer; transition: transform .28s var(--ease), background .3s ease, color .3s ease, box-shadow .3s ease; overflow: hidden; }
-    .command { min-width: 188px; border: 1px solid var(--gold); border-radius: var(--btn-r); padding: 12px 32px; color: #201126; background: var(--gold); box-shadow: 0 12px 30px rgb(5 1 10 / .3), 0 0 20px rgb(214 179 106 / .12); font-weight: 500; }
+    .actions { display: grid; justify-items: center; gap: 16px; min-height: 110px; padding-top: 8px; }
+    .command, .quiet-command { position: relative; min-height: 48px; cursor: pointer; transition: transform .28s var(--ease), background .3s ease, color .3s ease, box-shadow .3s ease; overflow: hidden; font-size: 15px; letter-spacing: .05em; }
+    .command { min-width: 200px; border: 1px solid var(--gold); border-radius: var(--btn-r); padding: 13px 36px; color: #201126; background: var(--gold); box-shadow: 0 12px 30px rgb(5 1 10 / .3), 0 0 20px rgb(214 179 106 / .12); font-weight: 500; }
     .command::before {
       content: "";
       position: absolute;
@@ -197,17 +197,17 @@
     .command:active { transform: translateY(-1px); }
     .command:disabled { cursor: not-allowed; opacity: .46; transform: none; box-shadow: none; }
     .command:disabled::before, .command:disabled::after { animation: none; display: none; }
-    .quiet-command { border: 0; border-radius: calc(var(--btn-r) - 4px); padding: 8px 16px; color: var(--muted); background: transparent; }
+    .quiet-command { border: 0; border-radius: calc(var(--btn-r) - 4px); padding: 10px 20px; color: var(--muted); background: transparent; font-size: 13px; }
     .quiet-command:hover { color: var(--moon); background: rgb(214 179 106 / .06); }
     .deck-stack:focus-visible, .draw-card:focus-visible, .command:focus-visible, .quiet-command:focus-visible { outline: 2px solid var(--gold); outline-offset: 5px; }
     @keyframes btn-shine { 0% { left: -100%; } 50%, 100% { left: 100%; } }
     @keyframes border-glow { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
-    .code-panel { display: none; width: min(620px, 100%); padding: 20px 24px; border: 1px solid rgb(214 179 106 / .58); border-radius: calc(var(--btn-r) + 4px); background: rgb(31 13 45 / .76); box-shadow: inset 0 0 40px rgb(166 91 208 / .08), 0 20px 50px rgb(5 1 10 / .4); text-align: center; }
-    .code-panel.is-visible { display: grid; gap: 9px; animation: code-arrive .7s var(--ease); }
-    @keyframes code-arrive { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
-    .code-label, .code-note { color: var(--muted); font-size: 12px; }
-    .draw-code { width: 100%; border: 0; padding: 0; color: var(--moon); background: transparent; font-family: ui-monospace, "SFMono-Regular", Menlo, monospace; font-size: clamp(14px, 2.3vw, 20px); text-align: center; }
+    .code-panel { display: none; width: min(620px, 100%); margin-top: 8px; padding: 24px 28px; border: 1px solid rgb(214 179 106 / .58); border-radius: calc(var(--btn-r) + 4px); background: rgb(31 13 45 / .82); box-shadow: inset 0 0 40px rgb(166 91 208 / .08), 0 24px 60px rgb(5 1 10 / .45); text-align: center; }
+    .code-panel.is-visible { display: grid; gap: 12px; animation: code-arrive .7s var(--ease); }
+    @keyframes code-arrive { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+    .code-label, .code-note { color: var(--muted); font-size: 13px; }
+    .draw-code { width: 100%; border: 0; padding: 8px 0; color: var(--moon); background: transparent; font-family: ui-monospace, "SFMono-Regular", Menlo, monospace; font-size: clamp(15px, 2.5vw, 22px); text-align: center; letter-spacing: .08em; }
     .footer { display: flex; justify-content: space-between; gap: 16px; padding-top: 13px; border-top: 1px solid rgb(214 179 106 / .2); color: #9c8ca8; font-size: 11px; }
 
     @media (max-width: 760px) {
