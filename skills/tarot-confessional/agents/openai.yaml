@@ -1,0 +1,4 @@
+interface:
+  display_name: "塔罗树洞"
+  short_description: "Reflective Chinese tarot draws, decoding, and guidance"
+  default_prompt: "Use $tarot-confessional to guide me through a reflective Chinese tarot reading."

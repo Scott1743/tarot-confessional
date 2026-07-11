@@ -4,13 +4,13 @@
 
 本项目把塔罗视为自我探索工具，而不是确定性预测、专业诊断或高风险决策依据。
 
-> 当前状态：东方视觉原型。双 HTML 和 8 张东方绢本风格大阿卡纳样牌已经完成，正式抽牌码解码器、78 张完整牌库和 Agent 动态报告生成器仍待实现。
+> 当前状态：v0.1 开发预览。双 HTML、C 风格「新工笔幻色」完整 78 张牌组、正式抽牌码协议与离线解码器已经完成；Agent 动态报告生成器仍待实现。
 
 ## 原型预览
 
 - [打开抽牌页](assets/draw.html)
 - [打开解读报告](assets/reading.html)
-- [查看样牌联系表](assets/images/contact-sheet.jpg)
+- [查看完整牌组联系表](assets/images/full-deck-contact-sheet.jpg)
 
 两个 HTML 均可直接离线打开，不加载远程字体、脚本、图片或统计服务。
 
@@ -30,6 +30,19 @@
 - [v0.2 MNEME 集成设计](docs/superpowers/specs/2026-07-12-mneme-v0.2-integration-design.md)
 - [双 HTML 原型实现规格](docs/superpowers/specs/2026-07-12-tarot-html-prototype-implementation.md)
 - [分阶段实施计划](docs/superpowers/plans/2026-07-12-tarot-confessional-roadmap.md)
+
+## 抽牌码协议
+
+- `references/deck.json` 提供完整 78 张牌的稳定 ID 与文件名。
+- `references/draw-code-protocol.md` 定义正式 `TC1` 密码格式。
+- `scripts/tarot_codec.py` 负责确定性编码、解码、校验和牌名查询。
+- `assets/tarot-codec.js` 与 Python 使用相同算法，抽牌页已接入正式协议。
+
+## 牌面资产
+
+- `assets/images/cards/` 包含完整 78 张 Web 牌面，统一为 768 × 1152 JPEG。
+- 视觉方向为 C 风格「新工笔幻色」：东方人物、建筑与山水叙事，配合紫、青、翠、橙、黄、粉的高明度反差色。
+- `references/card-art-direction-c.md` 记录可复现的美术方向，`scripts/generate_deck_art.py` 和 `scripts/process_deck_art.py` 支持断点生成与统一后处理。
 
 ## 安装
 
@@ -52,6 +65,8 @@
 ```text
 .
 ├── SKILL.md                 # 当前对话式 Skill 骨架
+├── skills/
+│   └── tarot-confessional/  # 可独立分发的 Agent Skill
 ├── Agent.md                 # 仓库内 Agent 协作指南
 ├── docs/superpowers/        # 产品规格与实施计划
 ├── README.md                # 项目说明

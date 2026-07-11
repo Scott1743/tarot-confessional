@@ -16,3 +16,6 @@ __pycache__/
 *.py[cod]
 *.skill
 assets/images/generated-sources/
+assets/videos/generated-sources/
+assets/style-samples/*/*_001.jpg
+assets/style-samples/*/contact.jpg
