@@ -57,3 +57,15 @@ Primary request: dark imperial-purple silk paper with visible fine fibers, miner
 Composition/framing: square seamless texture, no focal stain or edge
 Constraints: no text, symbols, borders, objects, bright glitter, bokeh circles, watermark
 ```
+
+## Eastern night landscape (draw page)
+
+```text
+Use case: stylized-concept
+Asset type: wide dynamic-background base for an Eastern mystical tarot interface
+Primary request: ancient Chinese mountain landscape at twilight with layered clouds, flowing mist, distant pine trees on mountain ridges, a hint of ancient star map constellations in the purple night sky, mineral pigment silk painting style
+Style/medium: mineral pigment silk painting with gold outline details, Dunhuang-inspired color layering
+Composition/framing: 16:9 wide panoramic, large quiet negative space in center for card table, no single focal object
+Color palette: ink black, imperial purple, orchid purple, muted gold outlines, restrained cinnabar undertone
+Constraints: no text, no people, no buildings, no neon, no sci-fi grid, no watermark
+```

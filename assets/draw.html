@@ -28,7 +28,7 @@
 
     * { box-sizing: border-box; }
     html { min-width: 320px; background: var(--night); }
-    body { margin: 0; min-height: 100dvh; overflow-x: hidden; color: var(--moon); background: var(--night); font-family: "Songti SC", "STSong", "Noto Serif CJK SC", serif; }
+    body { margin: 0; min-height: 100dvh; overflow-x: hidden; color: var(--moon); background: var(--night); font-family: "STKaiti", "KaiTi", "STSong", serif; }
     button { font: inherit; }
     [hidden] { display: none !important; }
 
@@ -37,53 +37,77 @@
     .sky,
     .silk-veil,
     #starfield,
-    .vignette { position: fixed; inset: 0; pointer-events: none; }
+    .vignette,
+    .wave-1,
+    .wave-2,
+    .wave-3 { position: fixed; inset: 0; pointer-events: none; }
 
     .sky {
-      z-index: -5;
+      z-index: -6;
       inset: -6%;
-      background: var(--night) url("images/eastern-sky.jpg") center 56% / cover no-repeat;
-      animation: sky-drift 34s ease-in-out infinite alternate, sky-breathe 8s ease-in-out infinite;
-      transform: translate3d(calc(var(--px) * -8px), calc(var(--py) * -5px), 0) scale(1.07);
+      background: var(--night) url("images/eastern-night-bg_001.jpg") center 58% / cover no-repeat;
+      animation: sky-drift 40s ease-in-out infinite alternate;
+      transform: translate3d(calc(var(--px) * -6px), calc(var(--py) * -4px), 0) scale(1.08);
       transition: transform 1.2s var(--ease);
     }
 
     .silk-veil {
-      z-index: -4;
-      inset: -28% -18%;
-      opacity: .38;
+      z-index: -5;
+      inset: -20% -12%;
+      opacity: .28;
       background: url("images/purple-silk.jpg") center / 620px repeat;
       mix-blend-mode: screen;
-      clip-path: polygon(0 31%, 18% 20%, 38% 29%, 61% 17%, 83% 27%, 100% 18%, 100% 76%, 78% 65%, 54% 77%, 30% 62%, 0 72%);
-      animation: veil-flow 24s var(--ease) infinite alternate, veil-breathe 10s ease-in-out infinite;
+      animation: veil-drift 30s ease-in-out infinite alternate;
     }
 
-    #starfield { z-index: -3; width: 100%; height: 100%; opacity: .76; }
-    .vignette { z-index: -2; background: linear-gradient(180deg, rgb(18 9 29 / .22), rgb(18 9 29 / .2) 46%, rgb(10 5 18 / .82)); }
-    .ambient-glow {
-      position: fixed;
-      z-index: -3;
-      top: 50%;
-      left: 50%;
-      width: 80vw;
-      height: 70vh;
-      transform: translate(-50%, -40%);
-      background: radial-gradient(ellipse at center, rgb(166 91 208 / .12), transparent 60%);
-      pointer-events: none;
-      animation: ambient-pulse 7s ease-in-out infinite;
+    .wave-1 {
+      z-index: -4;
+      background:
+        radial-gradient(ellipse 60% 40% at 20% 30%, rgb(166 91 208 / .14), transparent 60%),
+        radial-gradient(ellipse 50% 45% at 80% 70%, rgb(214 179 106 / .08), transparent 55%);
+      animation: wave-slow 16s ease-in-out infinite;
+    }
+    .wave-2 {
+      z-index: -4;
+      background:
+        radial-gradient(ellipse 45% 35% at 70% 25%, rgb(65 106 134 / .12), transparent 60%),
+        radial-gradient(ellipse 55% 40% at 30% 75%, rgb(166 91 208 / .1), transparent 55%);
+      animation: wave-mid 22s ease-in-out infinite;
+    }
+    .wave-3 {
+      z-index: -4;
+      background:
+        radial-gradient(ellipse 70% 50% at 50% 50%, rgb(214 179 106 / .05), transparent 65%);
+      animation: wave-gentle 28s ease-in-out infinite;
     }
 
-    @keyframes sky-drift { from { background-position: 45% 56%; } to { background-position: 56% 52%; } }
-    @keyframes sky-breathe { 0%, 100% { filter: saturate(.92) brightness(.78); } 50% { filter: saturate(1.12) brightness(.96); } }
-    @keyframes veil-flow { from { transform: translate3d(-5%, -2%, 0) rotate(-2deg) scale(1.06); } to { transform: translate3d(6%, 4%, 0) rotate(2deg) scale(1.14); } }
-    @keyframes veil-breathe { 0%, 100% { opacity: .22; } 50% { opacity: .42; } }
-    @keyframes ambient-pulse { 0%, 100% { opacity: .6; transform: translate(-50%, -40%) scale(1); } 50% { opacity: 1; transform: translate(-50%, -40%) scale(1.08); } }
+    #starfield { z-index: -3; width: 100%; height: 100%; opacity: .6; }
+    .vignette { z-index: -2; background: radial-gradient(ellipse at center, transparent 40%, rgb(10 5 18 / .55) 100%); }
 
-    body.is-shuffling .sky { animation-duration: 5s, 2.4s; filter: saturate(1.3) brightness(1.1); }
-    body.is-shuffling .silk-veil { animation-duration: 3.4s, 2s; opacity: .62; }
-    body.is-shuffling .ambient-glow { animation-duration: 1.8s; opacity: 1; }
+    @keyframes sky-drift { from { background-position: 46% 58%; } to { background-position: 54% 52%; } }
+    @keyframes veil-drift { from { transform: translate3d(-3%, -2%, 0) rotate(-1deg); } to { transform: translate3d(3%, 2%, 0) rotate(1deg); } }
+    @keyframes wave-slow {
+      0%, 100% { opacity: .7; transform: translate(0, 0) scale(1); }
+      33% { opacity: 1; transform: translate(3%, -2%) scale(1.04); }
+      66% { opacity: .8; transform: translate(-2%, 3%) scale(.98); }
+    }
+    @keyframes wave-mid {
+      0%, 100% { opacity: .6; transform: translate(-2%, 2%) scale(.96); }
+      50% { opacity: .9; transform: translate(2%, -3%) scale(1.03); }
+    }
+    @keyframes wave-gentle {
+      0%, 100% { opacity: .5; transform: scale(1); }
+      50% { opacity: .85; transform: scale(1.06); }
+    }
 
-    .shell { width: min(1280px, calc(100% - 44px)); min-height: 100dvh; margin: 0 auto; display: grid; grid-template-rows: auto 1fr auto; padding: 18px 0 max(18px, env(safe-area-inset-bottom)); }
+    body.is-shuffling .sky { animation-duration: 12s; filter: saturate(1.2) brightness(1.05); }
+    body.is-shuffling .silk-veil { animation-duration: 6s; opacity: .36; }
+    body.is-shuffling .wave-1 { animation-duration: 4.5s; opacity: 1; }
+    body.is-shuffling .wave-2 { animation-duration: 5.5s; opacity: 1; }
+    body.is-shuffling .wave-3 { animation-duration: 6.5s; opacity: 1; }
+    body.is-shuffling #starfield { opacity: .8; }
+
+    .shell { width: min(1280px, calc(100% - 44px)); min-height: 100dvh; margin: 0 auto; display: grid; grid-template-rows: auto 1fr auto; padding: 28px 0 max(28px, env(safe-area-inset-bottom)); gap: 20px; }
     .topbar { display: flex; align-items: center; justify-content: space-between; min-height: 46px; border-bottom: 1px solid rgb(214 179 106 / .28); color: var(--muted); font-family: "STKaiti", "KaiTi", serif; font-size: 13px; }
     .brand { color: var(--gold); letter-spacing: .2em; }
     .status { display: flex; align-items: center; gap: 10px; }
@@ -145,14 +169,39 @@
     .card-caption span { display: block; color: var(--gold); font-family: "STKaiti", "KaiTi", serif; font-size: 11px; }
 
     .actions { display: grid; justify-items: center; gap: 12px; min-height: 96px; }
-    .command, .quiet-command { min-height: 46px; cursor: pointer; transition: transform .28s var(--ease), background .3s ease, color .3s ease, box-shadow .3s ease; }
+    .command, .quiet-command { position: relative; min-height: 46px; cursor: pointer; transition: transform .28s var(--ease), background .3s ease, color .3s ease, box-shadow .3s ease; overflow: hidden; }
     .command { min-width: 188px; border: 1px solid var(--gold); border-radius: var(--btn-r); padding: 12px 32px; color: #201126; background: var(--gold); box-shadow: 0 12px 30px rgb(5 1 10 / .3), 0 0 20px rgb(214 179 106 / .12); font-weight: 500; }
+    .command::before {
+      content: "";
+      position: absolute;
+      top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgb(255 255 255 / .6), transparent);
+      transform: skewX(-20deg);
+      animation: btn-shine 3s ease-in-out infinite;
+    }
+    .command::after {
+      content: "";
+      position: absolute;
+      inset: -2px;
+      border-radius: calc(var(--btn-r) + 2px);
+      background: linear-gradient(45deg, var(--gold), rgb(166 91 208 / .6), var(--gold), rgb(65 106 134 / .6), var(--gold));
+      background-size: 300% 300%;
+      z-index: -1;
+      opacity: 0;
+      transition: opacity .4s ease;
+      animation: border-glow 4s linear infinite;
+    }
     .command:hover { transform: translateY(-3px); background: var(--gold-light); box-shadow: 0 18px 40px rgb(5 1 10 / .38), 0 0 32px rgb(214 179 106 / .22); }
+    .command:hover::after { opacity: 1; }
     .command:active { transform: translateY(-1px); }
     .command:disabled { cursor: not-allowed; opacity: .46; transform: none; box-shadow: none; }
+    .command:disabled::before, .command:disabled::after { animation: none; display: none; }
     .quiet-command { border: 0; border-radius: calc(var(--btn-r) - 4px); padding: 8px 16px; color: var(--muted); background: transparent; }
     .quiet-command:hover { color: var(--moon); background: rgb(214 179 106 / .06); }
     .deck-stack:focus-visible, .draw-card:focus-visible, .command:focus-visible, .quiet-command:focus-visible { outline: 2px solid var(--gold); outline-offset: 5px; }
+    @keyframes btn-shine { 0% { left: -100%; } 50%, 100% { left: 100%; } }
+    @keyframes border-glow { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
     .code-panel { display: none; width: min(620px, 100%); padding: 20px 24px; border: 1px solid rgb(214 179 106 / .58); border-radius: calc(var(--btn-r) + 4px); background: rgb(31 13 45 / .76); box-shadow: inset 0 0 40px rgb(166 91 208 / .08), 0 20px 50px rgb(5 1 10 / .4); text-align: center; }
     .code-panel.is-visible { display: grid; gap: 9px; animation: code-arrive .7s var(--ease); }
@@ -184,14 +233,16 @@
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
       #starfield { display: none; }
-      .sky, .silk-veil { animation: none; transform: none; }
+      .sky, .silk-veil, .wave-1, .wave-2, .wave-3 { animation: none; transform: none; }
     }
   </style>
 </head>
 <body>
   <div class="sky" aria-hidden="true"></div>
   <div class="silk-veil" aria-hidden="true"></div>
-  <div class="ambient-glow" aria-hidden="true"></div>
+  <div class="wave-1" aria-hidden="true"></div>
+  <div class="wave-2" aria-hidden="true"></div>
+  <div class="wave-3" aria-hidden="true"></div>
   <canvas id="starfield" aria-hidden="true"></canvas>
   <div class="vignette" aria-hidden="true"></div>
 
