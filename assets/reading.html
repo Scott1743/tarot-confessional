@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>塔罗树洞 · 夜观解读</title>
+  <style>
+    :root { --night:#12091d; --ink:#21102f; --imperial:#54266f; --glow:#a65bd0; --blue:#416a86; --cinnabar:#a94b52; --gold:#d6b36a; --gold-light:#ead096; --moon:#eee8f2; --muted:#b8a9c2; --rule:rgb(214 179 106 / .28); --card-r:12px; --btn-r:18px; }
+    * { box-sizing: border-box; }
+    html { min-width: 320px; background: var(--night); }
+    body { margin: 0; color: var(--moon); background: var(--night); font-family: "Songti SC", "STSong", "Noto Serif CJK SC", serif; line-height: 1.9; }
+    button { font: inherit; }
+    .sky, .silk, .shade, .ambient { position: fixed; inset: 0; pointer-events: none; }
+    .sky { z-index: -4; inset: -5%; background: url("images/eastern-sky.jpg") center / cover; opacity: .58; animation: sky 48s ease-in-out infinite alternate, sky-breathe 9s ease-in-out infinite; }
+    .silk { z-index: -3; background: url("images/purple-silk.jpg") center / 720px repeat; mix-blend-mode: screen; opacity: .2; animation: silk 28s ease-in-out infinite alternate, silk-breathe 11s ease-in-out infinite; }
+    .shade { z-index: -2; background: linear-gradient(180deg, rgb(18 9 29 / .34), rgb(18 9 29 / .82) 58%, rgb(10 5 16 / .96)); }
+    .ambient { z-index: -3; top: 42%; left: 50%; width: 90vw; height: 60vh; transform: translate(-50%, -50%); background: radial-gradient(ellipse at center, rgb(166 91 208 / .1), transparent 60%); animation: ambient-pulse 8s ease-in-out infinite; }
+    @keyframes sky { from { transform: scale(1.06) translateX(-1.5%); } to { transform: scale(1.12) translateX(1.5%); } }
+    @keyframes sky-breathe { 0%, 100% { filter: saturate(.88) brightness(.85); } 50% { filter: saturate(1.14) brightness(1); } }
+    @keyframes silk { from { transform: translate3d(-2%, -1%, 0); } to { transform: translate3d(2%, 2%, 0); } }
+    @keyframes silk-breathe { 0%, 100% { opacity: .14; } 50% { opacity: .26; } }
+    @keyframes ambient-pulse { 0%, 100% { opacity: .6; transform: translate(-50%, -50%) scale(1); } 50% { opacity: 1; transform: translate(-50%, -50%) scale(1.06); } }
+
+    .toolbar { position: sticky; top: 0; z-index: 10; min-height: 58px; display: flex; align-items: center; justify-content: space-between; padding: 0 max(20px, calc((100vw - 1080px) / 2)); border-bottom: 1px solid var(--rule); background: rgb(24 10 35 / .76); backdrop-filter: blur(14px); color: var(--muted); font-family: "STKaiti", "KaiTi", serif; font-size: 12px; }
+    .toolbar button { min-height: 38px; border: 1px solid var(--gold); border-radius: var(--btn-r); padding: 8px 20px; color: #21102f; background: var(--gold); cursor: pointer; transition: transform .25s cubic-bezier(.16,1,.3,1), background .3s ease, box-shadow .3s ease; box-shadow: 0 8px 20px rgb(5 1 10 / .25); font-weight: 500; }
+    .toolbar button:hover { transform: translateY(-2px); background: var(--gold-light); box-shadow: 0 12px 28px rgb(5 1 10 / .35), 0 0 20px rgb(214 179 106 / .2); }
+    .toolbar button:active { transform: translateY(0); }
+    .toolbar button:focus-visible { outline: 2px solid var(--moon); outline-offset: 3px; }
+
+    .scroll { width: min(1080px, calc(100% - 38px)); margin: 32px auto 70px; border: 1px solid rgb(214 179 106 / .3); border-radius: 16px; background: rgb(29 12 43 / .75); box-shadow: 0 36px 90px rgb(4 1 8 / .46), inset 0 0 90px rgb(166 91 208 / .05); overflow: hidden; }
+    .cover { position: relative; min-height: 620px; display: grid; grid-template-columns: 170px minmax(0, 1fr) 160px; align-items: center; gap: 40px; padding: clamp(42px, 7vw, 84px); overflow: hidden; border-bottom: 1px solid var(--rule); background: linear-gradient(90deg, rgb(18 9 29 / .88), rgb(55 23 72 / .28), rgb(18 9 29 / .82)); }
+    .cover::before { content: ""; position: absolute; inset: 8%; border: 1px solid rgb(214 179 106 / .2); transform: scale(.96); animation: frame-breathe 7s ease-in-out infinite; }
+    @keyframes frame-breathe { 50% { transform: scale(1); opacity: .62; } }
+    .vertical-mark { justify-self: center; writing-mode: vertical-rl; color: var(--gold); font-family: "STKaiti", "KaiTi", serif; letter-spacing: .22em; }
+    h1 { position: relative; margin: 0; font-size: clamp(46px, 7vw, 84px); font-weight: 400; line-height: 1.1; letter-spacing: .06em; text-align: center; text-shadow: 0 12px 44px rgb(166 91 208 / .28); animation: title-arrive 1.1s cubic-bezier(.16,1,.3,1) both; }
+    @keyframes title-arrive { from { opacity: 0; transform: translateY(28px); filter: blur(8px); } to { opacity: 1; transform: translateY(0); filter: blur(0); } }
+    .cover-meta { position: relative; justify-self: end; padding-left: 18px; border-left: 1px solid rgb(214 179 106 / .34); color: var(--muted); font-family: "STKaiti", "KaiTi", serif; font-size: 12px; line-height: 2.1; }
+
+    .content { position: relative; padding: clamp(34px, 6vw, 78px); }
+    .summary { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 36px; padding-bottom: 56px; border-bottom: 1px solid var(--rule); }
+    .label { color: var(--gold); font-family: "STKaiti", "KaiTi", serif; font-size: 12px; line-height: 1.7; }
+    .summary p { max-width: 720px; margin: 0; font-size: clamp(20px, 2.5vw, 29px); line-height: 1.65; }
+
+    .spread { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(18px, 4vw, 54px); padding: 70px 0 64px; border-bottom: 1px solid var(--rule); }
+    .spread-card { opacity: 0; transform: translateY(32px); transition: opacity .9s ease, transform .9s cubic-bezier(.16,1,.3,1); }
+    .spread-card.is-visible { opacity: 1; transform: translateY(0); }
+    .spread-card:nth-child(2) { margin-top: 38px; transition-delay: .15s; }
+    .spread-card:nth-child(3) { transition-delay: .3s; }
+    .card-frame { position: relative; width: min(100%, 224px); aspect-ratio: 2 / 3; margin: 0 auto 20px; overflow: hidden; border: 1px solid var(--gold); border-radius: var(--card-r); background: var(--night); box-shadow: 0 24px 52px rgb(4 1 8 / .5), 0 0 30px rgb(166 91 208 / .12), 0 0 50px rgb(214 179 106 / .08); transition: transform .45s cubic-bezier(.16,1,.3,1), box-shadow .45s ease; cursor: pointer; transform-style: preserve-3d; }
+    .card-frame::before { content: ""; position: absolute; inset: 7px; border: 1px solid rgb(238 232 242 / .35); border-radius: calc(var(--card-r) - 5px); pointer-events: none; z-index: 2; transition: border-color .4s ease; }
+    .card-frame::after { content: ""; position: absolute; inset: 0; border-radius: var(--card-r); background: linear-gradient(135deg, rgb(214 179 106 / 0), rgb(214 179 106 / .2), rgb(166 91 208 / 0)); opacity: 0; transition: opacity .5s ease; z-index: 1; pointer-events: none; }
+    .card-frame:hover { transform: translateY(-8px) scale(1.02); box-shadow: 0 32px 68px rgb(4 1 8 / .6), 0 0 46px rgb(166 91 208 / .25), 0 0 70px rgb(214 179 106 / .18); }
+    .card-frame:hover::before { border-color: rgb(214 179 106 / .6); }
+    .card-frame:hover::after { opacity: 1; }
+    .card-frame img { display: block; width: 100%; height: 100%; object-fit: cover; border-radius: calc(var(--card-r) - 1px); }
+    .card-frame.reversed img { transform: rotate(180deg); }
+    .spread-position { margin-bottom: 6px; color: var(--gold); font-family: "STKaiti", "KaiTi", serif; font-size: 11px; text-align: center; }
+    .spread-name { margin: 0; font-size: 23px; font-weight: 400; text-align: center; }
+    .orientation { display: block; color: var(--muted); font-size: 12px; text-align: center; }
+
+    .reading-axis { position: relative; padding-top: 74px; }
+    .qi-line { position: absolute; top: 72px; bottom: 22px; left: 128px; width: 1px; background: linear-gradient(var(--gold), rgb(166 91 208 / .2), transparent); transform-origin: top; transform: scaleY(0); transition: transform 1.8s cubic-bezier(.16,1,.3,1); }
+    .reading-axis.is-visible .qi-line { transform: scaleY(1); }
+    .entry { position: relative; display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 36px; padding: 0 0 62px; opacity: 0; transform: translateY(24px); transition: opacity .75s ease, transform .75s cubic-bezier(.16,1,.3,1); }
+    .entry.is-visible { opacity: 1; transform: translateY(0); }
+    .entry-copy { max-width: 720px; }
+    h2 { margin: 0 0 17px; font-size: clamp(26px, 3vw, 40px); font-weight: 400; line-height: 1.3; }
+    .entry-copy p { margin: 0 0 16px; color: #ded5e3; }
+
+    .synthesis { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 36px; padding: 58px 0; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+    blockquote { max-width: 760px; margin: 0; font-size: clamp(20px, 2.4vw, 29px); line-height: 1.72; }
+    .closing { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; padding-top: 64px; }
+    .numbered { margin: 0; padding: 0; list-style: none; counter-reset: item; }
+    .numbered li { position: relative; min-height: 58px; padding: 13px 0 13px 42px; border-top: 1px solid var(--rule); counter-increment: item; color: #ded5e3; }
+    .numbered li::before { content: counter(item, cjk-ideographic); position: absolute; left: 5px; color: var(--gold); font-family: "STKaiti", "KaiTi", serif; }
+    .boundary { margin-top: 66px; padding-top: 20px; border-top: 1px solid var(--rule); color: var(--muted); font-size: 12px; }
+
+    @media (max-width: 720px) {
+      .toolbar { padding: 0 14px; }
+      .scroll { width: calc(100% - 22px); margin: 11px auto 34px; }
+      .cover { min-height: 500px; grid-template-columns: 52px minmax(0,1fr); gap: 16px; padding: 30px 22px; }
+      .vertical-mark { font-size: 12px; }
+      h1 { font-size: clamp(39px, 12vw, 56px); text-align: left; }
+      .cover-meta { grid-column: 2; justify-self: start; padding: 12px 0 0; border-left: 0; border-top: 1px solid var(--rule); }
+      .content { padding: 36px 22px 44px; }
+      .summary, .entry, .synthesis { grid-template-columns: 1fr; gap: 14px; }
+      .summary { padding-bottom: 40px; }
+      .summary p { font-size: 20px; }
+      .spread { gap: 8px; padding: 46px 0; }
+      .spread-card:nth-child(2) { margin-top: 24px; }
+      .card-frame { width: min(100%, 118px); margin-bottom: 13px; }
+      .spread-name { font-size: 16px; }
+      .orientation, .spread-position { font-size: 10px; }
+      .reading-axis { padding-top: 50px; }
+      .qi-line { display: none; }
+      .entry { padding-bottom: 46px; }
+      .closing { grid-template-columns: 1fr; gap: 44px; padding-top: 48px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important; } .sky,.silk,.ambient { animation:none; } .spread-card,.entry { opacity:1; transform:none; } .qi-line { transform:scaleY(1); } }
+    @media print { @page { size:A4; margin:14mm; } html,body { background:white; color:#242024; } .sky,.silk,.shade,.ambient,.toolbar { display:none; } .scroll { width:100%; margin:0; border:0; background:white; box-shadow:none; border-radius:0; } .cover { min-height:230mm; color:white; background:#3b2450; break-after:page; print-color-adjust:exact; -webkit-print-color-adjust:exact; } .content { padding:0; } .summary { padding-top:8mm; } .entry-copy p,.numbered li { color:#322d35; } .spread-card,.entry,.synthesis,.closing section { break-inside:avoid; } .card-frame { box-shadow:none; } }
+  </style>
+</head>
+<body>
+  <div class="sky" aria-hidden="true"></div><div class="silk" aria-hidden="true"></div><div class="ambient" aria-hidden="true"></div><div class="shade" aria-hidden="true"></div>
+  <nav class="toolbar" aria-label="报告工具"><span>塔罗树洞 · 夜观解读</span><button type="button" onclick="window.print()">打印或保存 PDF</button></nav>
+  <main class="scroll">
+    <header class="cover"><div class="vertical-mark">三张行动牌阵</div><h1>关于下一步的三张牌</h1><div class="cover-meta">二〇二六年七月十二日<br>现状 · 阻力 · 方向</div></header>
+    <div class="content">
+      <section class="summary"><div class="label">所问之事</div><p>我是否应该在近期改变工作方向？我想分清真正的准备，和只是想从疲惫里逃开。</p></section>
+      <section class="spread" aria-label="本次牌阵">
+        <article class="spread-card"><div class="card-frame"><img src="images/cards/01-magician.jpg" alt="魔术师正位"></div><div class="spread-position">现状 · 此刻之势</div><h2 class="spread-name">魔术师</h2><span class="orientation">正位</span></article>
+        <article class="spread-card"><div class="card-frame reversed"><img src="images/cards/18-moon.jpg" alt="月亮逆位"></div><div class="spread-position">阻力 · 未明之处</div><h2 class="spread-name">月亮</h2><span class="orientation">逆位</span></article>
+        <article class="spread-card"><div class="card-frame"><img src="images/cards/09-hermit.jpg" alt="隐者正位"></div><div class="spread-position">方向 · 可行之路</div><h2 class="spread-name">隐者</h2><span class="orientation">正位</span></article>
+      </section>
+      <section class="reading-axis"><div class="qi-line" aria-hidden="true"></div>
+        <article class="entry"><div class="label">现状<br>魔术师 · 正位</div><div class="entry-copy"><h2>你手里已经有可以开始的东西</h2><p>魔术师首先指向资源的可用性。你现在的困惑未必来自能力不足，更像是已有经验、表达、关系和执行力还没有被放进同一个方向里。</p><p>这张牌并不催促你立刻离开。它更关心一个现实问题：如果暂时不改变职位，你是否仍能用现有条件做一次小规模试验，证明自己真正想走的方向？</p></div></article>
+        <article class="entry"><div class="label">阻力<br>月亮 · 逆位</div><div class="entry-copy"><h2>不确定正在退去，但疲惫会放大判断</h2><p>月亮逆位常出现在迷雾开始变薄的时候。你可能已经更清楚哪里不适合自己，只是仍担心看错，或者把短期情绪误认为长期答案。</p><p>阻力不是你太敏感，而是缺少可以对照的事实。把最消耗你的三件事和最能让你进入专注的三件事分别写下来，它们会比笼统的想换工作更接近问题本身。</p></div></article>
+        <article class="entry"><div class="label">方向<br>隐者 · 正位</div><div class="entry-copy"><h2>先缩小噪音，再决定要走多远</h2><p>隐者给出的不是退缩，而是一段主动降低外界声音的调查期。你需要的可能不是更多行业观点，而是一个不被催促的窗口，去确认自己愿意长期承担哪一种困难。</p><p>在作出不可逆决定前，找一位了解目标领域、又不会替你做决定的人谈一次。带着具体问题去，而不是只问我该不该走。</p></div></article>
+      </section>
+      <section class="synthesis"><div class="label">三牌合观</div><div><h2>变化可以开始，但第一步不是仓促离开</h2><blockquote>魔术师确认你有行动能力，月亮逆位要求你把情绪中的雾转换成事实，隐者则建议先进行一段安静而具体的验证。真正的变化更像试验、访谈和边界整理。</blockquote></div></section>
+      <section class="closing">
+        <div><div class="label">可行之事</div><h2>先做两件小事</h2><ol class="numbered"><li>用两周完成一个接近目标方向的小项目，记录投入感和真实困难。</li><li>约一位目标领域从业者，核对日常工作，而不只讨论机会与前景。</li></ol></div>
+        <div><div class="label">留待自问</div><h2>慢一点回答</h2><ol class="numbered"><li>我真正想离开的，是工作内容、环境，还是长期疲惫？</li><li>哪一种困难即使持续三年，我仍愿意学习如何处理？</li><li>什么证据会让我知道自己是在靠近，而不是逃离？</li></ol></div>
+      </section>
+      <footer class="boundary">这份阅读把塔罗作为整理问题的象征工具，不是对职业结果的保证。涉及收入、合同和重大职业决策时，请同时参考真实数据与专业建议。</footer>
+    </div>
+  </main>
+  <script>
+    if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      const observer = new IntersectionObserver(entries => entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add("is-visible"); observer.unobserve(entry.target); } }), { threshold: .18 });
+      document.querySelectorAll(".spread-card, .entry, .reading-axis").forEach(element => observer.observe(element));
+    } else document.querySelectorAll(".spread-card, .entry, .reading-axis").forEach(element => element.classList.add("is-visible"));
+  </script>
+</body>
+</html>
