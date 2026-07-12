@@ -7,7 +7,7 @@
 *今晚就给自己一场不被打扰的小小仪式。*
 
 [![MIT License](https://img.shields.io/badge/license-MIT-purple.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-0.3.0-pink.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-0.5.1-pink.svg)](CHANGELOG.md)
 [![Skills.sh](https://img.shields.io/badge/skills.sh-available-blue.svg)](https://www.skills.sh/?q=tarot-confessional)
 
 </div>
@@ -29,7 +29,7 @@
 
 ###   在线体验（无需安装）
 
-**[  点击这里体验完整营销页 →](https://scott1743.github.io/tarot-confessional/introduction/index.html)**
+**[  点击这里体验完整营销页 →](https://scott1743.github.io/tarot-confessional/)**
 
 *包含抽牌演示、解读报告展示和一键安装指南*
 
@@ -98,6 +98,10 @@ npx skills add Scott1743/tarot-confessional
 
 ### 严谨而非神秘
 虽然使用象征语言，但我们的代码和协议都是严谨可验证的。
+
+##   朋友项目
+
+想把一次解读里的体会变成可长期积累、可搜索的个人知识？试试 [Mneme](https://github.com/Scott1743/mneme)：塔罗树洞负责当下的倾听与象征性反思，Mneme 负责把值得留下的内容整理成一个本地优先、由 Agent 增量维护的知识 Wiki。
 
 ---
 
@@ -177,7 +181,7 @@ git clone https://github.com/Scott1743/tarot-confessional.git
 cd tarot-confessional
 
 # 打包 Skill
-python3 scripts/package_skill.py --version 0.3.0
+python3 scripts/package_skill.py --version 0.5.1
 
 # 运行测试
 python3 -m pytest tests/
