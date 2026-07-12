@@ -23,6 +23,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / "skills" / "tarot-confessional"
 DIST = ROOT / "dist"
+INTRODUCTION_SOURCE = ROOT / "introduction" / "index.html"
 
 
 def sha256(path: Path) -> str:
@@ -88,6 +89,21 @@ def stage_directory(skill_dir: Path, version: str) -> Path:
         shutil.rmtree(stage)
     shutil.copytree(skill_dir, stage)
     return stage
+
+
+def render_introduction_into(stage: Path, version: str) -> Path | None:
+    """Render the introduction page with placeholders filled and copy it into the staged skill."""
+    if not INTRODUCTION_SOURCE.is_file():
+        return None
+    sys.path.insert(0, str(ROOT / "scripts"))
+    import importlib
+    renderer = importlib.import_module("render_introduction")
+    intro_dst = stage / "introduction.html"
+    template = INTRODUCTION_SOURCE.read_text(encoding="utf-8")
+    substitutions = renderer.collect_substitutions(SOURCE, version)
+    rendered, _ = renderer.render(template, substitutions)
+    intro_dst.write_text(rendered, encoding="utf-8")
+    return intro_dst
 
 
 def write_sums(version: str, stage: Path) -> Path:
@@ -190,6 +206,9 @@ def package(version: str) -> int:
         return 1
     archive_stem = f"tarot-confessional-{version}"
     stage = stage_directory(SOURCE, version)
+    # Render the introduction page against this version so dist copies
+    # always carry the correct version, release date, and changelog summary.
+    intro_dst = render_introduction_into(stage, version)
     manifest = build_manifest(version, stage, archive_stem)
     manifest["files"].append("manifest.json")
     manifest["files"] = sorted(set(manifest["files"]))
@@ -203,6 +222,8 @@ def package(version: str) -> int:
     print(f"checksums: {sums_path}")
     print(f"manifest:  {stage / 'manifest.json'}")
     print(f"notes:     {notes_path}")
+    if intro_dst:
+        print(f"intro:     {intro_dst}")
     return 0
 
 

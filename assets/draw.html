@@ -119,8 +119,8 @@
     .seal { align-self: start; justify-self: center; margin-top: 34px; width: 68px; min-height: 94px; display: grid; place-items: center; padding: 10px 8px; border: 1px solid rgb(214 179 106 / .62); border-radius: 8px; color: var(--gold); background: rgb(55 19 72 / .4); font-family: "STKaiti", "KaiTi", serif; font-size: 12px; line-height: 1.7; text-align: center; box-shadow: inset 0 0 0 4px rgb(214 179 106 / .08), 0 8px 24px rgb(5 1 10 / .3); transition: box-shadow .4s ease, transform .4s var(--ease); }
     .seal:hover { transform: translateY(-2px); box-shadow: inset 0 0 0 4px rgb(214 179 106 / .12), 0 12px 32px rgb(5 1 10 / .4); }
 
-    .ritual { min-width: 0; display: grid; grid-template-rows: minmax(178px, .7fr) auto auto; gap: 20px; align-items: center; }
-    .table { position: relative; min-height: 190px; display: grid; place-items: center; transform: translate3d(calc(var(--px) * 5px), calc(var(--py) * 3px), 0); transition: transform 1s var(--ease); }
+    .ritual { min-width: 0; display: grid; grid-template-rows: minmax(218px, .7fr) auto auto; gap: 20px; align-items: center; }
+    .table { position: relative; min-height: 230px; display: grid; place-items: center; transform: translate3d(calc(var(--px) * 5px), calc(var(--py) * 3px), 0); transition: transform 1s var(--ease); }
     .table::before { content: ""; position: absolute; width: min(720px, 78vw); aspect-ratio: 2.8 / 1; border: 1px solid rgb(214 179 106 / .28); border-radius: 50%; transform: perspective(850px) rotateX(68deg); box-shadow: inset 0 0 80px rgb(166 91 208 / .12), 0 0 46px rgb(84 38 111 / .18); }
     .table::after { content: ""; position: absolute; width: min(440px, 54vw); height: 1px; background: linear-gradient(90deg, transparent, var(--gold), transparent); opacity: .56; }
 
@@ -136,18 +136,16 @@
     .deck-stack.is-shuffling { animation: shuffle 1.55s var(--ease) both; }
     @keyframes shuffle { 0% { transform: translateX(0) rotate(0) scale(1); } 18% { transform: translateX(-84%) rotate(-11deg) scale(1.06); } 36% { transform: translateX(72%) rotate(9deg) scale(.98); } 56% { transform: translateX(-48%) rotate(-6deg) scale(1.08); } 76% { transform: translateX(26%) rotate(3deg); } 100% { transform: translateX(0) rotate(0) scale(1); } }
 
-    .deck-rail { position: relative; z-index: 3; width: min(100%, 970px); display: none; grid-template-columns: repeat(8, minmax(58px, 1fr)); gap: clamp(6px, 1vw, 13px); }
-    .deck-rail.is-visible { display: grid; animation: fan-open .75s var(--ease) both; }
+    .deck-rail { position: relative; z-index: 3; width: min(100%, 970px); height: clamp(170px, 18vw, 210px); display: none; touch-action: pan-y; isolation: isolate; }
+    .deck-rail.is-visible { display: block; animation: fan-open .75s var(--ease) both; }
     @keyframes fan-open { from { opacity: 0; transform: scale(.78) translateY(24px); } to { opacity: 1; transform: scale(1) translateY(0); } }
-    .draw-card { position: relative; aspect-ratio: 2 / 3; min-width: 0; border: 1px solid rgb(214 179 106 / .45); border-radius: var(--card-r); padding: 0; background: #160c24 url("images/card-back.jpg") center / cover; box-shadow: 0 18px 44px rgb(5 1 10 / .38), 0 0 18px rgb(214 179 106 / .06); cursor: pointer; transform-style: preserve-3d; transition: transform .45s var(--ease), opacity .25s ease, box-shadow .4s var(--ease); }
+    .draw-card { --fan-x: 0px; --fan-y: 0px; --fan-angle: 0deg; --focus-x: 0px; --lift: 0px; --fan-scale: 1; position: absolute; left: 50%; bottom: 8px; width: clamp(64px, 7.4vw, 90px); aspect-ratio: 2 / 3; min-width: 0; border: 1px solid rgb(214 179 106 / .45); border-radius: var(--card-r); padding: 0; background: #160c24 url("images/card-back.jpg") center / cover; box-shadow: 0 16px 36px rgb(5 1 10 / .42), 0 0 14px rgb(214 179 106 / .05); cursor: pointer; transform: translateX(calc(-50% + var(--fan-x) + var(--focus-x))) translateY(calc(var(--fan-y) - var(--lift))) rotate(var(--fan-angle)) scale(var(--fan-scale)); transform-origin: 50% 115%; transform-style: preserve-3d; transition: transform .34s var(--ease), opacity .25s ease, box-shadow .34s var(--ease), border-color .25s ease; will-change: transform; }
     .draw-card::before { content: ""; position: absolute; inset: 6px; border: 1px solid rgb(238 232 242 / .2); border-radius: calc(var(--card-r) - 4px); pointer-events: none; transition: border-color .3s ease; }
-    .draw-card:nth-child(odd) { transform: translateY(7px) rotate(-1.3deg); }
-    .draw-card:nth-child(even) { transform: translateY(-3px) rotate(1.2deg); }
-    .draw-card:hover { transform: translateY(-18px) rotate(0) scale(1.05); box-shadow: 0 32px 64px rgb(5 1 10 / .58), 0 0 32px rgb(214 179 106 / .28), 0 0 60px rgb(166 91 208 / .18); }
-    .draw-card:hover::before { border-color: rgb(214 179 106 / .5); }
-    .draw-card.is-selected { transform: translateY(-26px) scale(1.06); box-shadow: 0 0 0 2px var(--gold), 0 24px 64px rgb(166 91 208 / .5), 0 0 50px rgb(214 179 106 / .25); }
-    .draw-card.is-selected::before { border-color: rgb(214 179 106 / .7); }
-    .draw-card.is-used { opacity: .16; pointer-events: none; }
+    .draw-card.is-near { box-shadow: 0 22px 48px rgb(5 1 10 / .5), 0 0 22px rgb(166 91 208 / .12); }
+    .draw-card.is-active { border-color: rgb(234 208 150 / .9); box-shadow: 0 34px 72px rgb(5 1 10 / .66), 0 0 34px rgb(214 179 106 / .34), 0 0 64px rgb(166 91 208 / .2); }
+    .draw-card.is-active::before { border-color: rgb(234 208 150 / .68); }
+    .draw-card.is-selected::before { border-color: rgb(214 179 106 / .72); }
+    .draw-card.is-used { opacity: 0; pointer-events: none; }
 
     .positions { position: relative; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(12px, 4vw, 58px); width: min(760px, 100%); margin: 0 auto; }
     .positions::before { content: ""; position: absolute; left: 10%; right: 10%; top: 52%; height: 1px; background: linear-gradient(90deg, transparent, rgb(214 179 106 / .62), transparent); opacity: .42; }
@@ -217,10 +215,10 @@
       .title-column { justify-content: flex-start; padding: 0; }
       h1 { writing-mode: horizontal-tb; font-size: clamp(29px, 8vw, 42px); letter-spacing: .04em; }
       .seal { position: absolute; top: 15px; right: 0; width: 54px; min-height: 64px; margin: 0; padding: 6px; font-size: 10px; }
-      .ritual { grid-template-rows: minmax(164px, auto) auto auto; }
-      .table { min-height: 174px; }
-      .deck-rail { width: calc(100vw - 26px); grid-template-columns: repeat(8, 72px); justify-content: start; gap: 9px; padding: 17px 6px 23px; overflow-x: auto; scroll-snap-type: x proximity; }
-      .draw-card { scroll-snap-align: center; }
+      .ritual { grid-template-rows: minmax(178px, auto) auto auto; }
+      .table { min-height: 190px; }
+      .deck-rail { width: calc(100vw - 26px); height: 168px; }
+      .draw-card { width: clamp(54px, 16vw, 66px); bottom: 5px; }
       .positions { gap: 7px; }
       .position:nth-child(2) { transform: translateY(8px); }
       .position-label { font-size: 14px; padding: 3px 10px; }
@@ -294,14 +292,114 @@
     const codePanel = $("#codePanel"), drawCode = $("#drawCode"), copyButton = $("#copyButton"), copyNote = $("#copyNote");
     const statusText = $("#statusText"), liveStatus = $("#liveStatus");
     let state = "ready", shuffled = [], selected = [], energy = 0;
+    let fanCards = [], activeFanIndex = -1, pendingFanX = 0, fanFrame = 0;
 
     function secureRandom(max) { if (!window.crypto?.getRandomValues) throw new Error("secure-random-unavailable"); const range = 0x100000000, limit = range - range % max, value = new Uint32Array(1); do window.crypto.getRandomValues(value); while (value[0] >= limit); return value[0] % max; }
     function secureShuffle(items) { const result = items.map(card => ({ ...card, reversed: secureRandom(2) === 1 })); for (let i = result.length - 1; i > 0; i--) { const j = secureRandom(i + 1); [result[i], result[j]] = [result[j], result[i]]; } return result; }
     function setStatus(text) { statusText.textContent = text; liveStatus.textContent = text; }
 
+    function nearestAvailableIndex(index) {
+      if (!fanCards.length) return -1;
+      const target = Math.max(0, Math.min(fanCards.length - 1, index));
+      if (!fanCards[target].classList.contains("is-used")) return target;
+      for (let offset = 1; offset < fanCards.length; offset++) {
+        const right = target + offset, left = target - offset;
+        if (right < fanCards.length && !fanCards[right].classList.contains("is-used")) return right;
+        if (left >= 0 && !fanCards[left].classList.contains("is-used")) return left;
+      }
+      return -1;
+    }
+
+    function baseFanZ(index) {
+      const middle = (fanCards.length - 1) / 2;
+      return String(Math.round(100 - Math.abs(index - middle)));
+    }
+
+    function layoutFan() {
+      if (!fanCards.length || !deckRail.classList.contains("is-visible")) return;
+      const railWidth = deckRail.clientWidth;
+      const cardWidth = fanCards[0].offsetWidth;
+      if (!railWidth || !cardWidth) return;
+      const edgeInset = innerWidth <= 760 ? 8 : 0;
+      const usable = Math.max(0, railWidth - cardWidth - edgeInset * 2), middle = (fanCards.length - 1) / 2;
+      fanCards.forEach((button, index) => {
+        const t = middle ? (index - middle) / middle : 0;
+        button.style.setProperty("--fan-x", `${(-usable / 2) + (usable * index / Math.max(1, fanCards.length - 1))}px`);
+        button.style.setProperty("--fan-y", `${Math.pow(Math.abs(t), 1.65) * 20}px`);
+        button.style.setProperty("--fan-angle", `${t * 9}deg`);
+        if (index !== activeFanIndex) button.style.zIndex = baseFanZ(index);
+      });
+    }
+
+    function clearFanFocus() {
+      activeFanIndex = -1;
+      fanCards.forEach((button, index) => {
+        button.classList.remove("is-active", "is-near");
+        button.style.removeProperty("--focus-x");
+        button.style.removeProperty("--lift");
+        button.style.removeProperty("--fan-scale");
+        button.style.zIndex = baseFanZ(index);
+      });
+    }
+
+    function setFanFocus(index) {
+      const available = nearestAvailableIndex(index);
+      if (available < 0) { clearFanFocus(); return -1; }
+      if (available === activeFanIndex) return available;
+      activeFanIndex = available;
+      fanCards.forEach((button, cardIndex) => {
+        const distance = cardIndex - available, absolute = Math.abs(distance);
+        const influence = Math.max(0, 1 - absolute / 5);
+        const push = absolute ? Math.sign(distance) * 38 * Math.pow(influence, 1.35) : 0;
+        button.classList.toggle("is-active", absolute === 0);
+        button.classList.toggle("is-near", absolute > 0 && absolute < 5);
+        button.style.setProperty("--focus-x", `${push}px`);
+        button.style.setProperty("--lift", `${absolute === 0 ? 38 : 10 * influence}px`);
+        button.style.setProperty("--fan-scale", `${absolute === 0 ? 1.08 : 1 + .018 * influence}`);
+        button.style.zIndex = absolute < 5 ? String(200 - absolute) : baseFanZ(cardIndex);
+      });
+      return available;
+    }
+
+    function fanIndexFromPointer(clientX) {
+      const rect = deckRail.getBoundingClientRect();
+      if (!rect.width) return 0;
+      const ratio = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+      return Math.round(ratio * (fanCards.length - 1));
+    }
+
+    function focusFanCard(index) {
+      const available = setFanFocus(index);
+      if (available < 0) return;
+      fanCards.forEach((button, cardIndex) => { button.tabIndex = cardIndex === available ? 0 : -1; });
+      fanCards[available].focus();
+    }
+
     function renderRail() {
       deckRail.replaceChildren();
-      shuffled.forEach((card, index) => { const button = document.createElement("button"); button.type = "button"; button.className = "draw-card"; button.setAttribute("aria-label", `选择第 ${index + 1} 张牌`); button.addEventListener("click", () => chooseCard(index, button)); deckRail.append(button); });
+      shuffled.forEach((card, index) => {
+        const button = document.createElement("button");
+        button.type = "button"; button.className = "draw-card"; button.dataset.index = index;
+        button.setAttribute("aria-label", `选择第 ${index + 1} 张牌`); button.setAttribute("aria-pressed", "false"); button.tabIndex = index === 0 ? 0 : -1;
+        button.addEventListener("focus", () => setFanFocus(index));
+        button.addEventListener("click", event => { if (event.detail === 0) { const next = chooseCard(index, button); if (next >= 0 && selected.length < 3) focusFanCard(next); } });
+        button.addEventListener("keydown", event => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            const next = chooseCard(index, button);
+            if (next >= 0 && selected.length < 3) focusFanCard(next);
+            return;
+          }
+          let target = -1;
+          if (event.key === "ArrowLeft") target = index - 1;
+          if (event.key === "ArrowRight") target = index + 1;
+          if (event.key === "Home") target = 0;
+          if (event.key === "End") target = fanCards.length - 1;
+          if (target >= 0) { event.preventDefault(); focusFanCard(target); }
+        });
+        deckRail.append(button);
+      });
+      fanCards = [...deckRail.children]; activeFanIndex = -1;
     }
 
     function beginShuffle() {
@@ -309,14 +407,16 @@
       try { shuffled = secureShuffle(deck); } catch { setStatus("当前浏览器无法安全抽牌"); primaryButton.textContent = "请换用较新的浏览器"; primaryButton.disabled = true; return; }
       state = "shuffling"; energy = 1; document.body.classList.add("is-shuffling"); setStatus("紫气聚合，正在洗牌"); primaryButton.disabled = true; deckButton.classList.add("is-shuffling");
       const delay = matchMedia("(prefers-reduced-motion: reduce)").matches ? 20 : 1580;
-      setTimeout(() => { renderRail(); deckButton.hidden = true; deckRail.classList.add("is-visible"); state = "drawing"; energy = .28; document.body.classList.remove("is-shuffling"); setStatus("请依次选择三张牌"); primaryButton.textContent = "还需选择三张"; }, delay);
+      setTimeout(() => { renderRail(); deckButton.hidden = true; deckRail.classList.add("is-visible"); requestAnimationFrame(layoutFan); state = "drawing"; energy = .28; document.body.classList.remove("is-shuffling"); setStatus("请依次选择三张牌"); primaryButton.textContent = "还需选择三张"; }, delay);
     }
 
     function chooseCard(index, button) {
-      if (state !== "drawing" || selected.some(item => item.index === index) || selected.length >= 3) return;
+      if (state !== "drawing" || selected.some(item => item.index === index) || selected.length >= 3) return -1;
       const card = shuffled[index]; selected.push({ ...card, index }); button.classList.add("is-selected", "is-used"); button.setAttribute("aria-pressed", "true");
       const slotIndex = selected.length - 1, slot = $(`#slot${slotIndex}`), back = document.createElement("div"); back.className = "slot-card"; back.style.background = '#160c24 url("images/card-back.jpg") center / cover'; back.setAttribute("aria-label", `${positions[slotIndex]}牌位已选择，尚未翻开`); slot.append(back);
       const remaining = 3 - selected.length; primaryButton.textContent = remaining ? `还需选择${remaining === 2 ? "两" : "一"}张` : "翻开此局"; primaryButton.disabled = remaining !== 0; setStatus(remaining ? `已选${selected.length}张` : "三张牌已归位");
+      if (!remaining) { clearFanFocus(); return -1; }
+      const next = nearestAvailableIndex(index + 1 < fanCards.length ? index + 1 : index - 1); setFanFocus(next); return next;
     }
 
     function revealCards() {
@@ -327,9 +427,22 @@
     }
 
     async function copyResult() { try { await navigator.clipboard.writeText(drawCode.value); copyButton.textContent = "已复制"; copyNote.textContent = "回到对话，粘贴这段抽牌码。"; } catch { drawCode.focus(); drawCode.select(); copyButton.textContent = "请手动复制"; copyNote.textContent = "抽牌码已经选中。"; } }
-    function reset() { state = "ready"; shuffled = []; selected = []; energy = 0; deckRail.className = "deck-rail"; deckRail.hidden = false; deckRail.replaceChildren(); deckButton.hidden = false; deckButton.classList.remove("is-shuffling"); primaryButton.hidden = false; primaryButton.disabled = false; primaryButton.textContent = "起念洗牌"; codePanel.classList.remove("is-visible"); resetButton.hidden = true; copyButton.textContent = "复制抽牌码"; copyNote.textContent = "回到对话，把抽牌码交给 Agent。"; for (let i = 0; i < 3; i++) { $(`#slot${i}`).replaceChildren(); $(`#caption${i}`).textContent = ""; } setStatus("静候起念"); deckButton.focus(); }
+    function reset() { state = "ready"; shuffled = []; selected = []; energy = 0; clearFanFocus(); fanCards = []; deckRail.className = "deck-rail"; deckRail.hidden = false; deckRail.replaceChildren(); deckButton.hidden = false; deckButton.classList.remove("is-shuffling"); primaryButton.hidden = false; primaryButton.disabled = false; primaryButton.textContent = "起念洗牌"; codePanel.classList.remove("is-visible"); resetButton.hidden = true; copyButton.textContent = "复制抽牌码"; copyNote.textContent = "回到对话，把抽牌码交给 Agent。"; for (let i = 0; i < 3; i++) { $(`#slot${i}`).replaceChildren(); $(`#caption${i}`).textContent = ""; } setStatus("静候起念"); deckButton.focus(); }
 
     deckButton.addEventListener("click", beginShuffle); primaryButton.addEventListener("click", () => state === "ready" ? beginShuffle() : revealCards()); copyButton.addEventListener("click", copyResult); resetButton.addEventListener("click", reset);
+    deckRail.addEventListener("pointermove", event => {
+      if (state !== "drawing") return;
+      pendingFanX = event.clientX;
+      if (!fanFrame) fanFrame = requestAnimationFrame(() => { fanFrame = 0; setFanFocus(fanIndexFromPointer(pendingFanX)); });
+    });
+    deckRail.addEventListener("pointerdown", event => { if (state === "drawing") setFanFocus(fanIndexFromPointer(event.clientX)); });
+    deckRail.addEventListener("pointerleave", event => { if (event.pointerType !== "touch" && state === "drawing") clearFanFocus(); });
+    deckRail.addEventListener("click", event => {
+      if (state !== "drawing" || event.detail === 0) return;
+      const index = setFanFocus(fanIndexFromPointer(event.clientX));
+      if (index >= 0) chooseCard(index, fanCards[index]);
+    });
+    if ("ResizeObserver" in window) new ResizeObserver(layoutFan).observe(deckRail); else addEventListener("resize", layoutFan, { passive: true });
 
     if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
       document.addEventListener("pointermove", event => { document.documentElement.style.setProperty("--px", ((event.clientX / innerWidth) - .5).toFixed(3)); document.documentElement.style.setProperty("--py", ((event.clientY / innerHeight) - .5).toFixed(3)); }, { passive: true });

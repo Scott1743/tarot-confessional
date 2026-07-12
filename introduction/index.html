@@ -1,0 +1,656 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>塔罗树洞 · 让心事有地方去</title>
+<meta name="description" content="一个面向中文女性的温柔塔罗 + 树洞倾诉 Agent Skill。今晚就给自己一场不被打扰的小小仪式。">
+<style>
+  :root {
+    --night: #12091D;
+    --ink-purple: #21102F;
+    --imperial: #54266F;
+    --glow: #A65BD0;
+    --moon: #EEE8F2;
+    --gold: #D6B36A;
+    --ash: #B7B0BF;
+    --rose: #E8B4B8;
+    --cinnabar: #A94B52;
+    --max: 1180px;
+    --gap: clamp(48px, 8vw, 96px);
+  }
+  *,*::before,*::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--night);
+    color: var(--moon);
+    font-family: "STKaiti", "KaiTi", "STSong", "Songti SC", serif;
+    line-height: 1.7;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: url("assets/eastern-night-bg_001.jpg") center / cover no-repeat;
+    opacity: .55;
+    z-index: -2;
+    animation: drift 60s ease-in-out infinite alternate;
+  }
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(166,91,208,.18), transparent 60%),
+                radial-gradient(ellipse at 100% 100%, rgba(214,179,106,.08), transparent 60%);
+    z-index: -1;
+    pointer-events: none;
+  }
+  @keyframes drift {
+    0%   { transform: translate(-2%, -1%) scale(1.02); }
+    100% { transform: translate(2%, 1%) scale(1.06); }
+  }
+
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px clamp(20px, 4vw, 48px);
+    backdrop-filter: blur(14px);
+    background: rgba(18, 9, 29, 0.55);
+    border-bottom: 1px solid rgba(214, 179, 106, .12);
+  }
+  .nav .brand {
+    font-family: "STKaiti", "KaiTi", serif;
+    font-size: 18px;
+    letter-spacing: .14em;
+    color: var(--gold);
+  }
+  .nav ul { display: flex; gap: clamp(14px, 3vw, 32px); list-style: none; margin: 0; padding: 0; font-size: 14px; }
+  .nav a { color: var(--moon); text-decoration: none; opacity: .8; transition: opacity .25s ease; }
+  .nav a:hover { opacity: 1; color: var(--gold); }
+  .nav .pill {
+    padding: 6px 14px;
+    border: 1px solid rgba(214, 179, 106, .4);
+    border-radius: 999px;
+    font-size: 12px;
+    color: var(--gold);
+  }
+
+  section {
+    padding: var(--gap) clamp(20px, 5vw, 64px);
+    max-width: var(--max);
+    margin: 0 auto;
+  }
+  .eyebrow {
+    display: inline-block;
+    padding: 4px 14px;
+    border: 1px solid rgba(214, 179, 106, .4);
+    border-radius: 999px;
+    color: var(--gold);
+    font-size: 12px;
+    letter-spacing: .18em;
+    margin-bottom: 24px;
+  }
+  h1, h2, h3 { font-family: "STKaiti", "KaiTi", "STSong", serif; margin: 0 0 .4em; line-height: 1.25; }
+  h1 { font-size: clamp(34px, 6vw, 64px); letter-spacing: .04em; }
+  h2 { font-size: clamp(28px, 4vw, 44px); color: var(--moon); }
+  h3 { font-size: clamp(20px, 2.5vw, 26px); color: var(--gold); }
+  p { margin: 0 0 1em; color: rgba(238, 232, 242, .86); }
+  .muted { color: var(--ash); }
+
+  /* ===== HERO ===== */
+  .hero {
+    min-height: calc(100vh - 80px);
+    display: grid;
+    align-content: center;
+    text-align: center;
+    position: relative;
+  }
+  .hero h1 {
+    background: linear-gradient(135deg, var(--moon) 0%, var(--glow) 50%, var(--gold) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin-bottom: .35em;
+  }
+  .hero .lede {
+    font-size: clamp(17px, 2vw, 22px);
+    max-width: 640px;
+    margin: 0 auto 1.2em;
+    color: rgba(238, 232, 242, .9);
+  }
+  .hero .cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 36px;
+    margin-top: 16px;
+    border: 1px solid var(--gold);
+    border-radius: 999px;
+    background: linear-gradient(135deg, rgba(214,179,106,.12), rgba(166,91,208,.08));
+    color: var(--gold);
+    font-size: 17px;
+    text-decoration: none;
+    transition: transform .3s ease, box-shadow .3s ease;
+    box-shadow: 0 12px 40px rgba(5, 1, 10, .35), 0 0 0 1px rgba(214,179,106,.12);
+  }
+  .hero .cta:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 18px 50px rgba(5, 1, 10, .45), 0 0 30px rgba(214,179,106,.22);
+  }
+  .hero .floating-cards {
+    display: flex;
+    justify-content: center;
+    gap: clamp(12px, 3vw, 36px);
+    margin: 56px auto 0;
+    perspective: 1000px;
+  }
+  .hero .floating-cards img {
+    width: clamp(80px, 12vw, 140px);
+    aspect-ratio: 2/3;
+    object-fit: cover;
+    border-radius: 12px;
+    border: 1px solid rgba(214,179,106,.3);
+    box-shadow: 0 24px 60px rgba(5,1,10,.55), 0 0 24px rgba(166,91,208,.18);
+    animation: float 6s ease-in-out infinite;
+    background: #1a0e2a;
+  }
+  .hero .floating-cards img:nth-child(2) { animation-delay: -2s; transform: translateY(-12px) rotate(-3deg); }
+  .hero .floating-cards img:nth-child(3) { animation-delay: -4s; transform: translateY(8px) rotate(2deg); }
+  .hero .floating-cards img:nth-child(1) { transform: translateY(4px) rotate(-4deg); }
+  @keyframes float {
+    0%, 100% { transform: translateY(0) rotate(var(--r, -4deg)); }
+    50% { transform: translateY(-12px) rotate(calc(var(--r, -4deg) + 1.5deg)); }
+  }
+
+  .badge-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 14px;
+    margin-top: 40px;
+    color: var(--ash);
+    font-size: 13px;
+  }
+  .badge-row span {
+    padding: 4px 12px;
+    border: 1px solid rgba(214, 179, 106, .25);
+    border-radius: 999px;
+  }
+
+  /* ===== DRAW GAMEPLAY ===== */
+  .draw-grid {
+    display: grid;
+    grid-template-columns: 1.1fr .9fr;
+    gap: clamp(28px, 5vw, 56px);
+    align-items: center;
+  }
+  .draw-grid .steps { display: flex; flex-direction: column; gap: 20px; margin: 32px 0; }
+  .draw-grid .step {
+    display: grid;
+    grid-template-columns: 36px 1fr;
+    gap: 18px;
+    padding: 18px 20px;
+    border: 1px solid rgba(214, 179, 106, .18);
+    border-radius: 14px;
+    background: rgba(33, 16, 47, .45);
+  }
+  .draw-grid .step .num {
+    width: 36px; height: 36px;
+    display: grid; place-items: center;
+    border: 1px solid var(--gold);
+    border-radius: 50%;
+    color: var(--gold);
+    font-family: "STKaiti", serif;
+  }
+  .draw-grid .step h4 {
+    margin: 0 0 4px;
+    color: var(--moon);
+    font-size: 17px;
+    font-family: "STKaiti", "KaiTi", serif;
+  }
+  .draw-grid .step p { margin: 0; font-size: 14px; color: var(--ash); }
+
+  .screenshot-frame {
+    position: relative;
+    border: 1px solid rgba(214, 179, 106, .25);
+    border-radius: 18px;
+    padding: 14px;
+    background: linear-gradient(135deg, rgba(166,91,208,.06), rgba(33,16,47,.6));
+    box-shadow: 0 24px 60px rgba(5, 1, 10, .45);
+  }
+  .screenshot-frame img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 10px;
+    border: 1px solid rgba(214, 179, 106, .12);
+  }
+  .screenshot-frame .label {
+    position: absolute;
+    top: -12px;
+    left: 18px;
+    padding: 4px 12px;
+    background: var(--night);
+    color: var(--gold);
+    font-size: 12px;
+    letter-spacing: .14em;
+    border: 1px solid var(--gold);
+    border-radius: 999px;
+  }
+  .screenshot-trio {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin-top: 28px;
+  }
+  .screenshot-trio .screenshot-frame { padding: 8px; }
+
+  /* ===== MNEME COMING SOON ===== */
+  .mneme-card {
+    margin-top: 48px;
+    padding: 32px;
+    border: 1px dashed rgba(214, 179, 106, .35);
+    border-radius: 18px;
+    background: rgba(33, 16, 47, .35);
+    position: relative;
+  }
+  .mneme-card .soon-tag {
+    position: absolute;
+    top: -14px;
+    right: 24px;
+    padding: 4px 14px;
+    background: linear-gradient(135deg, var(--glow), var(--cinnabar));
+    color: var(--moon);
+    font-size: 12px;
+    letter-spacing: .12em;
+    border-radius: 999px;
+  }
+  .mneme-card h3 { color: var(--moon); }
+  .mneme-card .features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    margin-top: 18px;
+  }
+  .mneme-card .feature {
+    padding: 16px;
+    border: 1px solid rgba(214, 179, 106, .18);
+    border-radius: 12px;
+    background: rgba(18, 9, 29, .4);
+  }
+  .mneme-card .feature strong { color: var(--gold); display: block; margin-bottom: 4px; }
+  .mneme-card .feature span { font-size: 13px; color: var(--ash); }
+
+  /* ===== READING ===== */
+  .reading-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: clamp(28px, 5vw, 56px);
+    align-items: start;
+  }
+  .reading-side .quote {
+    font-family: "STKaiti", "KaiTi", serif;
+    font-size: 18px;
+    color: rgba(238, 232, 242, .9);
+    border-left: 3px solid var(--gold);
+    padding: 8px 0 8px 18px;
+    margin: 24px 0;
+  }
+  .reading-side ul { padding-left: 18px; color: var(--ash); }
+  .reading-side li { margin-bottom: 8px; }
+
+  .reading-mock {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+  .reading-mock img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    border: 1px solid rgba(214, 179, 106, .15);
+  }
+
+  /* ===== INSTALL ===== */
+  .install-card {
+    padding: clamp(24px, 4vw, 40px);
+    border: 1px solid rgba(214, 179, 106, .25);
+    border-radius: 18px;
+    background: linear-gradient(135deg, rgba(33,16,47,.7), rgba(18,9,29,.7));
+    margin-top: 32px;
+  }
+  pre {
+    margin: 0;
+    padding: 18px 22px;
+    background: rgba(5, 1, 10, .55);
+    border: 1px solid rgba(214, 179, 106, .15);
+    border-radius: 12px;
+    overflow-x: auto;
+    color: var(--moon);
+    font-family: ui-monospace, "SFMono-Regular", Menlo, monospace;
+    font-size: 13.5px;
+    line-height: 1.7;
+  }
+  pre .comment { color: var(--ash); }
+  pre .str { color: var(--rose); }
+  .prompt-box {
+    background: rgba(214, 179, 106, .06);
+    border-left: 3px solid var(--gold);
+    padding: 20px 24px;
+    border-radius: 0 12px 12px 0;
+    font-family: "STKaiti", "KaiTi", serif;
+    font-size: 16px;
+    color: var(--moon);
+    line-height: 1.9;
+  }
+  .prompt-box em { color: var(--gold); font-style: normal; }
+  .install-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(20px, 4vw, 40px);
+    margin-top: 24px;
+  }
+  .final-cta {
+    text-align: center;
+    margin-top: 64px;
+    padding: 48px 32px;
+    border: 1px solid var(--gold);
+    border-radius: 24px;
+    background: radial-gradient(ellipse at center, rgba(214,179,106,.12), transparent 70%);
+  }
+  .final-cta h2 {
+    background: linear-gradient(135deg, var(--gold), var(--glow));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .final-cta a {
+    display: inline-block;
+    margin-top: 18px;
+    padding: 14px 40px;
+    background: var(--gold);
+    color: var(--night);
+    border-radius: 999px;
+    text-decoration: none;
+    font-weight: 600;
+    font-family: "STKaiti", serif;
+  }
+  .final-cta a:hover { transform: translateY(-2px); box-shadow: 0 18px 40px rgba(214,179,106,.3); }
+
+  /* ===== FOOTER ===== */
+  footer {
+    padding: 48px clamp(20px, 5vw, 64px);
+    text-align: center;
+    color: var(--ash);
+    border-top: 1px solid rgba(214, 179, 106, .12);
+    margin-top: 96px;
+  }
+  footer .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+    justify-content: center;
+    margin-bottom: 16px;
+    font-size: 13px;
+  }
+  footer .meta span::before {
+    content: "·";
+    margin-right: 18px;
+    color: var(--gold);
+  }
+  footer .meta span:first-child::before { content: ""; margin: 0; }
+
+  /* Responsive */
+  @media (max-width: 880px) {
+    .draw-grid, .reading-grid, .install-grid { grid-template-columns: 1fr; }
+    .screenshot-trio { grid-template-columns: 1fr; }
+    .nav ul { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: .001ms !important; transition-duration: .001ms !important; }
+    body::before { animation: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav" aria-label="主导航">
+  <span class="brand">塔罗树洞 · v{{VERSION}}</span>
+  <ul>
+    <li><a href="#howto">怎么玩</a></li>
+    <li><a href="#reading">阅读档案</a></li>
+    <li><a href="#install">开始使用</a></li>
+  </ul>
+  <span class="pill">中文 · 离线 · 不上传</span>
+</nav>
+
+<!-- ============ SECTION 1: HERO ============ -->
+<section class="hero">
+  <span class="eyebrow">致每一位没说出口的你</span>
+  <h1>今天晚上，让心事有地方去</h1>
+  <p class="lede">把那些说不出口、不知问谁、想了又想的事，<br>轻轻放进一场有温度的小小仪式。</p>
+
+  <div class="floating-cards" aria-hidden="true">
+    <img src="assets/02-high-priestess.jpg" alt="" loading="eager">
+    <img src="assets/17-star.jpg" alt="" loading="eager">
+    <img src="assets/18-moon.jpg" alt="" loading="eager">
+  </div>
+
+  <a class="cta" href="#howto">看看怎么玩 ↓</a>
+
+  <div class="badge-row">
+    <span>🌒 完全离线</span>
+    <span>✦ 不上传你的问题</span>
+    <span>✦ 不预测你的命运</span>
+    <span>✦ 不替你做决定</span>
+  </div>
+</section>
+
+<!-- ============ SECTION 2: HOW TO PLAY ============ -->
+<section id="howto">
+  <span class="eyebrow">一 · 玩法</span>
+  <h2>三张牌，三个视角，<br>三分钟看见自己</h2>
+  <p class="muted" style="max-width:620px">不需要懂塔罗，不需要记牌意。把问题放心底，让浏览器替你完成洗牌与选牌，然后把抽牌码交给我——剩下的，由我们一起慢慢说。</p>
+
+  <div class="draw-grid">
+    <div>
+      <div class="steps">
+        <div class="step">
+          <span class="num">1</span>
+          <div>
+            <h4>把问题放在心里</h4>
+            <p>也许是「我要不要换工作」，也许是「我们之间到底怎么了」。不需要打字说出来。</p>
+          </div>
+        </div>
+        <div class="step">
+          <span class="num">2</span>
+          <div>
+            <h4>点一下，让牌桌帮你开始</h4>
+            <p>浏览器用加密随机洗一副完整的 78 张牌，从 22 张大阿卡纳到 56 张小阿卡纳，一张不多一张不少。</p>
+          </div>
+        </div>
+        <div class="step">
+          <span class="num">3</span>
+          <div>
+            <h4>凭直觉选三张</h4>
+            <p>牌面朝下，凭第一感觉挑出三张。系统会给你三种牌阵：现状 / 阻力 / 方向，或者自己 / 对方 / 关系。</p>
+          </div>
+        </div>
+        <div class="step">
+          <span class="num">4</span>
+          <div>
+            <h4>复制抽牌码，回到对话</h4>
+            <p>一段不带任何隐私信息的 TC1 编码，把牌面"安全地"交给我。我会用温柔的语言，把它说成你听得懂的故事。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="screenshot-frame">
+        <span class="label">READY · 起念之前</span>
+        <img src="assets/screenshots/draw-ready.jpg" alt="抽牌页准备状态截图" loading="lazy">
+      </div>
+    </div>
+  </div>
+
+  <div class="screenshot-trio">
+    <div class="screenshot-frame">
+      <span class="label">SHUFFLE</span>
+      <img src="assets/screenshots/draw-picking.jpg" alt="洗完牌后的扇形牌列截图" loading="lazy">
+    </div>
+    <div class="screenshot-frame">
+      <span class="label">REVEAL</span>
+      <img src="assets/screenshots/draw-revealed.jpg" alt="翻牌后呈现的牌阵截图" loading="lazy">
+    </div>
+    <div class="screenshot-frame">
+      <span class="label">CODE-READY</span>
+      <img src="assets/card-back.jpg" alt="牌背特写" loading="lazy" style="aspect-ratio: 2/3; object-fit: cover;">
+    </div>
+  </div>
+
+  <!-- MNEME coming-soon card -->
+  <div class="mneme-card">
+    <span class="soon-tag">v0.2 敬请期待</span>
+    <h3>下一站：树洞 · 日记 · 梦境整理</h3>
+    <p>抽完牌只是开始。我们正在接入 <strong style="color:var(--gold)">MNEME</strong>，一个像本地 Wiki 一样陪你整理心事的小助手：</p>
+    <div class="features">
+      <div class="feature">
+        <strong>本地知识库</strong>
+        <span>你愿意保存的每一次阅读、每一段日记，都只留在你自己的电脑上。</span>
+      </div>
+      <div class="feature">
+        <strong>周期性 dream</strong>
+        <span>每周一次，我替你把分散的记录整理成主题时间线，让你看见自己的变化。</span>
+      </div>
+      <div class="feature">
+        <strong>默认零写入</strong>
+        <span>没有你的明确点头，一个字都不会落盘。说"忘掉"就能忘掉。</span>
+      </div>
+      <div class="feature">
+        <strong>不诊断、不依赖</strong>
+        <span>它帮你整理情绪轮廓，不替你贴标签，不假装"我比你更懂你"。</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SECTION 3: READING REPORT ============ -->
+<section id="reading">
+  <span class="eyebrow">二 · 私人阅读档案</span>
+  <h2>你带走的，不只是一串抽牌码</h2>
+  <p class="muted" style="max-width:620px">每一次抽完，我会生成一份可以保存、打印、反复回看的私人阅读档案。温柔的封面、纵向气脉串联的牌位解读、最后留两件可行的事和三个留给自己的问题。</p>
+
+  <div class="reading-grid">
+    <div class="reading-side">
+      <h3>它会包含</h3>
+      <ul>
+        <li>封面：日期、牌阵、你的问题（自动去隐私）</li>
+        <li>牌阵全景：图像 + 牌位 + 正逆位</li>
+        <li>逐牌解读：用你听得懂的语言，不堆术语</li>
+        <li>综合判断：牌与牌之间在说什么</li>
+        <li>可行之事：最多两项低风险下一步</li>
+        <li>留待自问：最多三个能带走的反思</li>
+        <li>边界说明：什么时候该去找专业帮助</li>
+      </ul>
+      <div class="quote">"塔罗作为整理问题的象征工具，<br>不是对结果的保证。"</div>
+      <p class="muted" style="font-size:13px">每一份报告顶部都印着这句话。我们不预测命运，只陪你把心事说清楚。</p>
+    </div>
+
+    <div class="reading-mock">
+      <div class="screenshot-frame">
+        <span class="label">COVER</span>
+        <img src="assets/screenshots/reading-cover.jpg" alt="报告封面截图" loading="lazy">
+      </div>
+      <div class="screenshot-frame">
+        <span class="label">SPREAD</span>
+        <img src="assets/screenshots/reading-spread.jpg" alt="牌阵全景截图" loading="lazy">
+      </div>
+      <div class="screenshot-frame">
+        <span class="label">READING</span>
+        <img src="assets/screenshots/reading-body.jpg" alt="逐牌解读截图" loading="lazy">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SECTION 4: INSTALL ============ -->
+<section id="install">
+  <span class="eyebrow">三 · 今晚就开始</span>
+  <h2>把它装进你的 Agent<br>——然后贴下面这段话</h2>
+  <p class="muted" style="max-width:620px">塔罗树洞是一个 <strong style="color:var(--gold)">Agent Skill</strong>。它和你的 Agent 一起工作：Agent 负责理解你的话、选择牌阵、综合解读；离线 HTML 负责仪式感与随机性；确定性脚本负责把你抽到的牌还原回去。</p>
+
+  <div class="install-card">
+    <h3>① 解压发行包</h3>
+    <p>在 <a href="https://github.com/Scott1743/tarot-confessional" style="color:var(--gold)">GitHub Releases</a> 下载 <code style="color:var(--rose)">tarot-confessional-{{VERSION}}.tar.gz</code>，解压到任意位置。</p>
+    <pre><span class="comment"># macOS / Linux</span>
+tar -xzf tarot-confessional-{{VERSION}}.tar.gz
+
+<span class="comment"># Windows (PowerShell)</span>
+Expand-Archive .\tarot-confessional-{{VERSION}}.zip</pre>
+
+    <h3 style="margin-top:32px">② 生成单文件抽牌页</h3>
+    <p>把 <code style="color:var(--rose)">assets/draw.html</code> 打包成一个真正可以"拷到任何地方都能打开"的自包含 HTML：</p>
+    <pre>python3 tarot-confessional-{{VERSION}}/scripts/build_draw_page.py \
+  --skill-dir ./tarot-confessional-{{VERSION}} \
+  --output ~/Desktop/draw.html \
+  --spread S3 \
+  --title <span class="str">"关于下一步的三张牌"</span></pre>
+
+    <h3 style="margin-top:32px">③ 把这个 Skill 装进你的 Agent</h3>
+    <p>根据你的 Agent 平台，把整个 <code style="color:var(--rose)">tarot-confessional-{{VERSION}}</code> 目录放到 Skill 的加载路径下。具体位置请参考你的 Agent 平台文档。</p>
+
+    <div class="install-grid">
+      <div>
+        <h3>④ 让 Agent 解码</h3>
+        <p>当用户在浏览器里完成抽牌，把 <code style="color:var(--rose)">TC1-...</code> 抽牌码贴回对话。Agent 会调用：</p>
+        <pre>python3 tarot-confessional-{{VERSION}}/scripts/tarot_codec.py \
+  decode <span class="str">"TC1-S3-..."</span> \
+  --deck tarot-confessional-{{VERSION}}/references/deck.json</pre>
+        <p class="muted">确定性脚本会把牌面原原本本地还原回来——不靠 LLM 猜测。</p>
+      </div>
+      <div>
+        <h3>⑤ 推荐提示词</h3>
+        <p>直接复制下面这段，贴在你的 Agent 对话开头：</p>
+        <div class="prompt-box">
+          请加载 <em>$tarot-confessional</em> 这个 Skill。<br>
+          我最近在考虑 <em>[你的事]</em>，<br>
+          想用塔罗陪我整理一下。<br>
+          先问我一个问题，再决定要不要抽牌。
+        </div>
+      </div>
+    </div>
+
+    <div class="final-cta">
+      <h2>准备好开始了吗？</h2>
+      <p class="muted">今晚，给自己十分钟的不被打扰。</p>
+      <a href="https://github.com/Scott1743/tarot-confessional/releases/tag/v{{VERSION}}">下载 v{{VERSION}} →</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="meta">
+    <span>塔罗树洞 v{{VERSION}}</span>
+    <span>{{RELEASE_DATE}}</span>
+    <span>{{PROTOCOL}} 协议</span>
+    <span>{{DECK_SIZE}} 张完整牌组</span>
+  </div>
+  <p style="font-size:13px">
+    本项目仅用于娱乐、自我反思和一般性情绪支持，<br>
+    不能替代医生、心理咨询师、律师、财务顾问或紧急救援服务。
+  </p>
+  <p style="font-size:12px; margin-top:24px; opacity:.5">
+    本次更新：{{CHANGELOG_SUMMARY}}
+  </p>
+</footer>
+
+</body>
+</html>
