@@ -7,7 +7,7 @@
 *今晚就给自己一场不被打扰的小小仪式。*
 
 [![MIT License](https://img.shields.io/badge/license-MIT-purple.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-0.5.1-pink.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-0.5.0-pink.svg)](CHANGELOG.md)
 [![Skills.sh](https://img.shields.io/badge/skills.sh-available-blue.svg)](https://www.skills.sh/?q=tarot-confessional)
 
 </div>
