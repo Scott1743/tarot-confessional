@@ -78,6 +78,15 @@ skills/tarot-confessional/
 - `dist/tarot-confessional/` — 解压后的目录名，**不带版本号**
 - `dist/tarot-confessional-<version>.tar.gz` — 归档文件名，**带版本号**
 - `dist/tarot-confessional-<version>.zip` — 归档文件名，**带版本号**
+
+### 版本升级规范
+
+**每次升级版本时，必须同步更新以下文件：**
+
+1. `CHANGELOG.md` — 添加新版本的变更记录
+2. `README.md` — 更新版本号 badge 和在线体验链接
+3. `introduction/index.html` — 更新版本号占位符
+4. `RELEASE_NOTES.md` — 更新功能状态和版本规划
 - `dist/SHA256SUMS` — 校验清单
 - `dist/MANIFEST.md` — 人类可读的发布说明
 
