@@ -45,6 +45,7 @@ def expected_layout(skill_dir: Path) -> list[str]:
         "assets/images/eastern-night-bg_001.jpg",
         "assets/images/purple-silk.jpg",
         "scripts/tarot_codec.py",
+        "scripts/build_draw_page.py",
         "references/deck.json",
         "references/draw-code-protocol.md",
         "references/reading-guidance.md",
@@ -188,8 +189,10 @@ def package(version: str) -> int:
         print(f"missing required files in {SOURCE}: {missing}", file=sys.stderr)
         return 1
     archive_stem = f"tarot-confessional-{version}"
-    manifest = build_manifest(version, SOURCE, archive_stem)
     stage = stage_directory(SOURCE, version)
+    manifest = build_manifest(version, stage, archive_stem)
+    manifest["files"].append("manifest.json")
+    manifest["files"] = sorted(set(manifest["files"]))
     write_manifest(stage, manifest)
     tar_path, zip_path = make_archives(version, stage)
     sums_path = write_sums(version, stage)

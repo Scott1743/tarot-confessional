@@ -10,12 +10,14 @@ import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import date, datetime
 from pathlib import Path
+from shutil import copy2
 
 ROOT = Path(__file__).resolve().parents[1]
 DECK_PATH = ROOT / "references" / "deck.json"
 CARD_DIR = ROOT / "assets" / "images" / "cards"
 RAW_DIR = ROOT / "assets" / "videos" / "generated-sources"
 FINAL_DIR = ROOT / "assets" / "videos" / "cards"
+SKILL_VIDEO_DIR = ROOT / "skills" / "tarot-confessional" / "assets" / "videos" / "cards"
 
 PROMPT = (
     "Create a subtle living-painting animation from this exact Eastern gongbi tarot artwork. "
@@ -82,6 +84,9 @@ def generate(card: dict, force: bool) -> tuple[int, str, str | None]:
         if completed.returncode == 0 and raw.is_file():
             try:
                 normalize_video(raw, image, target)
+                if (ROOT / "skills" / "tarot-confessional").is_dir():
+                    SKILL_VIDEO_DIR.mkdir(parents=True, exist_ok=True)
+                    copy2(target, SKILL_VIDEO_DIR / target.name)
                 return card["id"], "generated", None
             except (RuntimeError, ValueError) as exc:
                 error = str(exc)

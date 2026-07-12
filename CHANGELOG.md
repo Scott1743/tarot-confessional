@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.1] - 2026-07-12
+
+### Added
+
+- `scripts/build_draw_page.py` to produce a single-file, fully self-contained draw HTML (all CSS images inlined as data URIs, all 78 card faces inlined through `window.__tarotCardImages`, and both `deck-data.js` / `tarot-codec.js` inlined as `<script>` blocks). The resulting HTML works when copied, attached, or placed in any directory on Windows, macOS, or Linux.
+- `tests/test_build_draw_page.py` with 11 cases covering layout inlining, script inlining, 78-card inlining, CLI invocation, and self-containment guarantees.
+- `SKILL.md` updated to route Agents through `build_draw_page.py` for any HTML that will be moved, while keeping the bundled `assets/draw.html` only for local preview.
+- Package layout now requires `scripts/build_draw_page.py` in the skill bundle.
+
 ## [0.1.0] - 2026-07-12
 
 ### Added

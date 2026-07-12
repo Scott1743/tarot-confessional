@@ -22,7 +22,20 @@ Choose a spread:
 
 ## Run a visual draw
 
-Give the user the bundled file `assets/draw.html`. It runs offline, draws from all 78 cards, and produces a `TC1` code without embedding the user's question or identity.
+The skill ships with two HTML files. Pick the one that fits how the file will reach the user:
+
+1. **`assets/draw.html`** — template with relative `images/...` and `deck-data.js` references. Only works when the HTML stays inside the bundled directory. Use it for local previewing from a fixed installation path.
+2. **Single-file build via `scripts/build_draw_page.py`** — produces one HTML file with every CSS image, every card face, and both scripts inlined as data URIs and `<script>` blocks. Use this whenever the file might be moved, attached to a chat, opened from `/tmp`, or placed in any directory that does not contain the `assets/images/` and `assets/deck-data.js` siblings.
+
+Always run the builder when handing the file to the user. It runs offline, draws from all 78 cards, and produces a `TC1` code without embedding the user's question or identity.
+
+```bash
+python3 scripts/build_draw_page.py \
+  --skill-dir <path-to-tarot-confessional> \
+  --output <workspace>/draw.html \
+  --spread S3 \
+  --title "关于下一步的三张牌"
+```
 
 If the environment cannot open local HTML, tell the user where the file is and offer a conversational draw only after explaining that it loses the visual interaction.
 
@@ -71,11 +84,13 @@ Use `assets/reading.html` as the visual report template. It is currently a stati
 
 ## Bundled resources
 
-- `assets/draw.html`: offline 78-card visual draw experience.
+- `assets/draw.html`: offline 78-card visual draw experience (uses relative paths; keep inside the skill directory).
 - `assets/reading.html`: visual report reference template.
 - `assets/images/`: card faces, card back, and page backgrounds used by the HTML files.
+- `assets/videos/cards/`: available three-second card motion loops; the set is populated incrementally under the MiniMax daily quota.
 - `assets/deck-data.js`: browser-ready canonical deck data.
 - `assets/tarot-codec.js`: browser-side `TC1` encoder.
+- `scripts/build_draw_page.py`: builds a self-contained single-file draw page with every asset inlined. Always prefer this when the HTML will be moved, attached to a chat, or opened from a non-default location.
 - `scripts/tarot_codec.py`: deterministic encoder, decoder, and deck lookup CLI.
 - `references/deck.json`: canonical IDs `0..77` and card filenames.
 - `references/draw-code-protocol.md`: formal `TC1` protocol.
