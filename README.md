@@ -1,87 +1,216 @@
-# 塔罗树洞
+<div align="center">
 
-一个面向中文场景的 Agent Skill。它用 Agent 对话理解用户诉求，用离线 HTML 提供有仪式感的抽牌与报告体验，再由大模型完成结合上下文的塔罗解读。
+#  塔罗树洞
 
-本项目把塔罗视为自我探索工具，而不是确定性预测、专业诊断或高风险决策依据。
+**一个面向中文女性的温柔塔罗 + 树洞倾诉 Agent Skill**
 
-> 当前状态：v0.1 开发预览。双 HTML、C 风格「新工笔幻色」完整 78 张牌组、正式抽牌码协议与离线解码器已经完成；Agent 动态报告生成器仍待实现。
+*今晚就给自己一场不被打扰的小小仪式。*
 
-## 原型预览
+[![MIT License](https://img.shields.io/badge/license-MIT-purple.svg)](LICENSE)
+[![Version](https://img.shields.io/badge/version-0.3.0-pink.svg)](CHANGELOG.md)
+[![Skills.sh](https://img.shields.io/badge/skills.sh-available-blue.svg)](https://www.skills.sh/?q=tarot-confessional)
 
-- [打开抽牌页](assets/draw.html)
-- [打开解读报告](assets/reading.html)
-- [查看完整牌组联系表](assets/images/full-deck-contact-sheet.jpg)
+</div>
 
-两个 HTML 均可直接离线打开，不加载远程字体、脚本、图片或统计服务。
+---
 
-## 功能
+## ✨ 为什么选择塔罗树洞？
 
-- Agent 先通过对话理解问题并选择合适牌阵
-- 浏览器在本地完成安全随机抽牌，生成可校验的抽牌码
-- Agent 通过确定性脚本还原牌面，再结合牌义参考和用户上下文解读
-- 最终生成可离线阅读、保存和打印的 HTML 报告
-- v0.2 可选接入 MNEME，把用户授权的阅读和日记保存在本地知识库
-- 内置医疗、法律、财务、危机干预和长期记忆安全边界
+在这个快节奏的世界里，每个人都需要一个安全的角落，可以放下防备，说说心里话。
 
-## 设计文稿
+**塔罗树洞** 不是算命工具，而是一个温柔的陪伴者：
+- 它不会评判你的选择
+- 它不会给你绝对的答案
+- 它只是用象征的方式，帮你整理内心的纷扰
 
-- [产品与技术总设计](docs/superpowers/specs/2026-07-12-tarot-confessional-product-design.md)
-- [双 HTML 体验设计](docs/superpowers/specs/2026-07-12-tarot-html-experience-design.md)
-- [v0.2 MNEME 集成设计](docs/superpowers/specs/2026-07-12-mneme-v0.2-integration-design.md)
-- [双 HTML 原型实现规格](docs/superpowers/specs/2026-07-12-tarot-html-prototype-implementation.md)
-- [分阶段实施计划](docs/superpowers/plans/2026-07-12-tarot-confessional-roadmap.md)
+##   体验一下
 
-## 抽牌码协议
+<div align="center">
 
-- `references/deck.json` 提供完整 78 张牌的稳定 ID 与文件名。
-- `references/draw-code-protocol.md` 定义正式 `TC1` 密码格式。
-- `scripts/tarot_codec.py` 负责确定性编码、解码、校验和牌名查询。
-- `assets/tarot-codec.js` 与 Python 使用相同算法，抽牌页已接入正式协议。
+###   在线体验（无需安装）
 
-## 牌面资产
+**[  点击这里体验完整营销页 →](https://scott1743.github.io/tarot-confessional/introduction/index.html)**
 
-- `assets/images/cards/` 包含完整 78 张 Web 牌面，统一为 768 × 1152 JPEG。
-- 视觉方向为 C 风格「新工笔幻色」：东方人物、建筑与山水叙事，配合紫、青、翠、橙、黄、粉的高明度反差色。
-- `references/card-art-direction-c.md` 记录可复现的美术方向，`scripts/generate_deck_art.py` 和 `scripts/process_deck_art.py` 支持断点生成与统一后处理。
+*包含抽牌演示、解读报告展示和一键安装指南*
 
-## 安装
+</div>
 
-当前版本用于设计审阅和早期协作，不建议作为完成品安装。未来可用版本会以根目录 `SKILL.md` 为入口，并把脚本、参考资料和 HTML 资产一起打包。
+---
 
-不同 Agent 平台的安装位置和加载方式可能不同，请以对应平台文档为准。
+##   核心功能
 
-## 使用示例
+###   智能对话
+Agent 会先倾听你的困扰，理解你真正想探索的问题，然后选择最合适的牌阵。
 
-```text
+###   仪式感抽牌
+在本地浏览器中完成安全随机抽牌，支持正逆位，生成可校验的抽牌码。整个过程充满仪式感，却不依赖任何网络服务。
+
+###   深度解读
+结合你的具体问题和牌面象征，生成一份专属于你的解读报告。报告可离线阅读、保存和打印。
+
+###  ️ 安全边界
+内置医疗、法律、财务、危机干预等安全边界，确保这个工具不会越界。
+
+---
+
+##   快速开始
+
+### 方式一：通过 skills.sh 安装（推荐）
+
+```bash
+npx skills add Scott1743/tarot-confessional
+```
+
+### 方式二：手动安装
+
+1. 下载最新版本：[tarot-confessional-0.3.0.zip](https://github.com/Scott1743/tarot-confessional/releases/download/v0.3.0/tarot-confessional-0.3.0.zip)
+2. 解压到你的 Agent skills 目录
+3. 在对话中触发塔罗功能
+
+---
+
+##   使用示例
+
+```
 我最近在考虑要不要换工作，请用三张牌帮我梳理一下。
 ```
 
-```text
+```
 我想找个树洞说说最近的人际关系，不一定要抽牌。
 ```
 
-## 项目结构
-
-```text
-.
-├── SKILL.md                 # 当前对话式 Skill 骨架
-├── skills/
-│   └── tarot-confessional/  # 可独立分发的 Agent Skill
-├── Agent.md                 # 仓库内 Agent 协作指南
-├── docs/superpowers/        # 产品规格与实施计划
-├── README.md                # 项目说明
-├── CHANGELOG.md             # 版本变更记录
-└── RELEASE_NOTES.md         # 当前设计预览说明
+```
+我和男朋友吵架了，想用塔罗看看我们之间到底怎么了。
 ```
 
-## 参与贡献
+---
 
-提交改动前请阅读 [CONTRIBUTING.md](CONTRIBUTING.md) 和 [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)。安全问题请按 [SECURITY.md](SECURITY.md) 私下报告。
+##   设计理念
 
-## 免责声明
+### 象征而非预测
+塔罗牌是一面镜子，映照你内心的状态，而非预测未来的工具。
 
-本项目仅用于娱乐、自我反思和一般性情绪支持，不能替代医生、心理咨询师、律师、财务顾问或紧急救援服务提供的专业帮助。
+### 温柔而非评判
+无论你问什么问题，这里都不会有道德审判，只有理解和支持。
 
-## 许可证
+### 私密而非公开
+所有抽牌和解读都在本地完成，你的问题和牌面不会上传到任何服务器。
 
-本项目采用 [MIT License](LICENSE)。
+### 严谨而非神秘
+虽然使用象征语言，但我们的代码和协议都是严谨可验证的。
+
+---
+
+##   技术架构
+
+```text
+┌─────────────────────────────────────────────────────────┐
+│                      用户对话                           │
+└─────────────────┬───────────────────────────────────────┘
+                  │
+                  ▼
+┌─────────────────────────────────────────────────────────┐
+│                 Agent (LLM)                            │
+│  • 理解问题        • 选择牌阵        • 生成解读        │
+└─────────────────┬───────────────────────────────────────┘
+                  │
+                  ▼
+┌─────────────────────────────────────────────────────────┐
+│              离线 HTML 页面                             │
+│  • draw.html     → 安全随机抽牌                        │
+│  • reading.html  → 可视化解读报告                      │
+└─────────────────┬───────────────────────────────────────┘
+                  │
+                  ▼
+┌─────────────────────────────────────────────────────────┐
+│              确定性脚本                                 │
+│  • tarot_codec.py → 编码/解码抽牌码                    │
+│  • build_*.py     → 生成自包含 HTML                    │
+└─────────────────────────────────────────────────────────┘
+```
+
+---
+
+##   项目结构
+
+```text
+tarot-confessional/
+├── SKILL.md                 # Agent Skill 核心定义
+├── skills/
+│   └── tarot-confessional/  # 可分发的 Skill 包
+│       ├── assets/          # HTML 页面和图片资源
+│       ├── references/      # 牌组数据和解读指南
+│       └── scripts/         # 构建和编解码脚本
+├── introduction/            # 营销展示页
+├── docs/                    # 设计文档
+├── CHANGELOG.md             # 版本变更记录
+└── README.md                # 本文件
+```
+
+---
+
+##   设计文档
+
+- [产品与技术总设计](docs/superpowers/specs/2026-07-12-tarot-confessional-product-design.md)
+- [双 HTML 体验设计](docs/superpowers/specs/2026-07-12-tarot-html-experience-design.md)
+- [抽牌码协议规范](references/draw-code-protocol.md)
+- [解读指南](references/reading-guidance.md)
+
+---
+
+##   牌面艺术
+
+采用 **C 风格「新工笔幻色」** 视觉方向：
+- 东方人物、建筑与山水叙事
+- 紫、青、翠、橙、黄、粉的高明度反差色
+- 78 张完整牌组，统一 768 × 1152 JPEG
+
+---
+
+##  ️ 开发者指南
+
+### 本地开发
+
+```bash
+# 克隆仓库
+git clone https://github.com/Scott1743/tarot-confessional.git
+cd tarot-confessional
+
+# 打包 Skill
+python3 scripts/package_skill.py --version 0.3.0
+
+# 运行测试
+python3 -m pytest tests/
+```
+
+### 贡献指南
+
+提交改动前请阅读 [CONTRIBUTING.md](CONTRIBUTING.md) 和 [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)。
+
+---
+
+##   安全说明
+
+本项目仅用于 **娱乐、自我反思和一般性情绪支持**，不能替代：
+- ‍⚕️ 医生或心理咨询师的专业帮助
+- ⚖️ 律师的法律建议
+-   财务顾问的专业意见
+-   紧急救援服务
+
+如果你正在经历心理危机，请立即联系当地的专业心理援助热线。
+
+---
+
+##   许可证
+
+本项目采用 [MIT License](LICENSE) 开源协议。
+
+---
+
+<div align="center">
+
+**今晚，给自己十分钟的不被打扰。**
+
+*塔罗树洞，懂你的温柔角落。*
+
+</div>

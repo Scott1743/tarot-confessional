@@ -4,6 +4,30 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0] - 2026-07-12
+
+### Added
+
+- **README 全面重写**：更有吸引力的文案，突出产品特点和使用场景，添加 skills.sh 标签和在线体验链接。
+- **GitHub Pages 配置**：新增 `.github/workflows/deploy-pages.yml`，自动部署 introduction 页面到 GitHub Pages。
+- **RELEASE_NOTES.md 更新**：明确 v0.3.0 功能状态和版本规划。
+
+### Changed
+
+- **打包规范明确**：dist 输出目录不带版本号，归档文件带版本号（已在 Agent.md 和 cloud.md 中记录）。
+- **SKILL.md 强化**：强调必须生成 HTML 报告文件，而非仅返回纯文本或 markdown 格式。
+
+### Fixed
+
+- 修复 Agent 未按设计生成 HTML 报告的问题：通过在 SKILL.md 中明确要求 "You MUST generate an HTML report file"。
+
+## [0.2.0] - 2026-07-12
+
+### Added
+
+- `scripts/build_reading_page.py`：新增解读报告 HTML 生成脚本，将 `reading.html` 模板中的静态示例内容替换为实际解读数据，并内联所有图片资源为 data URI，生成自包含的 HTML 文件。
+- `introduction/` 营销页：四屏结构（Hero / 抽牌玩法 / 私人阅读档案 / 安装与提示词），女性向温柔语气，所有文案围绕"懂你"与"不评判"。
+
 ## [0.1.3] - 2026-07-12
 
 ### Added
