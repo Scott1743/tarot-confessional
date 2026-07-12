@@ -63,7 +63,7 @@ npx skills add Scott1743/tarot-confessional
 
 ### 方式二：手动安装
 
-1. 下载最新版本：[tarot-confessional-0.3.0.zip](https://github.com/Scott1743/tarot-confessional/releases/download/v0.3.0/tarot-confessional-0.3.0.zip)
+1. 下载最新版本：[tarot-confessional-0.5.1.zip](https://github.com/Scott1743/tarot-confessional/releases/download/v0.5.1/tarot-confessional-0.5.1.zip)
 2. 解压到你的 Agent skills 目录
 3. 在对话中触发塔罗功能
 
