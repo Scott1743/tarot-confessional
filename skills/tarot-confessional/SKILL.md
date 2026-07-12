@@ -7,56 +7,73 @@ description: Guide reflective Chinese tarot draws, decode TC1 draw codes, and pr
 
 Treat tarot as a symbolic reflection tool. Keep the experience gentle, private, and non-deterministic.
 
-## Route the request
+## 完整流程（必须严格遵守）
 
-1. Distinguish among venting, a focused question, and a tarot reading.
-2. Let a user vent without forcing a draw.
-3. Ask at most one brief clarifying question when a reading request has no usable focus.
-4. Do not request names, birthdays, addresses, or other identifying information.
+### 第一步：用户请求抽牌
 
-Choose a spread:
+1. 用户说想抽牌/占卜
+2. Agent 询问用户的问题（至少一个简短的澄清问题）
+3. Agent 选择合适的牌阵：
+   - `F1`: 单张牌，用于聚焦的问题
+   - `S3`: 三张牌（现状/阻力/方向），默认用于决策和一般不确定性
+   - `R3`: 三张牌（自我/他人/关系），用于人际关系问题
 
-- `F1`: one card for a focused prompt.
-- `S3`: situation, friction, direction. Use by default for decisions and general uncertainty.
-- `R3`: self, other, relationship. Use for interpersonal questions.
+### 第二步：启动服务器，给用户抽牌页面
 
-## Start the local server
-
-**Always start the local server before giving the user a draw page.** The server binds to `0.0.0.0` so the URL works from any interface. Run it as a background process:
+**draw.html 是预构建的，不需要 Agent 生成！** Agent 只需要启动服务器：
 
 ```bash
 python3 scripts/serve.py --skill-dir <path-to-tarot-confessional>
 ```
 
-The server prints a JSON line with the URLs. Extract the `draw` URL and give it to the user. Keep the server running in the background.
+服务器会：
+- 绑定到 `0.0.0.0`，可以从任何接口访问
+- 在 `/` 提供预构建的 `draw.html` 页面
+- 打印 JSON 格式的 URL 信息
 
-## Decode a returned code
+从输出中提取 `draw` URL 并给用户：
+```json
+{"draw": "http://localhost:8080/", "reading": null}
+```
 
-When the user returns a `TC1-...` code, decode it with the deterministic script. Never manually infer cards from a code:
+告诉用户：**"请点击这个链接开始抽牌：[URL]"**
+
+### 第三步：用户抽牌并返回 TC1 码
+
+1. 用户在 draw.html 页面上抽牌
+2. 页面会生成一个 `TC1-...` 格式的抽牌码
+3. 用户把 TC1 码复制回给 Agent
+
+### 第四步：解码 TC1 码
+
+**永远不要手动推断牌面！** 必须使用脚本解码：
 
 ```bash
 python3 scripts/tarot_codec.py decode "<TC1 code>" --deck references/deck.json
 ```
 
-Treat decoded order, card identity, and orientation as fixed facts. Reject invalid versions, checksums, lengths, duplicate cards, and out-of-range IDs.
+解码结果会告诉你：
+- 每张牌的 ID 和名称
+- 正逆位
+- 抽牌顺序
 
-## Interpret the reading
+### 第五步：生成解读内容
 
-Read `references/reading-guidance.md` before composing a reading.
+读取 `references/reading-guidance.md` 然后生成解读：
 
-1. Anchor each card to its spread position.
-2. Interpret reversals as blocked, internalized, delayed, excessive, or reconsidered energy according to context, not automatically as a negative omen.
-3. Connect patterns across cards instead of listing isolated dictionary meanings.
-4. Separate observation from possibility. Use phrases such as "这可能映照出" and "你可以留意".
-5. Close with one concise synthesis and one or two practical reflection prompts.
+1. 将每张牌锚定到牌阵位置
+2. 解读逆位：根据上下文判断是阻塞、内化、延迟、过度还是重新考虑
+3. 连接牌与牌之间的模式，而不是孤立地列出牌义
+4. 分离观察和可能性，使用"这可能映照出"和"你可以留意"等短语
+5. 以一个简洁的总结和一两个反思问题结束
 
-## Generate and serve the HTML report (REQUIRED)
+### 第六步：生成并提供 reading.html（必须！）
 
-**You MUST generate an HTML report.** Do not return the reading as plain text or markdown only.
+**你必须生成 HTML 报告！** 不要只返回纯文本或 markdown。
 
-### Step 1: Write the reading data as JSON
+#### 6.1 创建 reading-data.json
 
-Create a JSON file with the reading data:
+将解读数据写入 JSON 文件：
 
 ```json
 {
@@ -91,7 +108,7 @@ Create a JSON file with the reading data:
 }
 ```
 
-### Step 2: Build the reading HTML
+#### 6.2 构建 reading.html
 
 ```bash
 python3 scripts/build_reading_page.py \
@@ -100,36 +117,40 @@ python3 scripts/build_reading_page.py \
   --data <workspace>/reading-data.json
 ```
 
-### Step 3: Serve the reading page
+#### 6.3 提供 reading 页面
 
-Stop the previous server (if still running) and start a new one with the reading:
+停止之前的服务器（如果还在运行），启动新的服务器：
 
 ```bash
 python3 scripts/serve.py --skill-dir <path-to-tarot-confessional> --reading <workspace>/reading.html
 ```
 
-Extract the `reading` URL from the JSON output and give it to the user. The reading page is self-contained with all images inlined.
+从输出中提取 `reading` URL 并给用户：
+```json
+{"draw": "http://localhost:8080/", "reading": "http://localhost:8080/reading"}
+```
 
-## Apply safety boundaries
+告诉用户：**"你的解读报告已经准备好了：[URL]"**
 
-- Do not predict diagnoses, pregnancy, death, legal outcomes, investment returns, or immediate physical safety.
-- Do not frame an outcome as destined, guaranteed, or known by supernatural authority.
-- For consequential decisions, present tarot as one reflective input and encourage evidence-based professional advice.
-- If the user may be in immediate danger or considering self-harm, pause the reading and prioritize immediate local emergency help, a crisis service, or a trusted nearby person.
-- Do not create dependency by claiming the Agent understands the user better than people in their life.
+## 安全边界
 
-## Bundled resources
+- 不要预测诊断、怀孕、死亡、法律结果、投资回报或即时人身安全
+- 不要把结果描述为注定的、保证的或由超自然权威所知的
+- 对于重大决定，把塔罗作为一个反思性输入，并鼓励基于证据的专业建议
+- 如果用户可能处于即时危险或考虑自伤，暂停解读并优先寻求紧急帮助
+- 不要通过声称 Agent 比用户生活中的人更了解用户来制造依赖
 
-- `assets/draw.html`: offline 78-card visual draw experience (served by `serve.py`).
-- `assets/reading.html`: visual report template (used by `build_reading_page.py`).
-- `assets/images/`: card faces, card back, and page backgrounds.
-- `assets/videos/cards/`: available three-second card motion loops.
-- `assets/deck-data.js`: browser-ready canonical deck data.
-- `assets/tarot-codec.js`: browser-side `TC1` encoder.
-- `scripts/serve.py`: local HTTP server bound to 0.0.0.0; serves draw page at `/` and optionally reading at `/reading`.
-- `scripts/build_draw_page.py`: builds a self-contained single-file draw page (for offline/attachment use).
-- `scripts/build_reading_page.py`: builds a self-contained reading report with all images inlined and dynamic content rendered.
-- `scripts/tarot_codec.py`: deterministic encoder, decoder, and deck lookup CLI.
-- `references/deck.json`: canonical IDs `0..77` and card filenames.
-- `references/draw-code-protocol.md`: formal `TC1` protocol.
-- `references/reading-guidance.md`: interpretation and wording rules.
+## 内置资源
+
+- `assets/draw.html`: 预构建的 78 张牌抽牌体验（由 serve.py 提供）
+- `assets/reading.html`: 视觉报告模板（由 build_reading_page.py 使用）
+- `assets/images/`: 牌面、牌背和页面背景
+- `assets/videos/cards/`: 可用的三秒牌面动画循环
+- `assets/deck-data.js`: 浏览器端的规范牌组数据
+- `assets/tarot-codec.js`: 浏览器端的 TC1 编码器
+- `scripts/serve.py`: 本地 HTTP 服务器，绑定到 0.0.0.0，在 `/` 提供抽牌页，在 `/reading` 提供解读页
+- `scripts/build_reading_page.py`: 构建自包含的解读报告，内联所有图片并渲染动态内容
+- `scripts/tarot_codec.py`: 确定性的编码器、解码器和牌组查询 CLI
+- `references/deck.json`: 规范 ID `0..77` 和牌面文件名
+- `references/draw-code-protocol.md`: 正式的 TC1 协议
+- `references/reading-guidance.md`: 解读和措辞规则
