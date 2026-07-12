@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.0] - 2026-07-12
+
+### Added
+
+- **完整 Agent 流程文档**：SKILL.md 重写为六步流程，明确 draw.html 是预构建的，reading.html 是 Agent 生成的。
+- **本地服务器 `serve.py`**：绑定到 0.0.0.0，在 `/` 提供抽牌页，在 `/reading` 提供解读页。
+- **skills.sh 集成**：README 添加 skills.sh 标签和一键安装命令。
+
+### Changed
+
+- **流程明确化**：draw.html 预构建，Agent 只需生成 reading.html，避免 Agent 错误创建 draw.html。
+- **README 全面重写**：更有吸引力的文案，突出产品特点。
+
 ## [0.3.0] - 2026-07-12
 
 ### Added
