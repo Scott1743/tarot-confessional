@@ -84,6 +84,15 @@ class BuildDrawPageUnitTests(unittest.TestCase):
                 with self.subTest(marker=marker):
                     self.assertIn(marker, html)
 
+    def test_dynamic_card_src_uses_resolver_expression_not_literal_text(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            out = Path(tmp) / "draw.html"
+            build(skill_dir=SKILL, output=out, spread="S3", title="测试")
+            html = out.read_text(encoding="utf-8")
+            self.assertIn('img.src = (__tarotCardImagesResolve("cards/" + card.file)', html)
+            self.assertNotIn('img.src = `(__tarotCardImagesResolve', html)
+            self.assertNotIn('`images/cards/${card.file}`', html)
+
     def test_build_rejects_unknown_spread(self):
         with tempfile.TemporaryDirectory() as tmp:
             out = Path(tmp) / "draw.html"

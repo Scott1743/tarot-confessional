@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.1] - 2026-07-12
+
+### Fixed
+
+- 修复自包含抽牌页翻牌后把图片解析表达式误放进字符串、导致牌面图片地址无效的问题。
+- 修复 `serve.py` 调用父类 `do_GET` 时多传 `self`、导致 Python 3.12 请求失败的问题。
+
+### Changed
+
+- 在源码与发行版 `SKILL.md` 的 YAML frontmatter 中加入显式版本号；后续发布均需同步更新。
+
 ## [0.5.0] - 2026-07-12
 
 ### Added

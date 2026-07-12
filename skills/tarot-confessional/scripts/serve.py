@@ -75,7 +75,7 @@ class TarotHandler(SimpleHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(self.reading_html.encode("utf-8"))
             return
-        super().do_GET(self)
+        super().do_GET()
 
     def log_message(self, fmt, *args):
         # Suppress default logging; Agent doesn't need per-request noise.

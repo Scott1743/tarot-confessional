@@ -94,7 +94,7 @@ def _inject_card_image_map(html: str, card_assets: dict[str, str]) -> str:
     # Rewrite the dynamic reference inside the inline JS:
     # `images/cards/${card.file}` -> (__tarotCardImagesResolve("cards/" + card.file) || ("images/cards/" + card.file))
     html = html.replace(
-        "images/cards/${card.file}",
+        '`images/cards/${card.file}`',
         '(__tarotCardImagesResolve("cards/" + card.file) || ("images/cards/" + card.file))',
     )
     return html
