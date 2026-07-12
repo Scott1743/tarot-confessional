@@ -2,9 +2,9 @@
 """Package the tarot-confessional Agent Skill into the dist/ directory.
 
 This produces:
-- dist/tarot-confessional-<version>/   extracted skill directory
-- dist/tarot-confessional-<version>.tar.gz
-- dist/tarot-confessional-<version>.zip
+- dist/tarot-confessional/             extracted skill directory (no version in dir name)
+- dist/tarot-confessional-<version>.tar.gz  (version in file name)
+- dist/tarot-confessional-<version>.zip     (version in file name)
 - dist/SHA256SUMS                        checksum manifest
 - dist/MANIFEST.md                       human-readable release notes
 """
@@ -45,8 +45,10 @@ def expected_layout(skill_dir: Path) -> list[str]:
         "assets/images/card-back.jpg",
         "assets/images/eastern-night-bg_001.jpg",
         "assets/images/purple-silk.jpg",
+        "scripts/serve.py",
         "scripts/tarot_codec.py",
         "scripts/build_draw_page.py",
+        "scripts/build_reading_page.py",
         "references/deck.json",
         "references/draw-code-protocol.md",
         "references/reading-guidance.md",
@@ -83,8 +85,7 @@ def write_manifest(skill_dir: Path, manifest: dict) -> Path:
 
 
 def stage_directory(skill_dir: Path, version: str) -> Path:
-    archive_stem = f"tarot-confessional-{version}"
-    stage = DIST / archive_stem
+    stage = DIST / "tarot-confessional"
     if stage.exists():
         shutil.rmtree(stage)
     shutil.copytree(skill_dir, stage)
@@ -127,7 +128,13 @@ def make_archives(version: str, stage: Path) -> tuple[Path, Path]:
         tar_path.unlink()
     if zip_path.exists():
         zip_path.unlink()
-    shutil.make_archive(str(DIST / archive_stem), "gztar", root_dir=DIST, base_dir=archive_stem)
+    # Create tar.gz with "tarot-confessional" as the root directory inside
+    import subprocess
+    subprocess.run(
+        ["tar", "-czf", str(tar_path), "-C", str(DIST), "tarot-confessional"],
+        check=True,
+    )
+    # Create zip with "tarot-confessional" as the root directory inside
     with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as zf:
         for path in sorted(stage.rglob("*")):
             if path.is_file():
@@ -153,7 +160,7 @@ def write_release_notes(version: str, manifest: dict, sums_path: Path) -> Path:
         "## Layout",
         "",
         "```text",
-        "tarot-confessional/",
+        "tarot-confessional/           # extracted directory (no version in name)",
         "├── SKILL.md",
         "├── manifest.json",
         "├── agents/openai.yaml",
@@ -172,19 +179,22 @@ def write_release_notes(version: str, manifest: dict, sums_path: Path) -> Path:
         "│   ├── draw-code-protocol.md",
         "│   └── reading-guidance.md",
         "└── scripts/",
+        "    ├── serve.py",
+        "    ├── build_draw_page.py",
+        "    ├── build_reading_page.py",
         "    └── tarot_codec.py",
         "```",
         "",
         "## Artifacts",
         "",
-        f"- `{archive_stem}.tar.gz` ({tar_size} bytes)",
-        f"- `{archive_stem}.zip` ({zip_size} bytes)",
+        f"- `{archive_stem}.tar.gz` ({tar_size} bytes)  # version in file name",
+        f"- `{archive_stem}.zip` ({zip_size} bytes)  # version in file name",
         f"- `SHA256SUMS`",
         "",
         "## CLI decode example",
         "",
         "```bash",
-        f"python3 {archive_stem}/scripts/tarot_codec.py decode \"<TC1 code>\" --deck {archive_stem}/references/deck.json",
+        f"python3 tarot-confessional/scripts/tarot_codec.py decode \"<TC1 code>\" --deck tarot-confessional/references/deck.json",
         "```",
         "",
         "## Verification",

@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.3] - 2026-07-12
+
+### Added
+
+- `scripts/build_reading_page.py`：新增解读报告 HTML 生成脚本，将 `reading.html` 模板中的静态示例内容替换为实际解读数据，并内联所有图片资源为 data URI，生成自包含的 HTML 文件。
+- `SKILL.md`：强调必须生成 HTML 报告文件，而非仅返回纯文本或 markdown 格式。
+
+### Fixed
+
+- 修复 Agent 未按设计生成 HTML 报告的问题：通过在 SKILL.md 中明确要求 "You MUST generate an HTML report file"，确保 Agent 在解读完成后调用 `build_reading_page.py` 生成可视化报告。
+
 ## [0.1.2] - 2026-07-12
 
 ### Added

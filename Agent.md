@@ -40,6 +40,55 @@
 - 检查用户文本经过 schema 校验和 HTML 转义。
 - 提交前运行 `git diff --check`，避免空白符错误。
 
+## 打包规范
+
+### Skill 源目录结构
+
+Skill 源码位于 `skills/tarot-confessional/`，**不应被打包到 dist 之外的任何位置**。目录结构如下：
+
+```text
+skills/tarot-confessional/
+├── SKILL.md
+├── agents/
+│   └── openai.yaml
+├── assets/
+│   ├── draw.html
+│   ├── reading.html
+│   ├── deck-data.js
+│   ├── tarot-codec.js
+│   └── images/
+│       ├── card-back.jpg
+│       ├── eastern-night-bg_001.jpg
+│       ├── purple-silk.jpg
+│       └── cards/  (78 jpg)
+├── references/
+│   ├── deck.json
+│   ├── draw-code-protocol.md
+│   └── reading-guidance.md
+└── scripts/
+    ├── build_draw_page.py
+    ├── build_reading_page.py
+    └── tarot_codec.py
+```
+
+### dist 输出规则
+
+**打包生成出来的目录不应有版本号，但打包的文件要有版本号。**
+
+- `dist/tarot-confessional/` — 解压后的目录名，**不带版本号**
+- `dist/tarot-confessional-<version>.tar.gz` — 归档文件名，**带版本号**
+- `dist/tarot-confessional-<version>.zip` — 归档文件名，**带版本号**
+- `dist/SHA256SUMS` — 校验清单
+- `dist/MANIFEST.md` — 人类可读的发布说明
+
+执行打包：
+
+```bash
+python3 scripts/package_skill.py --version <version>
+```
+
+打包前必须将 `assets/draw.html` 和 `assets/reading.html` 的最新修改同步到 `skills/tarot-confessional/assets/`。
+
 ## 提交约定
 
 建议使用 Conventional Commits，例如：

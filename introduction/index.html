@@ -422,7 +422,7 @@
 <body>
 
 <nav class="nav" aria-label="主导航">
-  <span class="brand">塔罗树洞 · v{{VERSION}}</span>
+  <span class="brand">塔罗树洞</span>
   <ul>
     <li><a href="#howto">怎么玩</a></li>
     <li><a href="#reading">阅读档案</a></li>
@@ -584,54 +584,23 @@
 <!-- ============ SECTION 4: INSTALL ============ -->
 <section id="install">
   <span class="eyebrow">三 · 今晚就开始</span>
-  <h2>把它装进你的 Agent<br>——然后贴下面这段话</h2>
-  <p class="muted" style="max-width:620px">塔罗树洞是一个 <strong style="color:var(--gold)">Agent Skill</strong>。它和你的 Agent 一起工作：Agent 负责理解你的话、选择牌阵、综合解读；离线 HTML 负责仪式感与随机性；确定性脚本负责把你抽到的牌还原回去。</p>
+  <h2>装好 Skill，<br>说一句话就够了</h2>
+  <p class="muted" style="max-width:620px">塔罗树洞是一个 <strong style="color:var(--gold)">Agent Skill</strong>。你不需要跑任何脚本，不需要懂命令行——安装之后，像平时聊天一样跟 Agent 说话，它会替你处理一切。</p>
 
   <div class="install-card">
-    <h3>① 一键安装（推荐）</h3>
-    <p>塔罗树洞已收录于 <a href="https://www.skills.sh" style="color:var(--gold)">skills.sh</a> — Vercel 维护的 AI Agent Skills 目录。用一行命令装进你的 Agent：</p>
+    <h3>① 一键安装</h3>
+    <p>用一行命令装进你的 Agent：</p>
     <pre>npx skills add Scott1743/tarot-confessional</pre>
-    <p class="muted" style="font-size:13px">兼容 Claude Code、Codex、Cursor、GitHub Copilot 等所有主流 Agent。具体加载路径由各 Agent CLI 自动处理。</p>
+    <p class="muted" style="font-size:13px">兼容 Claude Code、Codex、Cursor、GitHub Copilot 等所有主流 Agent。</p>
 
-    <h3 style="margin-top:32px">② 如果你想自己控制路径</h3>
-    <p>在 <a href="https://github.com/Scott1743/tarot-confessional/releases/tag/v{{VERSION}}" style="color:var(--gold)">GitHub Releases</a> 下载 <code style="color:var(--rose)">tarot-confessional-{{VERSION}}.tar.gz</code>，解压到任意位置。</p>
-    <pre><span class="comment"># macOS / Linux</span>
-tar -xzf tarot-confessional-{{VERSION}}.tar.gz
-
-<span class="comment"># Windows (PowerShell)</span>
-Expand-Archive .\tarot-confessional-{{VERSION}}.zip</pre>
-
-    <h3 style="margin-top:32px">② 生成单文件抽牌页</h3>
-    <p>把 <code style="color:var(--rose)">assets/draw.html</code> 打包成一个真正可以"拷到任何地方都能打开"的自包含 HTML：</p>
-    <pre>python3 tarot-confessional-{{VERSION}}/scripts/build_draw_page.py \
-  --skill-dir ./tarot-confessional-{{VERSION}} \
-  --output ~/Desktop/draw.html \
-  --spread S3 \
-  --title <span class="str">"关于下一步的三张牌"</span></pre>
-
-    <h3 style="margin-top:32px">③ 把这个 Skill 装进你的 Agent</h3>
-    <p>根据你的 Agent 平台，把整个 <code style="color:var(--rose)">tarot-confessional-{{VERSION}}</code> 目录放到 Skill 的加载路径下。具体位置请参考你的 Agent 平台文档。</p>
-
-    <div class="install-grid">
-      <div>
-        <h3>④ 让 Agent 解码</h3>
-        <p>当用户在浏览器里完成抽牌，把 <code style="color:var(--rose)">TC1-...</code> 抽牌码贴回对话。Agent 会调用：</p>
-        <pre>python3 tarot-confessional-{{VERSION}}/scripts/tarot_codec.py \
-  decode <span class="str">"TC1-S3-..."</span> \
-  --deck tarot-confessional-{{VERSION}}/references/deck.json</pre>
-        <p class="muted">确定性脚本会把牌面原原本本地还原回来——不靠 LLM 猜测。</p>
-      </div>
-      <div>
-        <h3>⑤ 推荐提示词</h3>
-        <p>直接复制下面这段，贴在你的 Agent 对话开头：</p>
-        <div class="prompt-box">
-          请加载 <em>$tarot-confessional</em> 这个 Skill。<br>
-          我最近在考虑 <em>[你的事]</em>，<br>
-          想用塔罗陪我整理一下。<br>
-          先问我一个问题，再决定要不要抽牌。
-        </div>
-      </div>
+    <h3 style="margin-top:32px">② 对话提示词</h3>
+    <p>安装完成后，复制下面这段话贴进对话——剩下的全部交给 Agent：</p>
+    <div class="prompt-box">
+      我想抽一次塔罗。<br>
+      <em>（可选：我最近在困扰 [你的事]）</em><br>
+      请帮我开始。
     </div>
+    <p class="muted" style="font-size:13px; margin-top:16px">Agent 会自动启动抽牌页面、等你抽完后解码牌面、生成解读报告。你只需要对话和点链接。</p>
 
     <div class="final-cta">
       <h2>准备好开始了吗？</h2>

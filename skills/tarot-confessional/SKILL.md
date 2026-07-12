@@ -20,34 +20,25 @@ Choose a spread:
 - `S3`: situation, friction, direction. Use by default for decisions and general uncertainty.
 - `R3`: self, other, relationship. Use for interpersonal questions.
 
-## Run a visual draw
+## Start the local server
 
-The skill ships with two HTML files. Pick the one that fits how the file will reach the user:
-
-1. **`assets/draw.html`** — template with relative `images/...` and `deck-data.js` references. Only works when the HTML stays inside the bundled directory. Use it for local previewing from a fixed installation path.
-2. **Single-file build via `scripts/build_draw_page.py`** — produces one HTML file with every CSS image, every card face, and both scripts inlined as data URIs and `<script>` blocks. Use this whenever the file might be moved, attached to a chat, opened from `/tmp`, or placed in any directory that does not contain the `assets/images/` and `assets/deck-data.js` siblings.
-
-Always run the builder when handing the file to the user. It runs offline, draws from all 78 cards, and produces a `TC1` code without embedding the user's question or identity.
+**Always start the local server before giving the user a draw page.** The server binds to `0.0.0.0` so the URL works from any interface. Run it as a background process:
 
 ```bash
-python3 scripts/build_draw_page.py \
-  --skill-dir <path-to-tarot-confessional> \
-  --output <workspace>/draw.html \
-  --spread S3 \
-  --title "关于下一步的三张牌"
+python3 scripts/serve.py --skill-dir <path-to-tarot-confessional>
 ```
 
-If the environment cannot open local HTML, tell the user where the file is and offer a conversational draw only after explaining that it loses the visual interaction.
+The server prints a JSON line with the URLs. Extract the `draw` URL and give it to the user. Keep the server running in the background.
 
 ## Decode a returned code
 
-Never manually infer cards from a code. Run:
+When the user returns a `TC1-...` code, decode it with the deterministic script. Never manually infer cards from a code:
 
 ```bash
 python3 scripts/tarot_codec.py decode "<TC1 code>" --deck references/deck.json
 ```
 
-Treat decoded order, card identity, and orientation as fixed facts. Reject invalid versions, checksums, lengths, duplicate cards, and out-of-range IDs. Read `references/draw-code-protocol.md` only when debugging or explaining the protocol.
+Treat decoded order, card identity, and orientation as fixed facts. Reject invalid versions, checksums, lengths, duplicate cards, and out-of-range IDs.
 
 ## Interpret the reading
 
@@ -56,23 +47,68 @@ Read `references/reading-guidance.md` before composing a reading.
 1. Anchor each card to its spread position.
 2. Interpret reversals as blocked, internalized, delayed, excessive, or reconsidered energy according to context, not automatically as a negative omen.
 3. Connect patterns across cards instead of listing isolated dictionary meanings.
-4. Separate observation from possibility. Use phrases such as “这可能映照出” and “你可以留意”.
+4. Separate observation from possibility. Use phrases such as "这可能映照出" and "你可以留意".
 5. Close with one concise synthesis and one or two practical reflection prompts.
 
-Use this default response shape unless the user asks for something else:
+## Generate and serve the HTML report (REQUIRED)
 
-```markdown
-### 牌阵
-[牌位、牌名与正逆位]
+**You MUST generate an HTML report.** Do not return the reading as plain text or markdown only.
 
-### 解读
-[结合问题的整体解读]
+### Step 1: Write the reading data as JSON
 
-### 给你的提醒
-[总结与可执行的反思问题]
+Create a JSON file with the reading data:
+
+```json
+{
+  "spread_type": "三张行动牌阵",
+  "title": "关于下一步的三张牌",
+  "date": "二〇二六年七月十二日",
+  "positions": "现状 · 阻力 · 方向",
+  "question": "用户的问题",
+  "cards": [
+    {
+      "image": "01-magician.jpg",
+      "name": "魔术师",
+      "orientation": "正位",
+      "position": "现状 · 此刻之势",
+      "title": "解读标题",
+      "content": "<p>解读内容...</p>"
+    }
+  ],
+  "synthesis": {
+    "title": "合观标题",
+    "content": "<blockquote>合观内容...</blockquote>"
+  },
+  "actions": {
+    "title": "可行之事标题",
+    "items": ["事项1", "事项2"]
+  },
+  "questions": {
+    "title": "留待自问标题",
+    "items": ["问题1", "问题2"]
+  },
+  "disclaimer": "免责声明..."
+}
 ```
 
-Use `assets/reading.html` as the visual report template. It is currently a static reference: do not claim it contains the user's dynamic reading unless you have actually rendered and safely escaped new content into a separate output file.
+### Step 2: Build the reading HTML
+
+```bash
+python3 scripts/build_reading_page.py \
+  --skill-dir <path-to-tarot-confessional> \
+  --output <workspace>/reading.html \
+  --data <workspace>/reading-data.json
+```
+
+### Step 3: Serve the reading page
+
+Stop the previous server (if still running) and start a new one with the reading:
+
+```bash
+python3 scripts/serve.py --skill-dir <path-to-tarot-confessional> --reading <workspace>/reading.html
+```
+
+Extract the `reading` URL from the JSON output and give it to the user. The reading page is self-contained with all images inlined.
 
 ## Apply safety boundaries
 
@@ -84,13 +120,15 @@ Use `assets/reading.html` as the visual report template. It is currently a stati
 
 ## Bundled resources
 
-- `assets/draw.html`: offline 78-card visual draw experience (uses relative paths; keep inside the skill directory).
-- `assets/reading.html`: visual report reference template.
-- `assets/images/`: card faces, card back, and page backgrounds used by the HTML files.
-- `assets/videos/cards/`: available three-second card motion loops; the set is populated incrementally under the MiniMax daily quota.
+- `assets/draw.html`: offline 78-card visual draw experience (served by `serve.py`).
+- `assets/reading.html`: visual report template (used by `build_reading_page.py`).
+- `assets/images/`: card faces, card back, and page backgrounds.
+- `assets/videos/cards/`: available three-second card motion loops.
 - `assets/deck-data.js`: browser-ready canonical deck data.
 - `assets/tarot-codec.js`: browser-side `TC1` encoder.
-- `scripts/build_draw_page.py`: builds a self-contained single-file draw page with every asset inlined. Always prefer this when the HTML will be moved, attached to a chat, or opened from a non-default location.
+- `scripts/serve.py`: local HTTP server bound to 0.0.0.0; serves draw page at `/` and optionally reading at `/reading`.
+- `scripts/build_draw_page.py`: builds a self-contained single-file draw page (for offline/attachment use).
+- `scripts/build_reading_page.py`: builds a self-contained reading report with all images inlined and dynamic content rendered.
 - `scripts/tarot_codec.py`: deterministic encoder, decoder, and deck lookup CLI.
 - `references/deck.json`: canonical IDs `0..77` and card filenames.
 - `references/draw-code-protocol.md`: formal `TC1` protocol.
