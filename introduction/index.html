@@ -254,6 +254,12 @@
   .copy-btn:hover { background: var(--sun); border-color: var(--sun); color: var(--pine-deep); }
   .copy-btn:active { transform: translateY(-50%) scale(.95); }
   .copy-btn.copied { background: var(--leaf); border-color: var(--leaf); color: #fff; }
+  .code-block { position: relative; }
+  .code-block .copy-btn { top: 14px; transform: none; }
+  .code-block .copy-btn:active { transform: scale(.95); }
+  .link-copy { display: inline-flex; align-items: center; gap: 8px; }
+  .link-copy .copy-btn { position: static; transform: none; padding: 8px 14px; font-size: 13px; }
+  .link-copy .copy-btn:active { transform: scale(.95); }
   .install-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
   .install .button-secondary { background: transparent; }
 
@@ -433,7 +439,10 @@
     <p class="section-intro">安装之后，像平时聊天一样说出“我想抽一次塔罗”，Agent 会带你完成余下步骤。</p>
     <div class="install-box">
       <h3>安装森林密语</h3>
-      <pre>npx skills add Scott1743/tarot-confessional</pre>
+      <div class="code-block">
+        <pre>npx skills add Scott1743/tarot-confessional</pre>
+        <button class="copy-btn" data-copy="npx skills add Scott1743/tarot-confessional">复制</button>
+      </div>
       <h3>从一句话开始</h3>
       <div class="prompt-list">
         <div class="prompt-item">
@@ -456,9 +465,28 @@
           <p>说不清是什么情绪，就是想抽一次牌，听你帮我梳理一下。</p>
           <button class="copy-btn" data-copy="说不清是什么情绪，就是想抽一次牌，听你帮我梳理一下。">复制</button>
         </div>
+        <div class="prompt-item">
+          <p>最近总在怀疑自己够不够好，想抽三张牌看看这件事。</p>
+          <button class="copy-btn" data-copy="最近总在怀疑自己够不够好，想抽三张牌看看这件事。">复制</button>
+        </div>
+        <div class="prompt-item">
+          <p>有些过去的事还没放下，想用塔罗看看现在站在哪里。</p>
+          <button class="copy-btn" data-copy="有些过去的事还没放下，想用塔罗看看现在站在哪里。">复制</button>
+        </div>
+        <div class="prompt-item">
+          <p>最近睡不太好，心里像压着什么，帮我抽一次牌吧。</p>
+          <button class="copy-btn" data-copy="最近睡不太好，心里像压着什么，帮我抽一次牌吧。">复制</button>
+        </div>
+        <div class="prompt-item">
+          <p>工作上有点卡住，想换个角度看看接下来该怎么走。</p>
+          <button class="copy-btn" data-copy="工作上有点卡住，想换个角度看看接下来该怎么走。">复制</button>
+        </div>
       </div>
       <div class="install-actions">
         <a class="button button-primary" href="https://github.com/Scott1743/tarot-confessional/releases/latest">下载最新版</a>
+        <div class="link-copy">
+          <button class="copy-btn" data-copy="https://github.com/Scott1743/tarot-confessional/releases/latest">复制下载链接</button>
+        </div>
         <a class="button button-secondary" href="https://github.com/Scott1743/tarot-confessional">查看项目</a>
         <a class="button button-secondary" href="#top">回到森林</a>
       </div>
