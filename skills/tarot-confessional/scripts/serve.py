@@ -25,8 +25,11 @@ import argparse
 import json
 import socket
 import sys
+import tempfile
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 from pathlib import Path
+
+from build_draw_page import build as build_draw_page
 
 
 def find_free_port(host: str = "0.0.0.0", preferred: int | None = None) -> int:
@@ -59,6 +62,7 @@ class TarotHandler(SimpleHTTPRequestHandler):
     """Serve assets/ as root, with optional /reading route."""
 
     reading_html: str | None = None
+    draw_html: str | None = None
     serve_dir: str = "."
 
     def __init__(self, *args, **kwargs):
@@ -67,6 +71,12 @@ class TarotHandler(SimpleHTTPRequestHandler):
     def do_GET(self):
         # Route: / or /draw -> draw.html
         if self.path in ("/", "/draw"):
+            if self.draw_html:
+                self.send_response(200)
+                self.send_header("Content-Type", "text/html; charset=utf-8")
+                self.end_headers()
+                self.wfile.write(self.draw_html.encode("utf-8"))
+                return
             self.path = "/draw.html"
         # Route: /reading -> serve reading HTML
         elif self.path == "/reading" and self.reading_html:
@@ -88,6 +98,8 @@ def main() -> int:
     parser.add_argument("--port", type=int, default=None)
     parser.add_argument("--reading", type=Path, default=None,
                         help="Path to a generated reading HTML file to serve at /reading")
+    parser.add_argument("--draw", type=Path, default=None,
+                        help="Path to a self-contained draw HTML file; defaults to an automatic Base64 build")
     args = parser.parse_args()
 
     assets_dir = args.skill_dir / "assets"
@@ -103,11 +115,31 @@ def main() -> int:
             return 1
         reading_content = args.reading.read_text(encoding="utf-8")
 
+    # Always serve a self-contained draw page so card images do not depend on
+    # the caller's current directory, a temporary asset mount, or URL rewriting.
+    temp_draw_dir = None
+    if args.draw:
+        if not args.draw.is_file():
+            print(f"error: draw file not found: {args.draw}", file=sys.stderr)
+            return 1
+        draw_content = args.draw.read_text(encoding="utf-8")
+    else:
+        temp_draw_dir = tempfile.TemporaryDirectory(prefix="tarot-draw-")
+        draw_path = Path(temp_draw_dir.name) / "draw.html"
+        try:
+            build_draw_page(skill_dir=args.skill_dir, output=draw_path, spread="S3")
+            draw_content = draw_path.read_text(encoding="utf-8")
+        except (FileNotFoundError, ValueError) as exc:
+            print(f"error: could not build self-contained draw page: {exc}", file=sys.stderr)
+            temp_draw_dir.cleanup()
+            return 1
+
     port = args.port or find_free_port()
     local_ip = get_local_ip()
 
     # Store reading content and serve directory on the handler class
     TarotHandler.reading_html = reading_content
+    TarotHandler.draw_html = draw_content
     TarotHandler.serve_dir = str(assets_dir)
 
     server = HTTPServer(("0.0.0.0", port), TarotHandler)

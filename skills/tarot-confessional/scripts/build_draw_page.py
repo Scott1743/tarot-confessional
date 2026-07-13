@@ -10,7 +10,7 @@ different location (e.g. a chat attachment, /tmp, the user's working dir).
 The bundled `assets/draw.html` references:
   - 3 layout images via CSS url("images/...")
   - 1 layout image via <img src="images/...">
-  - 78 card images via JS template literal `images/cards/${card.file}`
+  - 78 upright + 78 reversed card images via JS template literals
   - 2 scripts via <script src="...">
 
 Relative paths break the moment the HTML is separated from its sibling
@@ -44,9 +44,9 @@ def expected_assets(assets_dir: Path) -> list[Path]:
         assets_dir / "images" / "eastern-night-bg_001.jpg",
         assets_dir / "images" / "purple-silk.jpg",
     ]
-    cards_dir = assets_dir / "images" / "cards"
-    cards = sorted(cards_dir.glob("*.jpg"))
-    return layout + cards
+    cards = sorted((assets_dir / "images" / "cards").glob("*.jpg"))
+    reversed_cards = sorted((assets_dir / "images" / "cards-reversed").glob("*.jpg"))
+    return layout + cards + reversed_cards
 
 
 def _data_uri(path: Path) -> str:
@@ -94,11 +94,11 @@ def _inject_card_image_map(html: str, card_assets: dict[str, str]) -> str:
     html = html.replace("</head>", bootstrap + "</head>", 1)
 
     # Rewrite the dynamic reference inside the inline JS:
-    # `images/cards/${card.file}` -> (__tarotCardImagesResolve("cards/" + card.file) || ("images/cards/" + card.file))
-    html = html.replace(
-        '`images/cards/${card.file}`',
-        '(__tarotCardImagesResolve("cards/" + card.file) || ("images/cards/" + card.file))',
-    )
+    for directory in ("cards", "cards-reversed"):
+        html = html.replace(
+            f'`images/{directory}/${{card.file}}`',
+            f'(__tarotCardImagesResolve("{directory}/" + card.file) || ("images/{directory}/" + card.file))',
+        )
     return html
 
 
@@ -119,8 +119,12 @@ def build(*, skill_dir: Path, output: Path, spread: str, title: str = "") -> Pat
         f"cards/{path.name}": _data_uri(path)
         for path in sorted((assets_dir / "images" / "cards").glob("*.jpg"))
     }
-    if len(card_assets) != 78:
-        raise ValueError(f"expected 78 card images, found {len(card_assets)}")
+    card_assets.update({
+        f"cards-reversed/{path.name}": _data_uri(path)
+        for path in sorted((assets_dir / "images" / "cards-reversed").glob("*.jpg"))
+    })
+    if len(card_assets) != 156:
+        raise ValueError(f"expected 156 upright/reversed card images, found {len(card_assets)}")
 
     scripts = {
         "deck-data.js": (assets_dir / "deck-data.js").read_text(encoding="utf-8"),

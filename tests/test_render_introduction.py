@@ -32,7 +32,7 @@ class SubstitutionCollectionTests(unittest.TestCase):
         # When the requested version isn't in CHANGELOG yet, fall back to the
         # most recent entry so the dist page is never missing required fields.
         date, bullets = latest_release_entry((ROOT / "CHANGELOG.md").read_text(encoding="utf-8"), "9.9.9")
-        self.assertEqual(date, "2026-07-12")
+        self.assertEqual(date, "2026-07-13")
         self.assertTrue(bullets)
 
 

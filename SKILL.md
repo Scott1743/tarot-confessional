@@ -1,6 +1,6 @@
 ---
 name: tarot-confessional
-version: 0.5.1
+version: 0.9.0
 description: Guide reflective Chinese tarot draws, decode TC1 draw codes, and provide calm symbolic readings for questions about emotions, relationships, choices, uncertainty, or 树洞式倾诉. Use when a user asks for 塔罗、抽牌、牌阵、占卜式自我探索，or returns a TC1 code from the bundled draw page. Do not use tarot as diagnosis, factual prediction, or professional medical, legal, financial, or crisis advice.
 ---
 
@@ -23,7 +23,7 @@ Choose a spread:
 
 ## Start the local server
 
-**Always start the local server before giving the user a draw page.** The server binds to `0.0.0.0` so the URL works from any interface. Run it as a background process:
+**Always start the local server before giving the user a draw page.** The server binds to `0.0.0.0` so the URL works from any interface. It automatically builds a self-contained draw HTML with all card and layout images embedded as Base64 data URIs; do not serve a raw `assets/draw.html` directly.
 
 ```bash
 python3 scripts/serve.py --skill-dir <path-to-tarot-confessional>
@@ -53,7 +53,7 @@ Read `references/reading-guidance.md` before composing a reading.
 
 ## Generate and serve the HTML report (REQUIRED)
 
-**You MUST generate an HTML report.** Do not return the reading as plain text or markdown only.
+**You MUST generate an HTML report.** Do not return the reading as plain text or markdown only. The builder embeds every card and layout image as a Base64 data URI after dynamic sections are rendered, so the delivered file must work without sibling assets.
 
 ### Step 1: Write the reading data as JSON
 

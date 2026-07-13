@@ -114,6 +114,33 @@
     padding: 0 0 clamp(72px, 10vh, 112px);
     animation: rise .9s .15s cubic-bezier(.16,1,.3,1) both;
   }
+  .hero-cards {
+    position: absolute;
+    z-index: -1;
+    top: 50%;
+    right: max(24px, calc((100% - var(--max))/2));
+    display: flex;
+    align-items: flex-start;
+    gap: clamp(10px, 1.6vw, 18px);
+    transform: translateY(-48%);
+    filter: drop-shadow(0 22px 28px rgba(2,25,21,.34));
+    animation: cards-rise 1s .35s cubic-bezier(.16,1,.3,1) both;
+  }
+  .hero-card {
+    position: relative;
+    width: clamp(96px, 11vw, 148px);
+    aspect-ratio: 2 / 3;
+    margin: 0;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,.62);
+    border-radius: 7px;
+    background: #123d32;
+    transform: rotate(-5deg);
+  }
+  .hero-card:nth-child(2) { margin-top: 42px; transform: rotate(2deg); }
+  .hero-card:nth-child(3) { margin-top: 12px; transform: rotate(6deg); }
+  .hero-card video, .hero-card img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .hero-card figcaption { position: absolute; inset: auto 0 0; padding: 22px 8px 7px; color: #fff; background: linear-gradient(transparent, rgba(3,25,21,.82)); font-family: "STKaiti", "KaiTi", serif; font-size: 14px; text-align: center; }
   .hero h1 {
     max-width: 760px;
     margin: 0;
@@ -229,6 +256,7 @@
   .motion-ready .reveal { opacity: 0; transform: translateY(24px); transition: opacity .8s cubic-bezier(.16,1,.3,1), transform .8s cubic-bezier(.16,1,.3,1); }
   .motion-ready .reveal.is-visible { opacity: 1; transform: none; }
   @keyframes rise { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+  @keyframes cards-rise { from { opacity: 0; transform: translate(30px, -42%); } to { opacity: 1; transform: translate(0, -48%); } }
   @keyframes settle { from { transform: scale(1.035); filter: saturate(.8); } to { transform: scale(1); filter: saturate(1); } }
   @keyframes cloud-breeze { from { transform: translate3d(-.35%, 0, 0) scale(1.006); } to { transform: translate3d(.55%, .15%, 0) scale(1.012); } }
   @keyframes meadow-breeze { 0%, 100% { transform: translate3d(-.12%, 0, 0) skewX(-.08deg) scale(1.002); } 50% { transform: translate3d(.18%, .08%, 0) skewX(.12deg) scale(1.005); } }
@@ -243,6 +271,11 @@
     .nav-links li:not(:last-child) { display: none; }
     .hero { min-height: 82dvh; }
     .hero-bg { object-position: 62% center; }
+    .hero-cards { top: auto; right: 20px; bottom: 24px; transform: none; gap: 8px; }
+    .hero-card { width: 82px; }
+    .hero-card:nth-child(2), .hero-card:nth-child(3) { margin-top: 0; }
+    .hero-card:nth-child(2) { transform: rotate(1deg); }
+    .hero-card:nth-child(3) { transform: rotate(4deg); }
     .journey, .reading-layout, .mneme { grid-template-columns: 1fr; }
     .journey-copy { position: static; }
     .promise-strip { grid-template-columns: 1fr 1fr; }
@@ -255,6 +288,9 @@
     .nav-cta { padding: 7px 12px; }
     .hero { min-height: 78dvh; }
     .hero-copy { padding-bottom: 54px; }
+    .hero-cards { top: 112px; right: 14px; bottom: auto; }
+    .hero-card { width: 70px; }
+    .hero-card figcaption { padding-bottom: 4px; font-size: 11px; }
     .hero h1 { max-width: 330px; font-size: clamp(44px, 14vw, 60px); }
     .hero p { max-width: 330px; font-size: 16px; }
     .hero-bg { object-position: 68% center; }
@@ -297,6 +333,20 @@
       <a class="button button-primary" href="#journey">走进森林</a>
       <a class="button button-secondary" href="#install">安装 Skill</a>
     </div>
+  </div>
+  <div class="hero-cards" aria-label="三张动态塔罗牌示例">
+    <figure class="hero-card">
+      <video autoplay muted loop playsinline preload="metadata" poster="assets/08-strength.jpg" aria-label="力量牌：狮子与小鼠的温柔互动"><source src="assets/08-strength.mp4" type="video/mp4"></video>
+      <figcaption>力量</figcaption>
+    </figure>
+    <figure class="hero-card">
+      <video autoplay muted loop playsinline preload="metadata" poster="assets/17-star.jpg" aria-label="星星牌：星光与水面"><source src="assets/17-star.mp4" type="video/mp4"></video>
+      <figcaption>星星</figcaption>
+    </figure>
+    <figure class="hero-card">
+      <video autoplay muted loop playsinline preload="metadata" poster="assets/48-queen-of-cups.jpg" aria-label="圣杯王后：豹子与圣杯"><source src="assets/48-queen-of-cups.mp4" type="video/mp4"></video>
+      <figcaption>圣杯王后</figcaption>
+    </figure>
   </div>
 </header>
 

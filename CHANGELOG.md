@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.9.0] - 2026-07-13
+
+### Added
+
+- 78 张全新正位与 78 张逆位森林动画牌面资产，运行时分别读取对应图片。
+- 介绍页 Hero 三张 3 秒动态牌面示例：力量、星星、圣杯王后。
+
+### Fixed
+
+- `serve.py` 默认自动构建 Base64 自包含抽牌页，脱离资源目录也能显示图片。
+- 修复动态 `reading.html` 牌阵在图片内联之后插入、导致相对路径失效的问题。
+- 逆位牌面不再旋转正位图片，改为使用独立逆位资产。
+
 ## [0.5.1] - 2026-07-12
 
 ### Fixed

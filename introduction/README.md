@@ -20,7 +20,8 @@
 | `assets/eastern-night-bg_001.jpg` | 旧版夜空背景，暂留素材库 | 项目自带 |
 | `assets/purple-silk.jpg` | 复用材质 | 项目自带 |
 | `assets/card-back.jpg` | 牌背特写 | 项目自带 |
-| `assets/0?-*.jpg`（6 张） | Hero 飘浮牌 | 项目牌库抽出 |
+| `assets/08-strength.jpg`, `assets/17-star.jpg`, `assets/48-queen-of-cups.jpg` | Hero 动态牌 poster | v0.9.0 三张代表性牌面 |
+| `assets/08-strength.mp4`, `assets/17-star.mp4`, `assets/48-queen-of-cups.mp4` | Hero 动态牌 | 每段 3 秒，轻微微风与水面动效 |
 | `assets/screenshots/*.jpg`（6 张） | 真实截图 | 用 `kimi-webbridge` 在用户真实浏览器中对 `draw.html` 与 `reading.html` 各状态实时截取 |
 
 更新截图：

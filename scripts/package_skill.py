@@ -46,6 +46,7 @@ def expected_layout(skill_dir: Path) -> list[str]:
         "assets/images/forest-whisper-bg.jpg",
         "assets/images/eastern-night-bg_001.jpg",
         "assets/images/purple-silk.jpg",
+        "assets/images/cards-reversed/00-fool.jpg",
         "scripts/serve.py",
         "scripts/tarot_codec.py",
         "scripts/build_draw_page.py",
@@ -89,7 +90,7 @@ def stage_directory(skill_dir: Path, version: str) -> Path:
     stage = DIST / "tarot-confessional"
     if stage.exists():
         shutil.rmtree(stage)
-    shutil.copytree(skill_dir, stage)
+    shutil.copytree(skill_dir, stage, ignore=shutil.ignore_patterns("__pycache__", "*.pyc"))
     return stage
 
 
@@ -218,6 +219,11 @@ def package(version: str) -> int:
         return 1
     archive_stem = f"tarot-confessional-{version}"
     stage = stage_directory(SOURCE, version)
+    # Ship the draw page as the same self-contained Base64 artifact that the
+    # server serves at runtime. A raw template would lose its image siblings
+    # when users open or attach the packaged HTML alone.
+    from build_draw_page import build as build_draw_page
+    build_draw_page(skill_dir=stage, output=stage / "assets" / "draw.html", spread="S3")
     # Render the introduction page against this version so dist copies
     # always carry the correct version, release date, and changelog summary.
     intro_dst = render_introduction_into(stage, version)
