@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="color-scheme" content="dark">
-  <title>塔罗树洞 · 夜观抽牌</title>
+  <title>森林密语 · 林间抽牌</title>
   <style>
     :root {
       --night: #12091d;
@@ -228,6 +228,49 @@
       .footer span:last-child { display: block; margin-top: 5px; }
     }
 
+    /* Forest Whispers theme: preserve the draw mechanics, replace the ritual language. */
+    :root { --night:#082a25; --ink-purple:#123d32; --imperial:#315f43; --glow:#7daa60; --blue:#6f9d8b; --cinnabar:#d49a43; --gold:#efbd50; --gold-light:#f8d978; --gold-glow:rgba(239,189,80,.34); --moon:#f4f1df; --muted:#c7d5c8; }
+    body { font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif; }
+    .sky { inset:-3%; background-image:linear-gradient(180deg,rgb(5 39 34/.38),rgb(4 31 27/.72)),url("images/forest-whisper-bg.jpg"); filter:saturate(.78) brightness(.7); animation:forest-breathe 18s ease-in-out infinite alternate; }
+    .silk-veil { display:none; }
+    .wave-1 { background:radial-gradient(ellipse 62% 40% at 50% 72%,rgb(239 189 80/.13),transparent 68%); }
+    .wave-2 { background:linear-gradient(180deg,rgb(8 42 37/.02),rgb(8 42 37/.34)); }
+    .wave-3 { background:radial-gradient(ellipse 70% 65% at 50% 50%,transparent 28%,rgb(3 26 22/.28) 100%); }
+    #starfield { opacity:.3; }
+    .vignette { background:radial-gradient(ellipse at center,transparent 32%,rgb(3 28 24/.5) 100%); }
+    body.is-shuffling .sky { filter:saturate(.92) brightness(.76); }
+    .shell { width:min(1180px,calc(100% - 44px)); padding-top:20px; }
+    .topbar { border-color:rgb(239 189 80/.28); color:rgb(229 236 218/.78); }
+    .brand { color:#fff0b0; letter-spacing:.12em; font-size:15px; }
+    .status::before { background:var(--gold); }
+    .scene { grid-template-columns:1fr; grid-template-rows:auto 1fr; gap:6px; padding-top:4px; }
+    .title-column { align-self:auto; justify-content:center; padding-top:0; text-align:center; }
+    h1 { writing-mode:horizontal-tb; max-width:720px; font-size:clamp(30px,4vw,46px); line-height:1.15; letter-spacing:0; text-shadow:0 8px 28px rgb(2 25 21/.46); }
+    .seal { position:absolute; top:2px; right:0; margin:0; border-color:rgb(239 189 80/.62); color:#ffdfa0; background:rgb(8 42 37/.58); box-shadow:inset 0 0 0 4px rgb(239 189 80/.07),0 8px 24px rgb(2 23 19/.28); }
+    .ritual { grid-template-rows:minmax(150px,.55fr) auto auto; gap:8px; }
+    .table { min-height:158px; }
+    .table::before { border-color:rgb(239 189 80/.25); box-shadow:inset 0 0 80px rgb(87 142 91/.13),0 0 46px rgb(8 42 37/.18); }
+    .deck-stack::before,.deck-stack::after { background:#0a302a; border-color:rgb(239 189 80/.38); }
+    .deck-stack img { box-shadow:0 26px 68px rgb(2 24 20/.62),0 0 32px rgb(239 189 80/.15); }
+    .draw-card { box-shadow:0 16px 36px rgb(2 24 20/.45),0 0 14px rgb(239 189 80/.06); }
+    .draw-card.is-near { box-shadow:0 22px 48px rgb(2 24 20/.5),0 0 22px rgb(101 159 99/.18); }
+    .draw-card.is-active { box-shadow:0 34px 72px rgb(2 24 20/.66),0 0 34px rgb(239 189 80/.3),0 0 64px rgb(87 142 91/.18); }
+    .positions::before { background:linear-gradient(90deg,transparent,rgb(239 189 80/.62),transparent); }
+    .position-label { color:#ffdfa0; background:rgb(8 42 37/.68); text-shadow:none; box-shadow:0 2px 12px rgb(2 24 20/.28); }
+    .slot { width:min(100%,112px); border-color:rgb(239 189 80/.28); background:rgb(7 39 34/.36); box-shadow:inset 0 0 36px rgb(87 142 91/.08); }
+    .slot-card { box-shadow:0 22px 52px rgb(2 24 20/.52),0 0 28px rgb(239 189 80/.13); }
+    .command { color:#17362d; background:var(--gold); box-shadow:0 12px 30px rgb(2 24 20/.34); }
+    .command::after { background:linear-gradient(45deg,var(--gold),rgb(93 145 91/.7),var(--gold)); }
+    .command:hover { box-shadow:0 18px 40px rgb(2 24 20/.4),0 0 32px rgb(239 189 80/.18); }
+    .quiet-command:hover { background:rgb(239 189 80/.08); }
+    .actions { min-height:72px; gap:8px; padding-top:0; }
+    .code-panel { border-color:rgb(239 189 80/.54); background:rgb(7 39 34/.9); box-shadow:inset 0 0 40px rgb(87 142 91/.08),0 24px 60px rgb(2 24 20/.45); }
+    .code-label { color:#ffdfa0; text-shadow:none; }
+    .code-note { color:#e1eadb; }
+    .footer { border-color:rgb(239 189 80/.2); color:rgb(213 225 210/.68); }
+    @keyframes forest-breathe { from { transform:translate3d(-.3%,0,0) scale(1.035); } to { transform:translate3d(.4%,-.2%,0) scale(1.05); } }
+    @media (max-width:760px) { .shell{width:min(100% - 26px,640px);padding-top:10px}.scene{gap:10px;padding-top:8px}.title-column{justify-content:flex-start;padding-right:66px;text-align:left}h1{font-size:clamp(28px,8vw,40px)}.seal{top:8px}.sky{background-position:67% center}.position-label{padding:4px 5px;font-size:12px;letter-spacing:0;white-space:nowrap} }
+
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
       #starfield { display: none; }
@@ -246,12 +289,12 @@
 
   <main class="shell">
     <header class="topbar">
-      <div class="brand">塔罗树洞</div>
-      <div class="status"><span id="statusText">静候起念</span></div>
+      <div class="brand">森林密语</div>
+      <div class="status"><span id="statusText">等你准备好</span></div>
     </header>
 
     <section class="scene" aria-labelledby="questionTitle">
-      <div class="title-column"><h1 id="questionTitle">把问题留在心里，选三张牌</h1></div>
+      <div class="title-column"><h1 id="questionTitle">先让心静下来，再选三张牌</h1></div>
       <div class="ritual">
         <div class="table">
           <button class="deck-stack" id="deckButton" type="button" aria-label="开始洗牌"><img src="images/card-back.jpg" alt="东方绢本风格塔罗牌背"></button>
@@ -259,27 +302,27 @@
         </div>
 
         <div class="positions" aria-label="现状、阻力、方向三牌阵">
-          <article class="position"><div class="position-label">现状 · 此刻之势</div><div class="slot" id="slot0"></div><div class="card-caption" id="caption0"></div></article>
-          <article class="position"><div class="position-label">阻力 · 未明之处</div><div class="slot" id="slot1"></div><div class="card-caption" id="caption1"></div></article>
-          <article class="position"><div class="position-label">方向 · 可行之路</div><div class="slot" id="slot2"></div><div class="card-caption" id="caption2"></div></article>
+          <article class="position"><div class="position-label">此刻 · 正在发生</div><div class="slot" id="slot0"></div><div class="card-caption" id="caption0"></div></article>
+          <article class="position"><div class="position-label">阻力 · 还没看清</div><div class="slot" id="slot1"></div><div class="card-caption" id="caption1"></div></article>
+          <article class="position"><div class="position-label">方向 · 可以试试</div><div class="slot" id="slot2"></div><div class="card-caption" id="caption2"></div></article>
         </div>
 
         <div class="actions">
-          <button class="command" id="primaryButton" type="button">起念洗牌</button>
+          <button class="command" id="primaryButton" type="button">开始洗牌</button>
           <div class="code-panel" id="codePanel">
-            <div class="code-label">此局已定</div>
+            <div class="code-label">你的三张牌已经出现</div>
             <input class="draw-code" id="drawCode" type="text" readonly aria-label="抽牌码">
             <button class="command" id="copyButton" type="button">复制抽牌码</button>
-            <div class="code-note" id="copyNote">回到对话，把抽牌码交给 Agent。</div>
+            <div class="code-note" id="copyNote">复制后回到对话，我们一起读懂它们。</div>
           </div>
-          <button class="quiet-command" id="resetButton" type="button" hidden>重新起局</button>
+          <button class="quiet-command" id="resetButton" type="button" hidden>再抽一次</button>
         </div>
       </div>
-      <aside class="seal" aria-label="三张行动牌阵">观<br>势<br>明<br>路</aside>
+      <aside class="seal" aria-label="三张行动牌阵">听<br>风<br>见<br>心</aside>
       <div id="liveStatus" class="sr-only" aria-live="polite"></div>
     </section>
 
-    <footer class="footer"><span>抽牌仅在当前浏览器中完成，不上传问题或结果。</span><span>新工笔幻色 · 完整 78 张塔罗牌组</span></footer>
+    <footer class="footer"><span>问题和抽牌结果不会离开当前浏览器。</span><span>完整 78 张牌组，每次重新洗牌</span></footer>
   </main>
 
   <script src="deck-data.js"></script>
@@ -405,16 +448,16 @@
     function beginShuffle() {
       if (state !== "ready") return;
       try { shuffled = secureShuffle(deck); } catch { setStatus("当前浏览器无法安全抽牌"); primaryButton.textContent = "请换用较新的浏览器"; primaryButton.disabled = true; return; }
-      state = "shuffling"; energy = 1; document.body.classList.add("is-shuffling"); setStatus("紫气聚合，正在洗牌"); primaryButton.disabled = true; deckButton.classList.add("is-shuffling");
+      state = "shuffling"; energy = 1; document.body.classList.add("is-shuffling"); setStatus("微风掠过牌面，正在洗牌"); primaryButton.disabled = true; deckButton.classList.add("is-shuffling");
       const delay = matchMedia("(prefers-reduced-motion: reduce)").matches ? 20 : 1580;
-      setTimeout(() => { renderRail(); deckButton.hidden = true; deckRail.classList.add("is-visible"); requestAnimationFrame(layoutFan); state = "drawing"; energy = .28; document.body.classList.remove("is-shuffling"); setStatus("请依次选择三张牌"); primaryButton.textContent = "还需选择三张"; }, delay);
+      setTimeout(() => { renderRail(); deckButton.hidden = true; deckRail.classList.add("is-visible"); requestAnimationFrame(layoutFan); state = "drawing"; energy = .28; document.body.classList.remove("is-shuffling"); setStatus("别想太久，凭第一感觉选择"); primaryButton.textContent = "再选三张"; }, delay);
     }
 
     function chooseCard(index, button) {
       if (state !== "drawing" || selected.some(item => item.index === index) || selected.length >= 3) return -1;
       const card = shuffled[index]; selected.push({ ...card, index }); button.classList.add("is-selected", "is-used"); button.setAttribute("aria-pressed", "true");
       const slotIndex = selected.length - 1, slot = $(`#slot${slotIndex}`), back = document.createElement("div"); back.className = "slot-card"; back.style.background = '#160c24 url("images/card-back.jpg") center / cover'; back.setAttribute("aria-label", `${positions[slotIndex]}牌位已选择，尚未翻开`); slot.append(back);
-      const remaining = 3 - selected.length; primaryButton.textContent = remaining ? `还需选择${remaining === 2 ? "两" : "一"}张` : "翻开此局"; primaryButton.disabled = remaining !== 0; setStatus(remaining ? `已选${selected.length}张` : "三张牌已归位");
+      const remaining = 3 - selected.length; primaryButton.textContent = remaining ? `再选${remaining === 2 ? "两" : "一"}张` : "翻开三张牌"; primaryButton.disabled = remaining !== 0; setStatus(remaining ? `已经选了${selected.length}张` : "三张牌都选好了");
       if (!remaining) { clearFanFocus(); return -1; }
       const next = nearestAvailableIndex(index + 1 < fanCards.length ? index + 1 : index - 1); setFanFocus(next); return next;
     }
@@ -423,11 +466,11 @@
       if (state !== "drawing" || selected.length !== 3) return; state = "revealed"; energy = .72;
       selected.forEach((card, index) => { const slot = $(`#slot${index}`); slot.replaceChildren(); const face = document.createElement("div"); face.className = `slot-card${card.reversed ? " is-reversed" : ""}`; face.style.animationDelay = `${index * 150}ms`; const img = document.createElement("img"); img.src = `images/cards/${card.file}`; img.alt = `${card.name}${card.reversed ? "逆位" : "正位"}`; face.append(img); slot.append(face); $(`#caption${index}`).innerHTML = `${card.name}<span>${card.reversed ? "逆位" : "正位"}</span>`; });
       drawCode.value = TarotCodec.encode("S3", selected);
-      deckRail.hidden = true; primaryButton.hidden = true; codePanel.classList.add("is-visible"); resetButton.hidden = false; state = "code-ready"; setStatus("此局已定"); setTimeout(() => { energy = .18; copyButton.focus(); }, 900);
+      deckRail.hidden = true; primaryButton.hidden = true; codePanel.classList.add("is-visible"); resetButton.hidden = false; state = "code-ready"; setStatus("牌已翻开"); setTimeout(() => { energy = .18; copyButton.focus(); }, 900);
     }
 
-    async function copyResult() { try { await navigator.clipboard.writeText(drawCode.value); copyButton.textContent = "已复制"; copyNote.textContent = "回到对话，粘贴这段抽牌码。"; } catch { drawCode.focus(); drawCode.select(); copyButton.textContent = "请手动复制"; copyNote.textContent = "抽牌码已经选中。"; } }
-    function reset() { state = "ready"; shuffled = []; selected = []; energy = 0; clearFanFocus(); fanCards = []; deckRail.className = "deck-rail"; deckRail.hidden = false; deckRail.replaceChildren(); deckButton.hidden = false; deckButton.classList.remove("is-shuffling"); primaryButton.hidden = false; primaryButton.disabled = false; primaryButton.textContent = "起念洗牌"; codePanel.classList.remove("is-visible"); resetButton.hidden = true; copyButton.textContent = "复制抽牌码"; copyNote.textContent = "回到对话，把抽牌码交给 Agent。"; for (let i = 0; i < 3; i++) { $(`#slot${i}`).replaceChildren(); $(`#caption${i}`).textContent = ""; } setStatus("静候起念"); deckButton.focus(); }
+    async function copyResult() { try { await navigator.clipboard.writeText(drawCode.value); copyButton.textContent = "已复制"; copyNote.textContent = "回到对话吧，我们一起看看这些牌。"; } catch { drawCode.focus(); drawCode.select(); copyButton.textContent = "请手动复制"; copyNote.textContent = "抽牌码已经为你选中。"; } }
+    function reset() { state = "ready"; shuffled = []; selected = []; energy = 0; clearFanFocus(); fanCards = []; deckRail.className = "deck-rail"; deckRail.hidden = false; deckRail.replaceChildren(); deckButton.hidden = false; deckButton.classList.remove("is-shuffling"); primaryButton.hidden = false; primaryButton.disabled = false; primaryButton.textContent = "开始洗牌"; codePanel.classList.remove("is-visible"); resetButton.hidden = true; copyButton.textContent = "复制抽牌码"; copyNote.textContent = "复制后回到对话，我们一起读懂它们。"; for (let i = 0; i < 3; i++) { $(`#slot${i}`).replaceChildren(); $(`#caption${i}`).textContent = ""; } setStatus("等你准备好"); deckButton.focus(); }
 
     deckButton.addEventListener("click", beginShuffle); primaryButton.addEventListener("click", () => state === "ready" ? beginShuffle() : revealCards()); copyButton.addEventListener("click", copyResult); resetButton.addEventListener("click", reset);
     deckRail.addEventListener("pointermove", event => {
@@ -448,7 +491,7 @@
       document.addEventListener("pointermove", event => { document.documentElement.style.setProperty("--px", ((event.clientX / innerWidth) - .5).toFixed(3)); document.documentElement.style.setProperty("--py", ((event.clientY / innerHeight) - .5).toFixed(3)); }, { passive: true });
       const canvas = $("#starfield"), ctx = canvas.getContext("2d"); let stars = [], raf = 0, running = true;
       function resize() { const dpr = Math.min(devicePixelRatio || 1, 1.6); canvas.width = innerWidth * dpr; canvas.height = innerHeight * dpr; canvas.style.width = `${innerWidth}px`; canvas.style.height = `${innerHeight}px`; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); stars = Array.from({ length: Math.min(64, Math.floor(innerWidth / 18)) }, (_, i) => ({ angle: Math.random() * Math.PI * 2, radius: .16 + Math.random() * .38, speed: .00008 + Math.random() * .00012, size: .45 + Math.random() * 1.2, lane: i % 3 })); }
-      function draw(time) { if (!running) return; ctx.clearRect(0, 0, innerWidth, innerHeight); const cx = innerWidth * .5, cy = innerHeight * .44, rx = innerWidth * (.34 - energy * .08), ry = innerHeight * (.2 - energy * .04); stars.forEach(star => { const a = star.angle + time * star.speed * (1 + energy * 3); const x = cx + Math.cos(a) * rx * (star.radius + .66), y = cy + Math.sin(a) * ry * (star.radius + .65); ctx.beginPath(); ctx.fillStyle = star.lane === 0 ? `rgba(214,179,106,${.24 + energy * .36})` : `rgba(224,197,241,${.18 + energy * .24})`; ctx.arc(x, y, star.size + energy * .45, 0, Math.PI * 2); ctx.fill(); }); raf = requestAnimationFrame(draw); }
+      function draw(time) { if (!running) return; ctx.clearRect(0, 0, innerWidth, innerHeight); const cx = innerWidth * .5, cy = innerHeight * .44, rx = innerWidth * (.34 - energy * .08), ry = innerHeight * (.2 - energy * .04); stars.forEach(star => { const a = star.angle + time * star.speed * (1 + energy * 3); const x = cx + Math.cos(a) * rx * (star.radius + .66), y = cy + Math.sin(a) * ry * (star.radius + .65); ctx.beginPath(); ctx.fillStyle = star.lane === 0 ? `rgba(239,189,80,${.18 + energy * .34})` : `rgba(188,221,176,${.14 + energy * .22})`; ctx.arc(x, y, star.size + energy * .45, 0, Math.PI * 2); ctx.fill(); }); raf = requestAnimationFrame(draw); }
       resize(); addEventListener("resize", resize, { passive: true }); document.addEventListener("visibilitychange", () => { running = !document.hidden; if (running) raf = requestAnimationFrame(draw); else cancelAnimationFrame(raf); }); raf = requestAnimationFrame(draw);
     }
   </script>

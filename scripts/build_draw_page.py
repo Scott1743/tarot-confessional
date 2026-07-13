@@ -40,6 +40,7 @@ def expected_assets(assets_dir: Path) -> list[Path]:
     """Return every asset the draw page needs (layout + 78 cards)."""
     layout = [
         assets_dir / "images" / "card-back.jpg",
+        assets_dir / "images" / "forest-whisper-bg.jpg",
         assets_dir / "images" / "eastern-night-bg_001.jpg",
         assets_dir / "images" / "purple-silk.jpg",
     ]
@@ -56,6 +57,7 @@ def _data_uri(path: Path) -> str:
 def _inline_layout_images(html: str, assets: dict[str, str]) -> str:
     """Replace layout image references with their data URI counterparts."""
     html = html.replace('url("images/card-back.jpg")', f'url("{assets["card-back.jpg"]}")')
+    html = html.replace('url("images/forest-whisper-bg.jpg")', f'url("{assets["forest-whisper-bg.jpg"]}")')
     html = html.replace('url("images/eastern-night-bg_001.jpg")', f'url("{assets["eastern-night-bg_001.jpg"]}")')
     html = html.replace('url("images/purple-silk.jpg")', f'url("{assets["purple-silk.jpg"]}")')
     html = html.replace('src="images/card-back.jpg"', f'src="{assets["card-back.jpg"]}"')
@@ -111,7 +113,7 @@ def build(*, skill_dir: Path, output: Path, spread: str, title: str = "") -> Pat
 
     html = template_path.read_text(encoding="utf-8")
 
-    layout_names = ("card-back.jpg", "eastern-night-bg_001.jpg", "purple-silk.jpg")
+    layout_names = ("card-back.jpg", "forest-whisper-bg.jpg", "eastern-night-bg_001.jpg", "purple-silk.jpg")
     layout_assets = {name: _data_uri(assets_dir / "images" / name) for name in layout_names}
     card_assets = {
         f"cards/{path.name}": _data_uri(path)

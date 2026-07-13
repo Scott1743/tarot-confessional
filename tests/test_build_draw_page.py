@@ -27,10 +27,11 @@ SKILL = ROOT / "skills" / "tarot-confessional"
 
 
 class BuildDrawPageUnitTests(unittest.TestCase):
-    def test_expected_assets_includes_three_layout_assets(self):
+    def test_expected_assets_includes_layout_assets(self):
         assets = expected_assets(SKILL / "assets")
         names = {path.name for path in assets}
         self.assertIn("card-back.jpg", names)
+        self.assertIn("forest-whisper-bg.jpg", names)
         self.assertIn("eastern-night-bg_001.jpg", names)
         self.assertIn("purple-silk.jpg", names)
 
@@ -57,12 +58,13 @@ class BuildDrawPageUnitTests(unittest.TestCase):
             build(skill_dir=SKILL, output=out, spread="S3", title="测试")
             html = out.read_text(encoding="utf-8")
             self.assertNotIn('url("images/card-back.jpg")', html)
+            self.assertNotIn('url("images/forest-whisper-bg.jpg")', html)
             self.assertNotIn('url("images/eastern-night-bg_001.jpg")', html)
             self.assertNotIn('url("images/purple-silk.jpg")', html)
             self.assertNotIn('src="images/card-back.jpg"', html)
-            # Three layout images + one inline back reference -> at least 4 data URIs
+            # Four layout images + one inline back reference -> at least 5 data URIs
             data_uris = re.findall(r"data:image/jpeg;base64,[A-Za-z0-9+/=]+", html)
-            self.assertGreaterEqual(len(data_uris), 4)
+            self.assertGreaterEqual(len(data_uris), 5)
 
     def test_build_inlines_all_78_card_faces(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -80,7 +82,7 @@ class BuildDrawPageUnitTests(unittest.TestCase):
             out = Path(tmp) / "draw.html"
             build(skill_dir=SKILL, output=out, spread="S3", title="测试")
             html = out.read_text(encoding="utf-8")
-            for marker in ("<!doctype html>", "<title>", "现状 · 此刻之势", "阻力 · 未明之处", "方向 · 可行之路", "TarotCodec.encode"):
+            for marker in ("<!doctype html>", "<title>", "此刻 · 正在发生", "阻力 · 还没看清", "方向 · 可以试试", "TarotCodec.encode"):
                 with self.subTest(marker=marker):
                     self.assertIn(marker, html)
 
