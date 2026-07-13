@@ -31,6 +31,7 @@ python3 scripts/serve.py --skill-dir <path-to-tarot-confessional>
 - 绑定到 `0.0.0.0`，可以从任何接口访问
 - 在 `/` 提供自包含的 `draw.html` 页面，脱离资源目录也能显示图片
 - 打印 JSON 格式的 URL 信息
+- 默认在 15 分钟无访问后自动退出；用户返回 TC1 码后，Agent 不再保留旧服务进程
 
 从输出中提取 `draw` URL 并给用户：
 ```json
@@ -120,13 +121,13 @@ python3 scripts/build_reading_page.py \
 
 #### 6.3 提供 reading 页面
 
-停止之前的服务器（如果还在运行），启动新的服务器：
+若旧服务仍在运行则停止它，再启动新的服务器：
 
 ```bash
 python3 scripts/serve.py --skill-dir <path-to-tarot-confessional> --reading <workspace>/reading.html
 ```
 
-从输出中提取 `reading` URL 并给用户。构建器会在动态牌阵插入完成后再内联图片，避免动态牌面残留 `images/cards/...` 相对路径：
+从输出中提取 `reading` URL 并给用户。服务会在 15 分钟无访问后自动退出；需要更长阅读时间时可附加 `--idle-timeout <秒数>`。构建器会在动态牌阵插入完成后再内联图片，避免动态牌面残留 `images/cards/...` 相对路径：
 ```json
 {"draw": "http://localhost:8080/", "reading": "http://localhost:8080/reading"}
 ```

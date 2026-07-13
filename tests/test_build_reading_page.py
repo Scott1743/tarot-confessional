@@ -63,7 +63,16 @@ class BuildReadingPageTests(unittest.TestCase):
             MODULE.build(skill_dir=SKILL, output=output, data=reading_data())
             html = output.read_text(encoding="utf-8")
             self.assertNotIn('url("images/', html)
-            self.assertGreaterEqual(html.count("data:image/jpeg;base64,"), 5)
+            self.assertEqual(html.count("data:image/jpeg;base64,"), 3)
+
+    def test_closing_sections_render_one_heading_when_title_matches_label(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            output = Path(tmp) / "reading.html"
+            MODULE.build(skill_dir=SKILL, output=output, data=reading_data())
+            html = output.read_text(encoding="utf-8")
+            self.assertEqual(html.count('<h2 class="section-heading">可行之事</h2>'), 1)
+            self.assertEqual(html.count('<h2 class="section-heading">留待自问</h2>'), 1)
+            self.assertNotIn('<div class="label">可行之事</div>', html)
 
 
 if __name__ == "__main__":

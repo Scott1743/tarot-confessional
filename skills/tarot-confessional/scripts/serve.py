@@ -26,6 +26,7 @@ import json
 import socket
 import sys
 import tempfile
+import time
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 from pathlib import Path
 
@@ -45,7 +46,11 @@ def find_free_port(host: str = "0.0.0.0", preferred: int | None = None) -> int:
                 return port
         except OSError:
             continue
-    raise RuntimeError("no free port in range 17000-17099")
+    # Long-lived prior sessions can fill the preferred range. Fall back to an
+    # OS-assigned ephemeral port so a new draw flow always remains available.
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        s.bind((host, 0))
+        return int(s.getsockname()[1])
 
 
 def get_local_ip() -> str:
@@ -64,11 +69,13 @@ class TarotHandler(SimpleHTTPRequestHandler):
     reading_html: str | None = None
     draw_html: str | None = None
     serve_dir: str = "."
+    last_activity: float = 0.0
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, directory=self.serve_dir, **kwargs)
 
     def do_GET(self):
+        type(self).last_activity = time.monotonic()
         # Route: / or /draw -> draw.html
         if self.path in ("/", "/draw"):
             if self.draw_html:
@@ -100,7 +107,11 @@ def main() -> int:
                         help="Path to a generated reading HTML file to serve at /reading")
     parser.add_argument("--draw", type=Path, default=None,
                         help="Path to a self-contained draw HTML file; defaults to an automatic Base64 build")
+    parser.add_argument("--idle-timeout", type=int, default=900,
+                        help="Seconds without requests before shutdown; set 0 to disable (default: 900)")
     args = parser.parse_args()
+    if args.idle_timeout < 0:
+        parser.error("--idle-timeout must be zero or a positive number")
 
     assets_dir = args.skill_dir / "assets"
     if not assets_dir.is_dir():
@@ -141,12 +152,15 @@ def main() -> int:
     TarotHandler.reading_html = reading_content
     TarotHandler.draw_html = draw_content
     TarotHandler.serve_dir = str(assets_dir)
+    TarotHandler.last_activity = time.monotonic()
 
     server = HTTPServer(("0.0.0.0", port), TarotHandler)
+    server.timeout = 1
 
     urls = {
         "draw": f"http://localhost:{port}/",
         "draw_lan": f"http://{local_ip}:{port}/",
+        "idle_timeout_seconds": args.idle_timeout,
     }
     if reading_content:
         urls["reading"] = f"http://localhost:{port}/reading"
@@ -156,11 +170,16 @@ def main() -> int:
     print(json.dumps(urls, ensure_ascii=False))
 
     try:
-        server.serve_forever()
+        while True:
+            server.handle_request()
+            if args.idle_timeout and time.monotonic() - TarotHandler.last_activity >= args.idle_timeout:
+                break
     except KeyboardInterrupt:
         pass
     finally:
         server.server_close()
+        if temp_draw_dir:
+            temp_draw_dir.cleanup()
 
     return 0
 

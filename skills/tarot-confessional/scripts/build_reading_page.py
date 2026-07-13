@@ -74,12 +74,7 @@ def _data_uri(path: Path) -> str:
 
 def _inline_images(html: str, images_dir: Path) -> str:
     """Replace all image references with data URIs."""
-    # Layout images in CSS
-    for name in ("eastern-night-bg_001.jpg", "purple-silk.jpg"):
-        data_uri = _data_uri(images_dir / name)
-        html = html.replace(f'url("images/{name}")', f'url("{data_uri}")')
-
-    # Reversed cards reuse upright images and rotate through the CSS class.
+    # The report uses a CSS cobalt field; only card images need inlining.
     for card_file in sorted((images_dir / "cards").glob("*.jpg")):
         data_uri = _data_uri(card_file)
         html = html.replace(f'src="images/cards/{card_file.name}"', f'src="{data_uri}"')
@@ -104,6 +99,12 @@ def _render_entry(card: dict) -> str:
 def _render_list_items(items: list[str]) -> str:
     """Render a list of items as <li> elements."""
     return "\n".join(f"<li>{item}</li>" for item in items)
+
+
+def _render_closing_section(label: str, title: str, items: list[str]) -> str:
+    """Render one closing column with one visible heading, never a duplicate tag."""
+    heading = title.strip() if title and title.strip() and title.strip() != label else label
+    return f'''<div class="closing-column"><h2 class="section-heading">{heading}</h2><ol class="numbered">{_render_list_items(items)}</ol></div>'''
 
 
 def build(*, skill_dir: Path, output: Path, data: dict) -> Path:
@@ -143,11 +144,9 @@ def build(*, skill_dir: Path, output: Path, data: dict) -> Path:
     html = _replace_section(html, '<section class="synthesis">', '</section>', synthesis_html)
 
     # Replace closing section
-    actions_html = _render_list_items(data["actions"]["items"])
-    questions_html = _render_list_items(data["questions"]["items"])
     closing_html = f'''      <section class="closing">
-        <div><div class="label">可行之事</div><h2>{data['actions']['title']}</h2><ol class="numbered">{actions_html}</ol></div>
-        <div><div class="label">留待自问</div><h2>{data['questions']['title']}</h2><ol class="numbered">{questions_html}</ol></div>
+        {_render_closing_section("可行之事", data["actions"]["title"], data["actions"]["items"])}
+        {_render_closing_section("留待自问", data["questions"]["title"], data["questions"]["items"])}
       </section>'''
     html = _replace_section(html, '<section class="closing">', '</section>', closing_html)
 
