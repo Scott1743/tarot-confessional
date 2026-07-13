@@ -246,6 +246,14 @@
   .install-box h3 { margin-bottom: 12px; }
   pre { margin: 14px 0 30px; padding: 18px 20px; overflow-x: auto; border: 1px solid rgba(244,241,223,.18); border-radius: var(--radius); color: #fff4bf; background: rgba(0,0,0,.18); font-family: ui-monospace, "SFMono-Regular", Menlo, monospace; font-size: 14px; }
   .prompt { margin: 14px 0 30px; padding: 20px; border-left: 4px solid var(--sun); background: rgba(244,241,223,.08); }
+  .prompt-list { margin: 14px 0 30px; display: grid; gap: 12px; }
+  .prompt-item { position: relative; padding: 16px 56px 16px 20px; border-left: 4px solid var(--sun); background: rgba(244,241,223,.08); border-radius: 0 var(--radius) var(--radius) 0; transition: background .25s ease; }
+  .prompt-item:hover { background: rgba(244,241,223,.14); }
+  .prompt-item p { color: rgba(244,241,223,.9); font-size: 15px; }
+  .copy-btn { position: absolute; top: 50%; right: 12px; transform: translateY(-50%); display: inline-flex; align-items: center; gap: 4px; padding: 6px 12px; border: 1px solid rgba(244,241,223,.3); border-radius: 999px; color: var(--paper); background: rgba(244,241,223,.08); font-size: 12px; font-weight: 600; cursor: pointer; transition: background .2s ease, border-color .2s ease, color .2s ease; }
+  .copy-btn:hover { background: var(--sun); border-color: var(--sun); color: var(--pine-deep); }
+  .copy-btn:active { transform: translateY(-50%) scale(.95); }
+  .copy-btn.copied { background: var(--leaf); border-color: var(--leaf); color: #fff; }
   .install-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
   .install .button-secondary { background: transparent; }
 
@@ -427,9 +435,31 @@
       <h3>安装森林密语</h3>
       <pre>npx skills add Scott1743/tarot-confessional</pre>
       <h3>从一句话开始</h3>
-      <div class="prompt">我想抽一次塔罗。最近有一件事让我困扰，请帮我开始。</div>
+      <div class="prompt-list">
+        <div class="prompt-item">
+          <p>我想抽一次塔罗。最近有一件事让我困扰，请帮我开始。</p>
+          <button class="copy-btn" data-copy="我想抽一次塔罗。最近有一件事让我困扰，请帮我开始。">复制</button>
+        </div>
+        <div class="prompt-item">
+          <p>今晚心里有点乱，想抽三张牌看看，帮我开始吧。</p>
+          <button class="copy-btn" data-copy="今晚心里有点乱，想抽三张牌看看，帮我开始吧。">复制</button>
+        </div>
+        <div class="prompt-item">
+          <p>有个决定我一直下不了，能陪我抽一次塔罗吗？</p>
+          <button class="copy-btn" data-copy="有个决定我一直下不了，能陪我抽一次塔罗吗？">复制</button>
+        </div>
+        <div class="prompt-item">
+          <p>最近和身边的人有些摩擦，想用塔罗换个角度看这件事。</p>
+          <button class="copy-btn" data-copy="最近和身边的人有些摩擦，想用塔罗换个角度看这件事。">复制</button>
+        </div>
+        <div class="prompt-item">
+          <p>说不清是什么情绪，就是想抽一次牌，听你帮我梳理一下。</p>
+          <button class="copy-btn" data-copy="说不清是什么情绪，就是想抽一次牌，听你帮我梳理一下。">复制</button>
+        </div>
+      </div>
       <div class="install-actions">
-        <a class="button button-primary" href="https://github.com/Scott1743/tarot-confessional">查看项目</a>
+        <a class="button button-primary" href="https://github.com/Scott1743/tarot-confessional/releases/latest">下载最新版</a>
+        <a class="button button-secondary" href="https://github.com/Scott1743/tarot-confessional">查看项目</a>
         <a class="button button-secondary" href="#top">回到森林</a>
       </div>
     </div>
@@ -451,7 +481,7 @@
       entries.forEach((entry) => {
         if (!entry.isIntersecting) return;
         entry.target.classList.add('is-visible');
-        observer.unobserve(entry.target);
+        observer.unobserve(entry);
       });
     }, { threshold: .12, rootMargin: '0px 0px -5% 0px' });
     targets.forEach((element, index) => {
@@ -459,6 +489,28 @@
       observer.observe(element);
     });
   })();
+
+  document.querySelectorAll('.copy-btn').forEach((btn) => {
+    btn.addEventListener('click', async () => {
+      const text = btn.dataset.copy;
+      try {
+        await navigator.clipboard.writeText(text);
+      } catch {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+      }
+      const original = btn.textContent;
+      btn.textContent = '已复制';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = original; btn.classList.remove('copied'); }, 1800);
+    });
+  });
 </script>
 </body>
 </html>
