@@ -158,7 +158,7 @@ class BuildDrawPageIntegrationTests(unittest.TestCase):
             result = subprocess.run(
                 [
                     sys.executable,
-                    str(ROOT / "scripts" / "build_draw_page.py"),
+                    str(SKILL / "scripts" / "build_draw_page.py"),
                     "--skill-dir", str(SKILL),
                     "--output", str(out),
                     "--spread", "S3",
