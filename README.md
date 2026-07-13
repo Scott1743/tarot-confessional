@@ -7,7 +7,7 @@
 *今晚就给自己一场不被打扰的小小仪式。*
 
 [![MIT License](https://img.shields.io/badge/license-MIT-purple.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-0.5.1-pink.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-1.0.0-pink.svg)](CHANGELOG.md)
 [![Skills.sh](https://img.shields.io/badge/skills.sh-available-blue.svg)](https://www.skills.sh/?q=tarot-confessional)
 
 </div>
@@ -63,7 +63,7 @@ npx skills add Scott1743/tarot-confessional
 
 ### 方式二：手动安装
 
-1. 下载最新版本：[tarot-confessional-0.5.1.zip](https://github.com/Scott1743/tarot-confessional/releases/download/v0.5.1/tarot-confessional-0.5.1.zip)
+1. 下载最新版本：[tarot-confessional-1.0.0.zip](https://github.com/Scott1743/tarot-confessional/releases/download/v1.0.0/tarot-confessional-1.0.0.zip)
 2. 解压到你的 Agent skills 目录
 3. 在对话中触发塔罗功能
 
@@ -140,10 +140,10 @@ tarot-confessional/
 
 ##   牌面艺术
 
-采用 **C 风格「新工笔幻色」** 视觉方向：
-- 东方人物、建筑与山水叙事
-- 紫、青、翠、橙、黄、粉的高明度反差色
-- 78 张完整牌组，统一 768 × 1152 JPEG
+采用 **钴蓝金线仪式塔罗** 视觉方向：
+- 钴蓝与群青底场、古金几何线、强中轴对称
+- 人物原型与物件象征并置，保留清晰的花色数量
+- 78 张完整正位牌组，统一 768 × 1152 JPEG；逆位由运行时旋转正位图呈现
 
 ---
 
@@ -157,7 +157,7 @@ git clone https://github.com/Scott1743/tarot-confessional.git
 cd tarot-confessional
 
 # 打包 Skill
-python3 scripts/package_skill.py --version 0.5.1
+python3 scripts/package_skill.py --version 1.0.0
 
 # 运行测试
 python3 -m pytest tests/

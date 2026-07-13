@@ -1,6 +1,6 @@
 ---
 name: tarot-confessional
-version: 0.5.1
+version: 1.0.0
 description: Guide reflective Chinese tarot draws, decode TC1 draw codes, and provide calm symbolic readings for questions about emotions, relationships, choices, uncertainty, or 树洞式倾诉. Use when a user asks for 塔罗、抽牌、牌阵、占卜式自我探索，or returns a TC1 code from the bundled draw page. Do not use tarot as diagnosis, factual prediction, or professional medical, legal, financial, or crisis advice.
 ---
 
@@ -21,7 +21,7 @@ Treat tarot as a symbolic reflection tool. Keep the experience gentle, private, 
 
 ### 第二步：启动服务器，给用户抽牌页面
 
-**draw.html 是预构建的，不需要 Agent 生成！** Agent 只需要启动服务器：
+**不要直接把原始 `draw.html` 路径交给用户。** Agent 只需要启动服务器；服务器会自动生成一个把牌面、牌背和背景全部编码为 Base64 data URI 的自包含 draw 页面，再提供 URL：
 
 ```bash
 python3 scripts/serve.py --skill-dir <path-to-tarot-confessional>
@@ -29,7 +29,7 @@ python3 scripts/serve.py --skill-dir <path-to-tarot-confessional>
 
 服务器会：
 - 绑定到 `0.0.0.0`，可以从任何接口访问
-- 在 `/` 提供预构建的 `draw.html` 页面
+- 在 `/` 提供自包含的 `draw.html` 页面，脱离资源目录也能显示图片
 - 打印 JSON 格式的 URL 信息
 
 从输出中提取 `draw` URL 并给用户：
@@ -126,7 +126,7 @@ python3 scripts/build_reading_page.py \
 python3 scripts/serve.py --skill-dir <path-to-tarot-confessional> --reading <workspace>/reading.html
 ```
 
-从输出中提取 `reading` URL 并给用户：
+从输出中提取 `reading` URL 并给用户。构建器会在动态牌阵插入完成后再内联图片，避免动态牌面残留 `images/cards/...` 相对路径：
 ```json
 {"draw": "http://localhost:8080/", "reading": "http://localhost:8080/reading"}
 ```

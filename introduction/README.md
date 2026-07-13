@@ -6,7 +6,7 @@
 
 | 屏 | 内容 | 文件引用 |
 |---|---|---|
-| 1 · Hero | 钩子文案 + CTA | `assets/{02-high-priestess,17-star,18-moon}.jpg` |
+| 1 · Hero | 森林主视觉 + 钩子文案 + CTA | `森林密语.png` |
 | 2 · 怎么玩 | 三步抽牌流程 + 三张真实截图 + MNEME 敬请期待 | `assets/screenshots/draw-{ready,picking,revealed}.jpg` |
 | 3 · 私人阅读档案 | 报告页结构 + 三张真实截图 | `assets/screenshots/reading-{cover,spread,body}.jpg` |
 | 4 · 安装 | CLI 命令 + 推荐提示词模板 + 发布 CTA | 仅内嵌代码块 |
@@ -15,10 +15,13 @@
 
 | 资源 | 用途 | 来源 |
 |---|---|---|
-| `assets/eastern-night-bg_001.jpg` | 页面背景 | 项目自带 |
+| `森林密语.png` | 页面主视觉 | 品牌主视觉参考 |
+| `assets/forest-whisper-bg.jpg` | 长页面背景 | 由主视觉衍生的网页优化版本 |
+| `assets/eastern-night-bg_001.jpg` | 旧版夜空背景，暂留素材库 | 项目自带 |
 | `assets/purple-silk.jpg` | 复用材质 | 项目自带 |
 | `assets/card-back.jpg` | 牌背特写 | 项目自带 |
-| `assets/0?-*.jpg`（6 张） | Hero 飘浮牌 | 项目牌库抽出 |
+| `assets/08-strength.jpg`, `assets/17-star.jpg`, `assets/48-queen-of-cups.jpg` | Hero 动态牌 poster | v0.9.0 三张代表性牌面 |
+| `assets/08-strength.mp4`, `assets/17-star.mp4`, `assets/48-queen-of-cups.mp4` | Hero 动态牌 | 每段 3 秒，轻微微风与水面动效 |
 | `assets/screenshots/*.jpg`（6 张） | 真实截图 | 用 `kimi-webbridge` 在用户真实浏览器中对 `draw.html` 与 `reading.html` 各状态实时截取 |
 
 更新截图：
@@ -77,8 +80,8 @@ python3 -m http.server -d introduction 8000
 
 - 文案围绕"懂你"和"不评判"，避免任何"宇宙告诉你""命中注定"等权威语
 - 不宣称预知未来，不替代专业咨询
-- 视觉全部走项目已有调色板（紫 `#54266F` + 月白 `#EEE8F2` + 金 `#D6B36A`）
-- 字体用思源宋体 / 楷体栈，不引入远程字体
+- 视觉以主视觉的森林绿、天空蓝和日光黄为准，正文用纸张色承接
+- 标题使用楷体栈，正文使用系统黑体栈，不引入远程字体
 
 ## 不做的事
 

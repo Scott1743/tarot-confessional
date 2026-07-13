@@ -34,7 +34,7 @@ class PackageIntegrationTests(unittest.TestCase):
             with contextlib.redirect_stdout(io.StringIO()):
                 rc = package(version)
             self.assertEqual(rc, 0)
-            stage = pkg.DIST / f"tarot-confessional-{version}"
+            stage = pkg.DIST / "tarot-confessional"
             manifest = json.loads((stage / "manifest.json").read_text(encoding="utf-8"))
             return pkg.DIST, stage, manifest
         finally:
@@ -43,7 +43,7 @@ class PackageIntegrationTests(unittest.TestCase):
     def test_package_creates_required_artifacts(self):
         dist, _stage, _manifest = self._run("0.1.0-test")
         stem = "tarot-confessional-0.1.0-test"
-        for artifact in (dist / stem, dist / f"{stem}.tar.gz", dist / f"{stem}.zip", dist / "SHA256SUMS", dist / "MANIFEST.md"):
+        for artifact in (dist / "tarot-confessional", dist / f"{stem}.tar.gz", dist / f"{stem}.zip", dist / "SHA256SUMS", dist / "MANIFEST.md"):
             with self.subTest(artifact=artifact):
                 self.assertTrue(artifact.exists(), f"missing {artifact}")
 
@@ -62,7 +62,14 @@ class PackageIntegrationTests(unittest.TestCase):
         for required in ("SKILL.md", "assets/draw.html", "assets/reading.html", "scripts/tarot_codec.py", "references/deck.json", "agents/openai.yaml", "manifest.json"):
             self.assertIn(required, actual)
 
-    def test_stage_contains_78_card_images(self):
+    def test_packaged_draw_page_is_self_contained(self):
+        _dist, stage, _manifest = self._run("0.1.0-test")
+        html = (stage / "assets" / "draw.html").read_text(encoding="utf-8")
+        self.assertIn("data:image/jpeg;base64,", html)
+        self.assertNotIn('`images/cards/${card.file}`', html)
+        self.assertNotIn('`images/cards-reversed/${card.file}`', html)
+
+    def test_stage_contains_78_upright_card_images(self):
         _dist, stage, _manifest = self._run("0.1.0-test")
         cards_dir = stage / "assets" / "images" / "cards"
         images = sorted(cards_dir.glob("*.jpg"))
@@ -78,10 +85,11 @@ class PackageIntegrationTests(unittest.TestCase):
             ["tar", "-xzf", str(dist / "tarot-confessional-0.1.0-test.tar.gz"), "-C", str(extract_dir)],
             check=True,
         )
-        extracted = extract_dir / "tarot-confessional-0.1.0-test"
+        extracted = extract_dir / "tarot-confessional"
         self.assertTrue((extracted / "SKILL.md").is_file())
         self.assertTrue((extracted / "scripts" / "tarot_codec.py").is_file())
         self.assertEqual(len(list((extracted / "assets" / "images" / "cards").glob("*.jpg"))), 78)
+        self.assertFalse((extracted / "assets" / "images" / "cards-reversed").exists())
         self.assertTrue((extracted / "manifest.json").is_file())
 
     def test_zip_archive_is_well_formed(self):
@@ -90,8 +98,8 @@ class PackageIntegrationTests(unittest.TestCase):
         with zipfile.ZipFile(zip_path) as zf:
             self.assertIsNone(zf.testzip(), "corrupt entry in zip")
             names = zf.namelist()
-        self.assertIn("tarot-confessional-0.1.0-test/SKILL.md", names)
-        self.assertIn("tarot-confessional-0.1.0-test/manifest.json", names)
+        self.assertIn("tarot-confessional/SKILL.md", names)
+        self.assertIn("tarot-confessional/manifest.json", names)
 
     def test_checksums_match_artifact_bytes(self):
         dist, _stage, _manifest = self._run("0.1.0-test")
@@ -104,9 +112,8 @@ class PackageIntegrationTests(unittest.TestCase):
 
     def test_packaged_codec_round_trips(self):
         dist, _stage, _manifest = self._run("0.1.0-test")
-        stem = "tarot-confessional-0.1.0-test"
-        codec = dist / stem / "scripts" / "tarot_codec.py"
-        deck = dist / stem / "references" / "deck.json"
+        codec = dist / "tarot-confessional" / "scripts" / "tarot_codec.py"
+        deck = dist / "tarot-confessional" / "references" / "deck.json"
         encoded = subprocess.run(
             ["python3", str(codec), "encode", "--spread", "S3", "0U", "18R", "9U"],
             capture_output=True, text=True, check=True,

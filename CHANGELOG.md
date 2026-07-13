@@ -4,6 +4,32 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.0] - 2026-07-14
+
+### Added
+
+- 78 张「钴蓝金线仪式塔罗」正位牌面资产：钴蓝群青底场、古金几何装饰、强中轴对称与人物/物件象征体系。
+- 完整 78 张联系表候选与可复现生成计划，作为牌面艺术的审阅来源。
+
+### Changed
+
+- 逆位统一复用正位牌图并在抽牌页、解读页和自包含 HTML 构建中旋转 `180°`。
+- 自包含抽牌页从内联 156 张独立正逆位资源收敛为内联 78 张正位资源，减小发行包体积并消除双资源漂移。
+- 发布版本升级至 `1.0.0`。
+
+## [0.9.0] - 2026-07-13
+
+### Added
+
+- 78 张全新正位与 78 张逆位森林动画牌面资产，运行时分别读取对应图片。
+- 介绍页 Hero 三张 3 秒动态牌面示例：力量、星星、圣杯王后。
+
+### Fixed
+
+- `serve.py` 默认自动构建 Base64 自包含抽牌页，脱离资源目录也能显示图片。
+- 修复动态 `reading.html` 牌阵在图片内联之后插入、导致相对路径失效的问题。
+- 逆位牌面不再旋转正位图片，改为使用独立逆位资产。
+
 ## [0.5.1] - 2026-07-12
 
 ### Fixed
