@@ -42,10 +42,10 @@ class BuildDrawPageUnitTests(unittest.TestCase):
         self.assertEqual(cards[0].name, "00-fool.jpg")
         self.assertEqual(cards[-1].name, "77-king-of-pentacles.jpg")
 
-    def test_expected_assets_includes_all_78_reversed_images(self):
+    def test_expected_assets_excludes_redundant_reversed_images(self):
         assets = expected_assets(SKILL / "assets")
         reversed_cards = [p for p in assets if p.parent.name == "cards-reversed"]
-        self.assertEqual(len(reversed_cards), 78)
+        self.assertEqual(reversed_cards, [])
 
     def test_build_replaces_external_script_tags(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -71,7 +71,7 @@ class BuildDrawPageUnitTests(unittest.TestCase):
             data_uris = re.findall(r"data:image/jpeg;base64,[A-Za-z0-9+/=]+", html)
             self.assertGreaterEqual(len(data_uris), 5)
 
-    def test_build_inlines_all_156_card_faces(self):
+    def test_build_inlines_all_78_upright_card_faces(self):
         with tempfile.TemporaryDirectory() as tmp:
             out = Path(tmp) / "draw.html"
             build(skill_dir=SKILL, output=out, spread="S3", title="测试")
@@ -79,8 +79,8 @@ class BuildDrawPageUnitTests(unittest.TestCase):
             self.assertIn("__tarotCardImages", html)
             image_block = re.search(r"window\.__tarotCardImages\s*=\s*\{(.+?)\};", html, re.DOTALL)
             self.assertIsNotNone(image_block, "expected __tarotCardImages map")
-            entries = re.findall(r'"(?:cards|cards-reversed)/[\w\-]+\.jpg"\s*:\s*"data:image/jpeg;base64,', image_block.group(0))
-            self.assertEqual(len(entries), 156)
+            entries = re.findall(r'"cards/[\w\-]+\.jpg"\s*:\s*"data:image/jpeg;base64,', image_block.group(0))
+            self.assertEqual(len(entries), 78)
 
     def test_build_keeps_html_structure_intact(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -96,12 +96,11 @@ class BuildDrawPageUnitTests(unittest.TestCase):
             out = Path(tmp) / "draw.html"
             build(skill_dir=SKILL, output=out, spread="S3", title="测试")
             html = out.read_text(encoding="utf-8")
-            self.assertIn('img.src = card.reversed ? (__tarotCardImagesResolve("cards-reversed/" + card.file)', html)
-            self.assertIn(': (__tarotCardImagesResolve("cards/" + card.file)', html)
+            self.assertIn('img.src = (__tarotCardImagesResolve("cards/" + card.file)', html)
             self.assertNotIn('img.src = `(__tarotCardImagesResolve', html)
             self.assertNotIn('`images/cards/${card.file}`', html)
             self.assertNotIn('`images/cards-reversed/${card.file}`', html)
-            self.assertNotIn("transform: rotate(180deg)", html)
+            self.assertIn("transform: rotate(180deg)", html)
 
     def test_build_rejects_unknown_spread(self):
         with tempfile.TemporaryDirectory() as tmp:

@@ -69,14 +69,11 @@ class PackageIntegrationTests(unittest.TestCase):
         self.assertNotIn('`images/cards/${card.file}`', html)
         self.assertNotIn('`images/cards-reversed/${card.file}`', html)
 
-    def test_stage_contains_78_upright_and_reversed_card_images(self):
+    def test_stage_contains_78_upright_card_images(self):
         _dist, stage, _manifest = self._run("0.1.0-test")
         cards_dir = stage / "assets" / "images" / "cards"
-        reversed_dir = stage / "assets" / "images" / "cards-reversed"
         images = sorted(cards_dir.glob("*.jpg"))
-        reversed_images = sorted(reversed_dir.glob("*.jpg"))
         self.assertEqual(len(images), 78)
-        self.assertEqual(len(reversed_images), 78)
         self.assertEqual(images[0].name, "00-fool.jpg")
         self.assertEqual(images[-1].name, "77-king-of-pentacles.jpg")
 
@@ -92,7 +89,7 @@ class PackageIntegrationTests(unittest.TestCase):
         self.assertTrue((extracted / "SKILL.md").is_file())
         self.assertTrue((extracted / "scripts" / "tarot_codec.py").is_file())
         self.assertEqual(len(list((extracted / "assets" / "images" / "cards").glob("*.jpg"))), 78)
-        self.assertEqual(len(list((extracted / "assets" / "images" / "cards-reversed").glob("*.jpg"))), 78)
+        self.assertFalse((extracted / "assets" / "images" / "cards-reversed").exists())
         self.assertTrue((extracted / "manifest.json").is_file())
 
     def test_zip_archive_is_well_formed(self):

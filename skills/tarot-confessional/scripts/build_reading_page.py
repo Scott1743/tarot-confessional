@@ -79,11 +79,10 @@ def _inline_images(html: str, images_dir: Path) -> str:
         data_uri = _data_uri(images_dir / name)
         html = html.replace(f'url("images/{name}")', f'url("{data_uri}")')
 
-    # Upright and reversed card images in HTML
-    for directory in ("cards", "cards-reversed"):
-        for card_file in sorted((images_dir / directory).glob("*.jpg")):
-            data_uri = _data_uri(card_file)
-            html = html.replace(f'src="images/{directory}/{card_file.name}"', f'src="{data_uri}"')
+    # Reversed cards reuse upright images and rotate through the CSS class.
+    for card_file in sorted((images_dir / "cards").glob("*.jpg")):
+        data_uri = _data_uri(card_file)
+        html = html.replace(f'src="images/cards/{card_file.name}"', f'src="{data_uri}"')
 
     return html
 
@@ -93,8 +92,7 @@ def _render_card(card: dict, index: int) -> str:
     reversed_class = ' reversed' if card.get("orientation") == "逆位" else ""
     alt_text = f"{card['name']}{'逆位' if card.get('orientation') == '逆位' else '正位'}"
 
-    directory = "cards-reversed" if reversed_class else "cards"
-    return f'''        <article class="spread-card"><div class="card-frame{reversed_class}"><img src="images/{directory}/{card['image']}" alt="{alt_text}"></div><div class="spread-position">{card['position']}</div><h2 class="spread-name">{card['name']}</h2><span class="orientation">{card['orientation']}</span></article>'''
+    return f'''        <article class="spread-card"><div class="card-frame{reversed_class}"><img src="images/cards/{card['image']}" alt="{alt_text}"></div><div class="spread-position">{card['position']}</div><h2 class="spread-name">{card['name']}</h2><span class="orientation">{card['orientation']}</span></article>'''
 
 
 def _render_entry(card: dict) -> str:

@@ -161,7 +161,7 @@
     @keyframes settle { from { opacity: 0; transform: translateY(-36px) rotateY(110deg) scale(.88); } to { opacity: 1; transform: translateY(0) rotateY(0) scale(1); } }
     @keyframes reveal-ring { 0% { opacity: .9; transform: scale(.5); } 60% { opacity: .5; } 100% { opacity: 0; transform: scale(1.55); } }
     .slot-card img { display: block; width: 100%; height: 100%; object-fit: cover; border-radius: calc(var(--card-r) - 1px); }
-    .slot-card.is-reversed img { transform: none; }
+    .slot-card.is-reversed img { transform: rotate(180deg); }
     .card-caption { min-height: 42px; padding-top: 9px; font-size: 15px; }
     .card-caption span { display: block; color: var(--gold); font-family: "STKaiti", "KaiTi", serif; font-size: 11px; }
 
@@ -490,7 +490,7 @@
 
     function revealCards() {
       if (state !== "drawing" || selected.length !== 3) return; state = "revealed"; energy = .72;
-      selected.forEach((card, index) => { const slot = $(`#slot${index}`); slot.replaceChildren(); const face = document.createElement("div"); face.className = `slot-card${card.reversed ? " is-reversed" : ""}`; face.style.animationDelay = `${index * 150}ms`; const img = document.createElement("img"); img.src = card.reversed ? `images/cards-reversed/${card.file}` : `images/cards/${card.file}`; img.alt = `${card.name}${card.reversed ? "逆位" : "正位"}`; face.append(img); slot.append(face); $(`#caption${index}`).innerHTML = `${card.name}<span>${card.reversed ? "逆位" : "正位"}</span>`; });
+      selected.forEach((card, index) => { const slot = $(`#slot${index}`); slot.replaceChildren(); const face = document.createElement("div"); face.className = `slot-card${card.reversed ? " is-reversed" : ""}`; face.style.animationDelay = `${index * 150}ms`; const img = document.createElement("img"); img.src = `images/cards/${card.file}`; img.alt = `${card.name}${card.reversed ? "逆位" : "正位"}`; face.append(img); slot.append(face); $(`#caption${index}`).innerHTML = `${card.name}<span>${card.reversed ? "逆位" : "正位"}</span>`; });
       drawCode.value = TarotCodec.encode("S3", selected);
       deckRail.hidden = true; primaryButton.hidden = true; codePanel.classList.add("is-visible"); resetButton.hidden = false; state = "code-ready"; setStatus("牌已翻开"); setTimeout(() => { energy = .18; copyButton.focus(); }, 900);
     }

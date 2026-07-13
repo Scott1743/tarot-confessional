@@ -161,7 +161,7 @@
     @keyframes settle { from { opacity: 0; transform: translateY(-36px) rotateY(110deg) scale(.88); } to { opacity: 1; transform: translateY(0) rotateY(0) scale(1); } }
     @keyframes reveal-ring { 0% { opacity: .9; transform: scale(.5); } 60% { opacity: .5; } 100% { opacity: 0; transform: scale(1.55); } }
     .slot-card img { display: block; width: 100%; height: 100%; object-fit: cover; border-radius: calc(var(--card-r) - 1px); }
-    .slot-card.is-reversed img { transform: none; }
+    .slot-card.is-reversed img { transform: rotate(180deg); }
     .card-caption { min-height: 42px; padding-top: 9px; font-size: 15px; }
     .card-caption span { display: block; color: var(--gold); font-family: "STKaiti", "KaiTi", serif; font-size: 11px; }
 
@@ -229,47 +229,73 @@
     }
 
     /* Forest Whispers theme: preserve the draw mechanics, replace the ritual language. */
-    :root { --night:#082a25; --ink-purple:#123d32; --imperial:#315f43; --glow:#7daa60; --blue:#6f9d8b; --cinnabar:#d49a43; --gold:#efbd50; --gold-light:#f8d978; --gold-glow:rgba(239,189,80,.34); --moon:#f4f1df; --muted:#c7d5c8; }
-    body { font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif; }
-    .sky { inset:-3%; background-image:linear-gradient(180deg,rgb(5 39 34/.38),rgb(4 31 27/.72)),url("images/forest-whisper-bg.jpg"); filter:saturate(.78) brightness(.7); animation:forest-breathe 18s ease-in-out infinite alternate; }
-    .silk-veil { display:none; }
-    .wave-1 { background:radial-gradient(ellipse 62% 40% at 50% 72%,rgb(239 189 80/.13),transparent 68%); }
-    .wave-2 { background:linear-gradient(180deg,rgb(8 42 37/.02),rgb(8 42 37/.34)); }
-    .wave-3 { background:radial-gradient(ellipse 70% 65% at 50% 50%,transparent 28%,rgb(3 26 22/.28) 100%); }
-    #starfield { opacity:.3; }
-    .vignette { background:radial-gradient(ellipse at center,transparent 32%,rgb(3 28 24/.5) 100%); }
-    body.is-shuffling .sky { filter:saturate(.92) brightness(.76); }
-    .shell { width:min(1180px,calc(100% - 44px)); padding-top:20px; }
-    .topbar { border-color:rgb(239 189 80/.28); color:rgb(229 236 218/.78); }
-    .brand { color:#fff0b0; letter-spacing:.12em; font-size:15px; }
-    .status::before { background:var(--gold); }
-    .scene { grid-template-columns:1fr; grid-template-rows:auto 1fr; gap:6px; padding-top:4px; }
-    .title-column { align-self:auto; justify-content:center; padding-top:0; text-align:center; }
-    h1 { writing-mode:horizontal-tb; max-width:720px; font-size:clamp(30px,4vw,46px); line-height:1.15; letter-spacing:0; text-shadow:0 8px 28px rgb(2 25 21/.46); }
-    .seal { position:absolute; top:2px; right:0; margin:0; border-color:rgb(239 189 80/.62); color:#ffdfa0; background:rgb(8 42 37/.58); box-shadow:inset 0 0 0 4px rgb(239 189 80/.07),0 8px 24px rgb(2 23 19/.28); }
-    .ritual { grid-template-rows:minmax(150px,.55fr) auto auto; gap:8px; }
-    .table { min-height:158px; }
-    .table::before { border-color:rgb(239 189 80/.25); box-shadow:inset 0 0 80px rgb(87 142 91/.13),0 0 46px rgb(8 42 37/.18); }
-    .deck-stack::before,.deck-stack::after { background:#0a302a; border-color:rgb(239 189 80/.38); }
-    .deck-stack img { box-shadow:0 26px 68px rgb(2 24 20/.62),0 0 32px rgb(239 189 80/.15); }
-    .draw-card { box-shadow:0 16px 36px rgb(2 24 20/.45),0 0 14px rgb(239 189 80/.06); }
-    .draw-card.is-near { box-shadow:0 22px 48px rgb(2 24 20/.5),0 0 22px rgb(101 159 99/.18); }
-    .draw-card.is-active { box-shadow:0 34px 72px rgb(2 24 20/.66),0 0 34px rgb(239 189 80/.3),0 0 64px rgb(87 142 91/.18); }
-    .positions::before { background:linear-gradient(90deg,transparent,rgb(239 189 80/.62),transparent); }
-    .position-label { color:#ffdfa0; background:rgb(8 42 37/.68); text-shadow:none; box-shadow:0 2px 12px rgb(2 24 20/.28); }
-    .slot { width:min(100%,112px); border-color:rgb(239 189 80/.28); background:rgb(7 39 34/.36); box-shadow:inset 0 0 36px rgb(87 142 91/.08); }
-    .slot-card { box-shadow:0 22px 52px rgb(2 24 20/.52),0 0 28px rgb(239 189 80/.13); }
-    .command { color:#17362d; background:var(--gold); box-shadow:0 12px 30px rgb(2 24 20/.34); }
-    .command::after { background:linear-gradient(45deg,var(--gold),rgb(93 145 91/.7),var(--gold)); }
-    .command:hover { box-shadow:0 18px 40px rgb(2 24 20/.4),0 0 32px rgb(239 189 80/.18); }
-    .quiet-command:hover { background:rgb(239 189 80/.08); }
-    .actions { min-height:72px; gap:8px; padding-top:0; }
-    .code-panel { border-color:rgb(239 189 80/.54); background:rgb(7 39 34/.9); box-shadow:inset 0 0 40px rgb(87 142 91/.08),0 24px 60px rgb(2 24 20/.45); }
-    .code-label { color:#ffdfa0; text-shadow:none; }
-    .code-note { color:#e1eadb; }
-    .footer { border-color:rgb(239 189 80/.2); color:rgb(213 225 210/.68); }
-    @keyframes forest-breathe { from { transform:translate3d(-.3%,0,0) scale(1.035); } to { transform:translate3d(.4%,-.2%,0) scale(1.05); } }
-    @media (max-width:760px) { .shell{width:min(100% - 26px,640px);padding-top:10px}.scene{gap:10px;padding-top:8px}.title-column{justify-content:flex-start;padding-right:66px;text-align:left}h1{font-size:clamp(28px,8vw,40px)}.seal{top:8px}.sky{background-position:67% center}.position-label{padding:4px 5px;font-size:12px;letter-spacing:0;white-space:nowrap} }
+    :root {
+      --night: #082a25;
+      --ink-purple: #123d32;
+      --imperial: #315f43;
+      --glow: #7daa60;
+      --blue: #6f9d8b;
+      --cinnabar: #d49a43;
+      --gold: #efbd50;
+      --gold-light: #f8d978;
+      --gold-glow: rgba(239, 189, 80, .34);
+      --moon: #f4f1df;
+      --muted: #c7d5c8;
+    }
+    body { font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif; }
+    .sky {
+      inset: -3%;
+      background-image: linear-gradient(180deg, rgb(5 39 34 / .38), rgb(4 31 27 / .72)), url("images/forest-whisper-bg.jpg");
+      filter: saturate(.78) brightness(.7);
+      animation: forest-breathe 18s ease-in-out infinite alternate;
+    }
+    .silk-veil { display: none; }
+    .wave-1 { background: radial-gradient(ellipse 62% 40% at 50% 72%, rgb(239 189 80 / .13), transparent 68%); }
+    .wave-2 { background: linear-gradient(180deg, rgb(8 42 37 / .02), rgb(8 42 37 / .34)); }
+    .wave-3 { background: radial-gradient(ellipse 70% 65% at 50% 50%, transparent 28%, rgb(3 26 22 / .28) 100%); }
+    #starfield { opacity: .3; }
+    .vignette { background: radial-gradient(ellipse at center, transparent 32%, rgb(3 28 24 / .5) 100%); }
+    body.is-shuffling .sky { filter: saturate(.92) brightness(.76); }
+    .shell { width: min(1180px, calc(100% - 44px)); padding-top: 20px; }
+    .topbar { border-color: rgb(239 189 80 / .28); color: rgb(229 236 218 / .78); }
+    .brand { color: #fff0b0; letter-spacing: .12em; font-size: 15px; }
+    .status::before { background: var(--gold); }
+    .scene { grid-template-columns: 1fr; grid-template-rows: auto 1fr; gap: 6px; padding-top: 4px; }
+    .title-column { align-self: auto; justify-content: center; padding-top: 0; text-align: center; }
+    h1 { writing-mode: horizontal-tb; max-width: 720px; font-size: clamp(30px, 4vw, 46px); line-height: 1.15; letter-spacing: 0; text-shadow: 0 8px 28px rgb(2 25 21 / .46); }
+    .seal { position: absolute; top: 2px; right: 0; margin: 0; border-color: rgb(239 189 80 / .62); color: #ffdfa0; background: rgb(8 42 37 / .58); box-shadow: inset 0 0 0 4px rgb(239 189 80 / .07), 0 8px 24px rgb(2 23 19 / .28); }
+    .ritual { grid-template-rows: minmax(150px, .55fr) auto auto; gap: 8px; }
+    .table { min-height: 158px; }
+    .table::before { border-color: rgb(239 189 80 / .25); box-shadow: inset 0 0 80px rgb(87 142 91 / .13), 0 0 46px rgb(8 42 37 / .18); }
+    .deck-stack::before, .deck-stack::after { background: #0a302a; border-color: rgb(239 189 80 / .38); }
+    .deck-stack img { box-shadow: 0 26px 68px rgb(2 24 20 / .62), 0 0 32px rgb(239 189 80 / .15); }
+    .draw-card { box-shadow: 0 16px 36px rgb(2 24 20 / .45), 0 0 14px rgb(239 189 80 / .06); }
+    .draw-card.is-near { box-shadow: 0 22px 48px rgb(2 24 20 / .5), 0 0 22px rgb(101 159 99 / .18); }
+    .draw-card.is-active { box-shadow: 0 34px 72px rgb(2 24 20 / .66), 0 0 34px rgb(239 189 80 / .3), 0 0 64px rgb(87 142 91 / .18); }
+    .positions::before { background: linear-gradient(90deg, transparent, rgb(239 189 80 / .62), transparent); }
+    .position-label { color: #ffdfa0; background: rgb(8 42 37 / .68); text-shadow: none; box-shadow: 0 2px 12px rgb(2 24 20 / .28); }
+    .slot { width: min(100%, 112px); border-color: rgb(239 189 80 / .28); background: rgb(7 39 34 / .36); box-shadow: inset 0 0 36px rgb(87 142 91 / .08); }
+    .slot-card { box-shadow: 0 22px 52px rgb(2 24 20 / .52), 0 0 28px rgb(239 189 80 / .13); }
+    .command { color: #17362d; background: var(--gold); box-shadow: 0 12px 30px rgb(2 24 20 / .34); }
+    .command::after { background: linear-gradient(45deg, var(--gold), rgb(93 145 91 / .7), var(--gold)); }
+    .command:hover { box-shadow: 0 18px 40px rgb(2 24 20 / .4), 0 0 32px rgb(239 189 80 / .18); }
+    .quiet-command:hover { background: rgb(239 189 80 / .08); }
+    .actions { min-height: 72px; gap: 8px; padding-top: 0; }
+    .code-panel { border-color: rgb(239 189 80 / .54); background: rgb(7 39 34 / .9); box-shadow: inset 0 0 40px rgb(87 142 91 / .08), 0 24px 60px rgb(2 24 20 / .45); }
+    .code-label { color: #ffdfa0; text-shadow: none; }
+    .code-note { color: #e1eadb; }
+    .footer { border-color: rgb(239 189 80 / .2); color: rgb(213 225 210 / .68); }
+    @keyframes forest-breathe { from { transform: translate3d(-.3%, 0, 0) scale(1.035); } to { transform: translate3d(.4%, -.2%, 0) scale(1.05); } }
+
+    @media (max-width: 760px) {
+      .shell { width: min(100% - 26px, 640px); padding-top: 10px; }
+      .scene { gap: 10px; padding-top: 8px; }
+      .title-column { justify-content: flex-start; padding-right: 66px; text-align: left; }
+      h1 { font-size: clamp(28px, 8vw, 40px); }
+      .seal { top: 8px; }
+      .sky { background-position: 67% center; }
+      .position-label { padding: 4px 5px; font-size: 12px; letter-spacing: 0; white-space: nowrap; }
+    }
 
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
@@ -464,7 +490,7 @@
 
     function revealCards() {
       if (state !== "drawing" || selected.length !== 3) return; state = "revealed"; energy = .72;
-      selected.forEach((card, index) => { const slot = $(`#slot${index}`); slot.replaceChildren(); const face = document.createElement("div"); face.className = `slot-card${card.reversed ? " is-reversed" : ""}`; face.style.animationDelay = `${index * 150}ms`; const img = document.createElement("img"); img.src = card.reversed ? `images/cards-reversed/${card.file}` : `images/cards/${card.file}`; img.alt = `${card.name}${card.reversed ? "逆位" : "正位"}`; face.append(img); slot.append(face); $(`#caption${index}`).innerHTML = `${card.name}<span>${card.reversed ? "逆位" : "正位"}</span>`; });
+      selected.forEach((card, index) => { const slot = $(`#slot${index}`); slot.replaceChildren(); const face = document.createElement("div"); face.className = `slot-card${card.reversed ? " is-reversed" : ""}`; face.style.animationDelay = `${index * 150}ms`; const img = document.createElement("img"); img.src = `images/cards/${card.file}`; img.alt = `${card.name}${card.reversed ? "逆位" : "正位"}`; face.append(img); slot.append(face); $(`#caption${index}`).innerHTML = `${card.name}<span>${card.reversed ? "逆位" : "正位"}</span>`; });
       drawCode.value = TarotCodec.encode("S3", selected);
       deckRail.hidden = true; primaryButton.hidden = true; codePanel.classList.add("is-visible"); resetButton.hidden = false; state = "code-ready"; setStatus("牌已翻开"); setTimeout(() => { energy = .18; copyButton.focus(); }, 900);
     }

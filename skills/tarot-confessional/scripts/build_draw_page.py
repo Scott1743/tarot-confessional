@@ -10,7 +10,7 @@ different location (e.g. a chat attachment, /tmp, the user's working dir).
 The bundled `assets/draw.html` references:
   - 3 layout images via CSS url("images/...")
   - 1 layout image via <img src="images/...">
-  - 78 upright + 78 reversed card images via JS template literals
+  - 78 upright card images; reversed cards rotate the upright image at runtime
   - 2 scripts via <script src="...">
 
 Relative paths break the moment the HTML is separated from its sibling
@@ -37,7 +37,7 @@ VALID_SPREADS = {"F1", "S3", "R3"}
 
 
 def expected_assets(assets_dir: Path) -> list[Path]:
-    """Return every asset the draw page needs (layout + 78 cards)."""
+    """Return every asset the draw page needs (layout + 78 upright cards)."""
     layout = [
         assets_dir / "images" / "card-back.jpg",
         assets_dir / "images" / "forest-whisper-bg.jpg",
@@ -45,8 +45,7 @@ def expected_assets(assets_dir: Path) -> list[Path]:
         assets_dir / "images" / "purple-silk.jpg",
     ]
     cards = sorted((assets_dir / "images" / "cards").glob("*.jpg"))
-    reversed_cards = sorted((assets_dir / "images" / "cards-reversed").glob("*.jpg"))
-    return layout + cards + reversed_cards
+    return layout + cards
 
 
 def _data_uri(path: Path) -> str:
@@ -93,12 +92,11 @@ def _inject_card_image_map(html: str, card_assets: dict[str, str]) -> str:
         raise ValueError("draw.html missing </head> closing tag")
     html = html.replace("</head>", bootstrap + "</head>", 1)
 
-    # Rewrite the dynamic reference inside the inline JS:
-    for directory in ("cards", "cards-reversed"):
-        html = html.replace(
-            f'`images/{directory}/${{card.file}}`',
-            f'(__tarotCardImagesResolve("{directory}/" + card.file) || ("images/{directory}/" + card.file))',
-        )
+    # Rewrite the dynamic upright-card reference inside the inline JS.
+    html = html.replace(
+        '`images/cards/${card.file}`',
+        '(__tarotCardImagesResolve("cards/" + card.file) || ("images/cards/" + card.file))',
+    )
     return html
 
 
@@ -119,12 +117,8 @@ def build(*, skill_dir: Path, output: Path, spread: str, title: str = "") -> Pat
         f"cards/{path.name}": _data_uri(path)
         for path in sorted((assets_dir / "images" / "cards").glob("*.jpg"))
     }
-    card_assets.update({
-        f"cards-reversed/{path.name}": _data_uri(path)
-        for path in sorted((assets_dir / "images" / "cards-reversed").glob("*.jpg"))
-    })
-    if len(card_assets) != 156:
-        raise ValueError(f"expected 156 upright/reversed card images, found {len(card_assets)}")
+    if len(card_assets) != 78:
+        raise ValueError(f"expected 78 upright card images, found {len(card_assets)}")
 
     scripts = {
         "deck-data.js": (assets_dir / "deck-data.js").read_text(encoding="utf-8"),

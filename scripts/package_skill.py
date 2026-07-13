@@ -46,7 +46,6 @@ def expected_layout(skill_dir: Path) -> list[str]:
         "assets/images/forest-whisper-bg.jpg",
         "assets/images/eastern-night-bg_001.jpg",
         "assets/images/purple-silk.jpg",
-        "assets/images/cards-reversed/00-fool.jpg",
         "scripts/serve.py",
         "scripts/tarot_codec.py",
         "scripts/build_draw_page.py",
