@@ -19,7 +19,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 PLAN_PATH = Path(__file__).with_name("card_plan.json")
-DECK_PATH = ROOT / "references" / "deck.json"
+DECK_PATH = ROOT / "skills" / "tarot-confessional" / "references" / "deck.json"
 DEFAULT_OUT = ROOT / "assets" / "images" / "generated-sources" / "forest-deck-v2-animals"
 LOG_LOCK = threading.Lock()
 

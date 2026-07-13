@@ -13,7 +13,8 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT / "scripts"))
+SKILL = ROOT / "skills" / "tarot-confessional"
+sys.path.insert(0, str(SKILL / "scripts"))
 
 from tarot_codec import (  # noqa: E402
     ALPHABET,
@@ -189,7 +190,7 @@ class DecodeErrorTests(unittest.TestCase):
 
 class DeckEnrichmentTests(unittest.TestCase):
     def setUp(self):
-        self.deck = load_deck(ROOT / "references" / "deck.json")
+        self.deck = load_deck(SKILL / "references" / "deck.json")
 
     def test_deck_has_exactly_78_cards(self):
         self.assertEqual(len(self.deck), 78)
@@ -202,14 +203,14 @@ class DeckEnrichmentTests(unittest.TestCase):
         self.assertEqual(self.deck[18]["name_zh"], "月亮")
 
     def test_enrich_merges_metadata_into_cards(self):
-        result = enrich(decode(encode("F1", [{"id": 18, "reversed": True}])), ROOT / "references" / "deck.json")
+        result = enrich(decode(encode("F1", [{"id": 18, "reversed": True}])), SKILL / "references" / "deck.json")
         card = result["cards"][0]
         self.assertEqual(card["name_zh"], "月亮")
         self.assertEqual(card["name_en"], "The Moon")
         self.assertEqual(card["orientation"], "reversed")
 
     def test_enrich_preserves_decode_order(self):
-        result = enrich(decode(encode("S3", [{"id": 0}, {"id": 1}, {"id": 2}])), ROOT / "references" / "deck.json")
+        result = enrich(decode(encode("S3", [{"id": 0}, {"id": 1}, {"id": 2}])), SKILL / "references" / "deck.json")
         self.assertEqual([c["id"] for c in result["cards"]], [0, 1, 2])
 
 

@@ -4,7 +4,7 @@
 
 ## Skill 源目录结构
 
-Skill 源码位于 `skills/tarot-confessional/`，**不参与打包分发**，仅作为打包脚本的输入源。目录结构如下：
+Skill 源码唯一位于 `skills/tarot-confessional/`，并作为打包脚本的输入源。仓库根目录不得再放置 `SKILL.md` 或第二套运行时资产。
 
 ```text
 skills/tarot-confessional/
@@ -46,11 +46,7 @@ skills/tarot-confessional/
 ### 打包流程
 
 ```bash
-# 1. 同步最新 HTML 到 skill 源目录
-cp assets/draw.html skills/tarot-confessional/assets/draw.html
-cp assets/reading.html skills/tarot-confessional/assets/reading.html
-
-# 2. 执行打包
+# 执行打包
 python3 scripts/package_skill.py --version <version>
 ```
 
@@ -69,4 +65,4 @@ ls /tmp/tarot-confessional/
 
 - dist 目录中**不应出现带版本号的子目录**（如 `tarot-confessional-0.1.4/`），只保留不带版本号的 `tarot-confessional/`。
 - 历史归档文件（`.tar.gz` / `.zip`）保留版本号，可共存于 dist 目录中。
-- 每次打包前必须确认 `skills/tarot-confessional/assets/` 中的 HTML 文件与项目根目录 `assets/` 中的最新版本一致。
+- 每次打包前修改并检查 `skills/tarot-confessional/` 中的唯一运行时源。

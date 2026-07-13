@@ -8,7 +8,7 @@
 
 ## 核心文件
 
-- `SKILL.md`：运行时行为、触发描述、输出方式与安全边界的唯一事实来源。
+- `skills/tarot-confessional/SKILL.md`：运行时行为、触发描述、输出方式与安全边界的唯一事实来源。
 - `README.md`：面向使用者的安装、示例和项目定位。
 - `CHANGELOG.md`：遵循 Keep a Changelog 结构记录版本变化。
 - `RELEASE_NOTES.md`：最近一次公开版本的摘要。
@@ -19,7 +19,7 @@
 
 ## 修改原则
 
-1. 保持 `SKILL.md` 的 YAML frontmatter 有效，且 `name` 与目录用途稳定。
+1. 保持 `skills/tarot-confessional/SKILL.md` 的 YAML frontmatter 有效，且 `name` 与目录用途稳定。
 2. 使用清晰、自然的中文；元数据和跨平台技术字段可使用英文。
 3. 不把塔罗结果描述为事实、诊断、保证或不可改变的命运。
 4. 涉及医疗、法律、财务、自伤或人身安全时，优先保留专业求助与危机处理边界。
@@ -31,7 +31,7 @@
 
 ## 验证清单
 
-- 检查 `SKILL.md` frontmatter 至少包含 `name` 和 `description`。
+- 检查 `skills/tarot-confessional/SKILL.md` frontmatter 至少包含 `name` 和 `description`。
 - 检查触发描述同时说明“做什么”和“何时使用”。
 - 用至少三个场景人工验证：普通占卜、纯倾诉、高风险请求。
 - 确认输出没有绝对化预测、隐私诱导或专业诊断。
@@ -44,7 +44,7 @@
 
 ### Skill 源目录结构
 
-Skill 源码位于 `skills/tarot-confessional/`，**不应被打包到 dist 之外的任何位置**。目录结构如下：
+Skill 源码唯一位于 `skills/tarot-confessional/`。仓库根目录不得再放置 `SKILL.md`，否则 `npx skills add owner/repo` 会错误地把根目录识别为单文件 Skill。
 
 ```text
 skills/tarot-confessional/
@@ -96,7 +96,7 @@ skills/tarot-confessional/
 python3 scripts/package_skill.py --version <version>
 ```
 
-打包前必须将 `assets/draw.html` 和 `assets/reading.html` 的最新修改同步到 `skills/tarot-confessional/assets/`。
+打包直接读取 `skills/tarot-confessional/`，不得维护第二套根目录运行时资产。
 
 ## 提交约定
 

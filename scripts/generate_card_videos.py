@@ -13,11 +13,11 @@ from pathlib import Path
 from shutil import copy2
 
 ROOT = Path(__file__).resolve().parents[1]
-DECK_PATH = ROOT / "references" / "deck.json"
-CARD_DIR = ROOT / "assets" / "images" / "cards"
+DECK_PATH = ROOT / "skills" / "tarot-confessional" / "references" / "deck.json"
+CARD_DIR = ROOT / "skills" / "tarot-confessional" / "assets" / "images" / "cards"
 RAW_DIR = ROOT / "assets" / "videos" / "generated-sources"
-FINAL_DIR = ROOT / "assets" / "videos" / "cards"
-SKILL_VIDEO_DIR = ROOT / "skills" / "tarot-confessional" / "assets" / "videos" / "cards"
+FINAL_DIR = ROOT / "skills" / "tarot-confessional" / "assets" / "videos" / "cards"
+SKILL_VIDEO_DIR = FINAL_DIR
 
 PROMPT = (
     "Create a subtle living-painting animation from this exact Eastern gongbi tarot artwork. "

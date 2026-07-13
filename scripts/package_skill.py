@@ -221,6 +221,7 @@ def package(version: str) -> int:
     # Ship the draw page as the same self-contained Base64 artifact that the
     # server serves at runtime. A raw template would lose its image siblings
     # when users open or attach the packaged HTML alone.
+    sys.path.insert(0, str(SOURCE / "scripts"))
     from build_draw_page import build as build_draw_page
     build_draw_page(skill_dir=stage, output=stage / "assets" / "draw.html", spread="S3")
     # Render the introduction page against this version so dist copies

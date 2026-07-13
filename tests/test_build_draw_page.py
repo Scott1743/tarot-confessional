@@ -19,7 +19,7 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT / "scripts"))
+sys.path.insert(0, str(ROOT / "skills" / "tarot-confessional" / "scripts"))
 
 from build_draw_page import build, expected_assets  # noqa: E402
 

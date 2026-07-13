@@ -130,7 +130,7 @@ class DeckGenerationPlanTests(unittest.TestCase):
 
     def test_card_identity_matches_canonical_deck(self):
         _plan, cards = MODULE.load_and_validate_plan()
-        deck = json.loads((ROOT / "references" / "deck.json").read_text(encoding="utf-8"))["cards"]
+        deck = json.loads((ROOT / "skills" / "tarot-confessional" / "references" / "deck.json").read_text(encoding="utf-8"))["cards"]
         self.assertEqual([(c["id"], c["key"], c["name_zh"]) for c in cards], [(c["id"], c["key"], c["name_zh"]) for c in deck])
 
     def test_human_plan_lists_every_card_once(self):

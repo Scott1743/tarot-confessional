@@ -5,7 +5,8 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT / "scripts"))
+SKILL = ROOT / "skills" / "tarot-confessional"
+sys.path.insert(0, str(SKILL / "scripts"))
 
 from tarot_codec import DrawCodeError, decode, encode, enrich  # noqa: E402
 
@@ -34,13 +35,13 @@ class TarotCodecTests(unittest.TestCase):
             encode("S3", [{"id": 2}, {"id": 2}, {"id": 3}])
 
     def test_deck_has_stable_78_ids(self):
-        data = json.loads((ROOT / "references" / "deck.json").read_text(encoding="utf-8"))
+        data = json.loads((SKILL / "references" / "deck.json").read_text(encoding="utf-8"))
         self.assertEqual(data["card_count"], 78)
         self.assertEqual([card["id"] for card in data["cards"]], list(range(78)))
         self.assertEqual(len({card["key"] for card in data["cards"]}), 78)
 
     def test_enrich_uses_deck_table(self):
-        result = enrich(decode(encode("F1", [{"id": 18, "reversed": True}])), ROOT / "references" / "deck.json")
+        result = enrich(decode(encode("F1", [{"id": 18, "reversed": True}])), SKILL / "references" / "deck.json")
         self.assertEqual(result["cards"][0]["name_zh"], "月亮")
 
 

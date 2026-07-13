@@ -14,9 +14,9 @@ ROOT = Path(__file__).resolve().parents[1]
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--source", type=Path, default=ROOT / "assets/images/generated-sources/full-deck-c")
-    parser.add_argument("--output", type=Path, default=ROOT / "assets/images/cards")
+    parser.add_argument("--output", type=Path, default=ROOT / "skills" / "tarot-confessional" / "assets" / "images" / "cards")
     args = parser.parse_args()
-    cards = json.loads((ROOT / "references/deck.json").read_text(encoding="utf-8"))["cards"]
+    cards = json.loads((ROOT / "skills" / "tarot-confessional" / "references" / "deck.json").read_text(encoding="utf-8"))["cards"]
     args.output.mkdir(parents=True, exist_ok=True)
     failures = []
     for card in cards:

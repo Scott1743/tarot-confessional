@@ -11,7 +11,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-DECK_PATH = ROOT / "references" / "deck.json"
+DECK_PATH = ROOT / "skills" / "tarot-confessional" / "references" / "deck.json"
 DEFAULT_OUT = ROOT / "assets" / "images" / "generated-sources" / "full-deck-c"
 
 STYLE = (
