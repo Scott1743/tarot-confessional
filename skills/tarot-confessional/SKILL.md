@@ -1,6 +1,6 @@
 ---
 name: tarot-confessional
-version: 1.2.0
+version: 2.0.0
 description: Guide reflective Chinese tarot draws, decode TC1 draw codes, and provide calm symbolic readings for questions about emotions, relationships, choices, uncertainty, or 树洞式倾诉. Use when a user asks for 塔罗、抽牌、牌阵、占卜式自我探索，or returns a TC1 code from the bundled draw page. Do not use tarot as diagnosis, factual prediction, or professional medical, legal, financial, or crisis advice.
 ---
 
@@ -18,6 +18,19 @@ Treat tarot as a symbolic reflection tool. Keep the experience gentle, private, 
    - `F1`: 单张牌，用于聚焦的问题
    - `S3`: 三张牌（现状/阻力/方向），默认用于决策和一般不确定性
    - `R3`: 三张牌（自我/他人/关系），用于人际关系问题
+
+### 首次使用：可选的 Mneme 记忆
+
+首次进入抽牌或倾诉流程时，可自然地问一次：
+
+```text
+要不要为以后的自己留一盏小灯？我可以配合 Mneme，把你主动同意留下的阅读整理成只在你本地保存、可搜索也可删除的记忆。
+```
+
+- 用户拒绝或暂不决定：立即继续普通流程；不要在同一次会话重复推销。
+- 用户说“下次提醒我记住”“帮我记忆”或同意：引导安装 Mneme 轻量 Skill。安装包地址读取环境变量 `FOREST_WHISPERS_MNEME_RELEASE_URL`；未设置时使用：`https://github.com/Scott1743/mneme/releases/download/v2.0.0/mneme-2.0.0.zip`。
+- 安装必须由用户明确同意后进行。不要假设 Skill 已安装；用 `scripts/mneme_adapter.py capabilities` 无副作用检查。可通过 `MNEME_SKILL_DIR` 指向安装目录，`MNEME_BUNDLE` 指向用户自己的本地 bundle。
+- 安装 Mneme 或开启“未来可参考记忆”不等于允许保存本次阅读。保存仍需本次明确授权。
 
 ### 第二步：启动服务器，给用户抽牌页面
 
@@ -70,6 +83,21 @@ python3 scripts/tarot_codec.py decode "<TC1 code>" --deck references/deck.json
 5. 以一个简洁的总结和一两个反思问题结束
 6. 遵守「森林密语」文案语法：每段至多一个自然隐喻，然后回到事实、边界或可验证的小行动
 
+#### 5.1 密语回响：只在用户授权后检索
+
+若已检测到 Mneme，先询问一次是否在解读时参考相关的本地记录。可选项为“允许以后自动参考 / 只参考这一次 / 暂不参考”。未授权时绝不调用 search、不读取 bundle。
+
+在 TC1 解码后、生成解读前，授权为自动或本次时执行：
+
+```bash
+python3 scripts/mneme_adapter.py --bundle "$MNEME_BUNDLE" search "<去细节的当前主题>"
+```
+
+- 查询只包含主题关键词，最多返回 3 条候选。随后只读取确实相关的 Markdown 页面，最多 3 篇；搜索摘要不是真实来源。
+- 当前问题、当前牌面和当前牌位永远优先。没有可靠命中时静默走普通解读。
+- 正式牌义解读结束后，**单独**增加“密语回响”小节，结合用户确认过的历史事实进行心理支持，并列出真实日期和 bundle 相对路径。例如“你在 2026-07-02 的记录中也提到工作边界（来源：concepts/work-boundaries.md）”。
+- 不得把历史写成心理诊断、人格标签或因果结论；不得说“我一直记得你”。仅一次参考在完成后恢复为关闭。
+
 ### 第六步：生成并提供 reading.html（必须！）
 
 **你必须生成 HTML 报告！** 不要只返回纯文本或 markdown。
@@ -107,9 +135,18 @@ python3 scripts/tarot_codec.py decode "<TC1 code>" --deck references/deck.json
     "title": "留给风的问题",
     "items": ["问题1", "问题2"]
   },
+  "memory": {
+    "enabled": true,
+    "title": "旧日的记录也照见了这一步",
+    "guidance": "把过去作为参照，不替你定义此刻；这次阅读仍由你现在的感受和选择来决定。",
+    "sources": [{"date": "2026-07-02", "title": "工作边界", "path": "concepts/work-boundaries.md"}],
+    "dream_enabled": true
+  },
   "disclaimer": "免责声明..."
 }
 ```
+
+仅当实际使用了 Mneme 记忆时传入 `memory.enabled: true`。未安装、未授权或无可靠命中时省略 `memory`，报告尾部会显示轻度本地记忆引导，不影响阅读流程。
 
 #### 6.2 构建 reading.html
 
@@ -133,7 +170,19 @@ python3 scripts/serve.py --skill-dir <path-to-tarot-confessional> --reading <wor
 {"draw": "http://localhost:8080/", "reading": "http://localhost:8080/reading"}
 ```
 
-告诉用户：**"你的解读报告已经准备好了：[URL]"**
+告诉用户：**"你的解读报告已经准备好了：[URL]"**。若没有 Mneme，不要把安装变成阻碍；报告末尾已有一段可跳过的轻度引导。
+
+### 第七步：查看后整理与保存
+
+当已启用 Mneme 时，用带 `--mneme-bundle` 的阅读服务器启动报告。阅读页“整理这次回响”按钮会调用 `mneme dream --json` 的只读审阅端点；这不是自动存储，也不修改 bundle。
+
+用户点击按钮或明确说“帮我记住这次阅读”后：
+
+1. 先说明将保存的最小内容（问题摘要、牌面、解读摘要和用户主动补充），询问是否保存；不保存完整聊天。
+2. 得到明确同意后，由 Agent 依 Mneme 的 ingest 工作流写入用户本地 bundle，再执行 `mneme reindex`。
+3. `dream` 的候选仅供整理参考。任何合并、主题页或写入，都要向用户展示并得到确认；不能把 dream 结果当作心理判断。
+
+未安装 Mneme 时，仍然完整生成 reading；用户以后说“帮我记住”再重新提供安装引导即可。
 
 ## 安全边界
 

@@ -51,9 +51,11 @@ def expected_layout(skill_dir: Path) -> list[str]:
         "scripts/tarot_codec.py",
         "scripts/build_draw_page.py",
         "scripts/build_reading_page.py",
+        "scripts/mneme_adapter.py",
         "references/deck.json",
         "references/draw-code-protocol.md",
         "references/reading-guidance.md",
+        "references/mneme-integration.md",
     ]
     missing = [rel for rel in required if not (skill_dir / rel).is_file()]
     return missing

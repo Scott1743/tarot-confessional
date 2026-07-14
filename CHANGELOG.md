@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.0] - 2026-07-14
+
+### Added
+
+- 「密语回响」可选 Mneme 联动：首次使用可征询安装，轻量 Skill 下载地址由 `FOREST_WHISPERS_MNEME_RELEASE_URL` 配置，默认指向 Mneme `2.0.0`。
+- `mneme_adapter.py` 提供无副作用的安装检测、最多三条的受限检索与只读 `dream` 审阅调用。
+- 阅读报告支持仅在实际使用记忆时显示的“密语回响”心理支持与来源；未安装 Mneme 时显示轻度、可跳过的本地记忆引导。
+- 本地阅读服务可选提供 `POST /mneme/dream`，供报告页按钮请求 Mneme 的只读审阅。
+
+### Changed
+
+- 解读流程在 TC1 解码后、牌义生成前增加明确授权的本地记忆检索；正式牌义后才单独结合记忆回应。
+- 发布版本升级至 `2.0.0`，版本概念为「密语回响」。
+
 ## [1.2.0] - 2026-07-14
 
 ### Changed

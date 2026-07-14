@@ -84,6 +84,47 @@ class BuildReadingPageTests(unittest.TestCase):
             self.assertEqual(html.count('<h2 class="section-heading">留待自问</h2>'), 1)
             self.assertNotIn('<div class="label">可行之事</div>', html)
 
+    def test_no_mneme_reading_has_a_lightweight_memory_invite(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            output = Path(tmp) / "reading.html"
+            MODULE.build(skill_dir=SKILL, output=output, data=reading_data())
+            html = output.read_text(encoding="utf-8")
+            self.assertIn("想把这次的感受留给未来的自己吗？", html)
+            self.assertNotIn('<button class="memory-action" type="button" data-mneme-dream>', html)
+
+    def test_mneme_reading_renders_sources_and_dream_button(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            output = Path(tmp) / "reading.html"
+            data = reading_data()
+            data["memory"] = {
+                "enabled": True,
+                "title": "旧日的记录也照见了这一步",
+                "guidance": "过去只作参照，不替你定义现在。",
+                "sources": [{"date": "2026-07-02", "title": "工作边界", "path": "concepts/work-boundaries.md"}],
+                "dream_enabled": True,
+            }
+            MODULE.build(skill_dir=SKILL, output=output, data=data)
+            html = output.read_text(encoding="utf-8")
+            self.assertIn("密语回响", html)
+            self.assertIn("concepts/work-boundaries.md", html)
+            self.assertIn('data-mneme-dream', html)
+
+    def test_mneme_metadata_is_html_escaped(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            output = Path(tmp) / "reading.html"
+            data = reading_data()
+            data["memory"] = {
+                "enabled": True,
+                "title": "<script>bad()</script>",
+                "guidance": "现在 < 过去",
+                "sources": [{"date": "today", "title": "<b>note</b>", "path": "concepts/a&b.md"}],
+            }
+            MODULE.build(skill_dir=SKILL, output=output, data=data)
+            html = output.read_text(encoding="utf-8")
+            self.assertNotIn("<script>bad()</script>", html)
+            self.assertIn("&lt;script&gt;bad()&lt;/script&gt;", html)
+            self.assertIn("concepts/a&amp;b.md", html)
+
 
 if __name__ == "__main__":
     unittest.main()

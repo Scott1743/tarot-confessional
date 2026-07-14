@@ -31,6 +31,7 @@ from http.server import HTTPServer, SimpleHTTPRequestHandler
 from pathlib import Path
 
 from build_draw_page import build as build_draw_page
+from mneme_adapter import dream as mneme_dream
 
 
 def find_free_port(host: str = "0.0.0.0", preferred: int | None = None) -> int:
@@ -70,6 +71,8 @@ class TarotHandler(SimpleHTTPRequestHandler):
     draw_html: str | None = None
     serve_dir: str = "."
     last_activity: float = 0.0
+    mneme_bundle: str | None = None
+    mneme_skill_dir: str | None = None
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, directory=self.serve_dir, **kwargs)
@@ -94,6 +97,20 @@ class TarotHandler(SimpleHTTPRequestHandler):
             return
         super().do_GET()
 
+    def do_POST(self):
+        type(self).last_activity = time.monotonic()
+        if self.path != "/mneme/dream" or not self.mneme_bundle:
+            self.send_error(404)
+            return
+        result = mneme_dream(bundle=self.mneme_bundle, skill_dir=self.mneme_skill_dir)
+        status = 200 if result["status"] == "ok" else 503
+        body = json.dumps(result, ensure_ascii=False).encode("utf-8")
+        self.send_response(status)
+        self.send_header("Content-Type", "application/json; charset=utf-8")
+        self.send_header("Content-Length", str(len(body)))
+        self.end_headers()
+        self.wfile.write(body)
+
     def log_message(self, fmt, *args):
         # Suppress default logging; Agent doesn't need per-request noise.
         pass
@@ -109,6 +126,10 @@ def main() -> int:
                         help="Path to a self-contained draw HTML file; defaults to an automatic Base64 build")
     parser.add_argument("--idle-timeout", type=int, default=900,
                         help="Seconds without requests before shutdown; set 0 to disable (default: 900)")
+    parser.add_argument("--mneme-bundle", default=None,
+                        help="Enable the local read-only Mneme dream endpoint for this reading server")
+    parser.add_argument("--mneme-skill-dir", default=None,
+                        help="Optional installed Mneme skill directory")
     args = parser.parse_args()
     if args.idle_timeout < 0:
         parser.error("--idle-timeout must be zero or a positive number")
@@ -153,6 +174,8 @@ def main() -> int:
     TarotHandler.draw_html = draw_content
     TarotHandler.serve_dir = str(assets_dir)
     TarotHandler.last_activity = time.monotonic()
+    TarotHandler.mneme_bundle = args.mneme_bundle
+    TarotHandler.mneme_skill_dir = args.mneme_skill_dir
 
     server = HTTPServer(("0.0.0.0", port), TarotHandler)
     server.timeout = 1
@@ -165,6 +188,8 @@ def main() -> int:
     if reading_content:
         urls["reading"] = f"http://localhost:{port}/reading"
         urls["reading_lan"] = f"http://{local_ip}:{port}/reading"
+    if args.mneme_bundle:
+        urls["mneme_dream"] = f"http://localhost:{port}/mneme/dream"
 
     # Print JSON so Agent can parse
     print(json.dumps(urls, ensure_ascii=False))

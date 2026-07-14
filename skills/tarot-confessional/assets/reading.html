@@ -88,6 +88,16 @@
     .numbered li { position: relative; min-height: 64px; padding: 14px 0 14px 42px; border-top: 1px solid var(--line); color: var(--body); counter-increment: item; font-size: 16px; }
     .numbered li::before { content: counter(item, decimal-leading-zero); position: absolute; left: 0; color: var(--moss); font-family: ui-monospace, "SFMono-Regular", Menlo, monospace; font-size: 12px; }
     .boundary { margin-top: 72px; padding-top: 22px; border-top: 1px solid var(--line); color: var(--muted); font-size: 13px; }
+    .memory-echo, .memory-invite { display: grid; grid-template-columns: 180px minmax(0, 1fr); gap: 32px; margin-top: 68px; padding: 36px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .memory-echo h2, .memory-invite h2 { margin: 0 0 12px; color: var(--pine); font-family: "STKaiti", "KaiTi", serif; font-size: 28px; font-weight: 600; line-height: 1.35; }
+    .memory-echo p, .memory-invite p { margin: 0; color: var(--body); }
+    .memory-sources { display: grid; gap: 8px; margin: 22px 0; padding: 0; list-style: none; color: var(--body); font-size: 14px; }
+    .memory-sources li { padding-left: 14px; border-left: 2px solid var(--fern); }
+    .memory-sources span { display: block; color: var(--muted); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; overflow-wrap: anywhere; }
+    .memory-action { min-height: 42px; border: 1px solid var(--moss); border-radius: 5px; padding: 8px 16px; color: #fff; background: var(--moss); cursor: pointer; }
+    .memory-action:hover { background: var(--pine); }
+    .memory-action:disabled { cursor: wait; opacity: .65; }
+    .memory-status { min-height: 1.82em; margin-top: 12px !important; color: var(--muted) !important; font-size: 13px; }
 
     @supports (animation-timeline: view()) {
       .entry, .synthesis, .closing { animation: reading-reveal linear both; animation-timeline: view(); animation-range: entry 8% cover 30%; }
@@ -100,7 +110,7 @@
       .cover { min-height: 430px; padding: 60px 24px; }
       .cover::before { inset: 14px; }
       .content { padding: 38px 22px 50px; }
-      .summary, .entry, .synthesis { grid-template-columns: 1fr; gap: 16px; }
+      .summary, .entry, .synthesis, .memory-echo, .memory-invite { grid-template-columns: 1fr; gap: 16px; }
       .spread { grid-template-columns: 1fr; gap: 46px; padding: 54px 0; }
       .spread-card:nth-child(2) { margin-top: 0; }
       .card-frame { width: min(68vw, 230px); }
@@ -146,8 +156,27 @@
       </section>
       <section class="synthesis"><div class="section-kicker">风里的共同方向</div><div><h2>变化可以开始，但第一步不是仓促离开</h2><blockquote>魔术师提醒你已经握有行动的种子；月亮逆位让雾慢慢退去；隐者邀请你先走一小段安静、真实、可以回头检验的路。</blockquote></div></section>
       <section class="closing"><div class="closing-column"><h2 class="section-heading">带回现实的小事</h2><ol class="numbered"><li>用两周完成一个接近目标方向的小项目，记录投入感和真实困难。</li><li>约一位目标领域从业者，核对日常工作，而不只讨论机会与前景。</li></ol></div><div class="closing-column"><h2 class="section-heading">留给风的问题</h2><ol class="numbered"><li>我真正想离开的，是工作内容、环境，还是长期疲惫？</li><li>哪一种困难即使持续三年，我仍愿意学习如何处理？</li></ol></div></section>
+      <section class="memory-placeholder"><div class="memory-invite"><div class="section-kicker">让回响留下</div><div><h2>想把这次的感受留给未来的自己吗？</h2><p>Mneme 是可选的本地记忆。下次对话时说“帮我记住这次阅读”，我会先征求你的同意，再帮你把值得留下的部分放进自己的本地树洞。</p></div></div></section>
       <footer class="boundary">这封林间回信把塔罗当作整理问题的象征工具，不替你预言结果。涉及收入、合同和重大决定时，也请把真实数据与专业建议带在身边。</footer>
     </div>
   </main>
+  <script>
+    document.querySelectorAll('[data-mneme-dream]').forEach((button) => {
+      button.addEventListener('click', async () => {
+        const status = document.querySelector('[data-mneme-status]');
+        button.disabled = true;
+        if (status) status.textContent = '正在整理本次回响…';
+        try {
+          const response = await fetch('/mneme/dream', { method: 'POST' });
+          if (!response.ok) throw new Error('unavailable');
+          if (status) status.textContent = '已完成整理审阅。回到对话后，我会先和你确认要留下什么。';
+        } catch (_error) {
+          if (status) status.textContent = '这份离线回信无法直接整理。回到对话告诉我“帮我记住这次阅读”即可。';
+        } finally {
+          button.disabled = false;
+        }
+      });
+    });
+  </script>
 </body>
 </html>

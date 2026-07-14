@@ -60,6 +60,7 @@ from __future__ import annotations
 
 import argparse
 import base64
+import html as html_lib
 import json
 import sys
 from datetime import datetime
@@ -114,6 +115,22 @@ def _render_closing_section(label: str, title: str, items: list[str]) -> str:
     return f'''<div class="closing-column"><h2 class="section-heading">{heading}</h2><ol class="numbered">{_render_list_items(items)}</ol></div>'''
 
 
+def _render_memory_echo(memory: dict | None) -> str:
+    """Render the opt-in Mneme section or the no-memory gentle prompt."""
+    if memory and memory.get("enabled"):
+        sources = memory.get("sources", [])
+        source_html = "".join(
+            f'<li><strong>{html_lib.escape(str(source.get("date", "此前")))}</strong> · {html_lib.escape(str(source.get("title", "一则本地记录")))}<span>{html_lib.escape(str(source.get("path", "")))}</span></li>'
+            for source in sources
+        )
+        sources_block = f'<ol class="memory-sources">{source_html}</ol>' if source_html else ""
+        action = '<button class="memory-action" type="button" data-mneme-dream>整理这次回响</button>' if memory.get("dream_enabled") else ""
+        title = html_lib.escape(str(memory.get("title", "这次阅读与旧日的轻轻照面")))
+        guidance = html_lib.escape(str(memory.get("guidance", "把今天的感受放回你自己手中；过去的记录只作参照，不替你定义现在。")))
+        return f'''      <section class="memory-echo"><div class="section-kicker">密语回响</div><div><h2>{title}</h2><p>{guidance}</p>{sources_block}{action}<p class="memory-status" data-mneme-status aria-live="polite"></p></div></section>'''
+    return '''      <section class="memory-invite"><div class="section-kicker">让回响留下</div><div><h2>想把这次的感受留给未来的自己吗？</h2><p>Mneme 是可选的本地记忆。下次对话时说“帮我记住这次阅读”，我会先征求你的同意，再帮你把值得留下的部分放进自己的本地树洞。</p></div></section>'''
+
+
 def build(*, skill_dir: Path, output: Path, data: dict) -> Path:
     """Build a self-contained reading HTML page."""
     assets_dir = skill_dir / "assets"
@@ -156,6 +173,9 @@ def build(*, skill_dir: Path, output: Path, data: dict) -> Path:
         {_render_closing_section("留待自问", data["questions"]["title"], data["questions"]["items"])}
       </section>'''
     html = _replace_section(html, '<section class="closing">', '</section>', closing_html)
+
+    memory_html = _render_memory_echo(data.get("memory"))
+    html = _replace_section(html, '<section class="memory-placeholder">', '</section>', memory_html)
 
     disclaimer_html = f'''      <footer class="boundary">{data["disclaimer"]}</footer>'''
     html = _replace_section(html, '<footer class="boundary">', '</footer>', disclaimer_html)
