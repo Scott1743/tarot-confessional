@@ -74,7 +74,14 @@ def _data_uri(path: Path) -> str:
 
 def _inline_images(html: str, images_dir: Path) -> str:
     """Replace all image references with data URIs."""
-    # The report uses a CSS cobalt field; only card images need inlining.
+    background = images_dir / "reading-forest-bg.jpg"
+    if not background.is_file():
+        raise FileNotFoundError(f"missing reading background: {background}")
+    html = html.replace(
+        'url("images/reading-forest-bg.jpg")',
+        f'url("{_data_uri(background)}")',
+    )
+
     for card_file in sorted((images_dir / "cards").glob("*.jpg")):
         data_uri = _data_uri(card_file)
         html = html.replace(f'src="images/cards/{card_file.name}"', f'src="{data_uri}"')
@@ -93,7 +100,7 @@ def _render_card(card: dict, index: int) -> str:
 def _render_entry(card: dict) -> str:
     """Render a reading entry for a card."""
     orientation_suffix = f" · {card['orientation']}" if card.get("orientation") else ""
-    return f'''        <article class="entry"><div class="label">{card['position'].split('·')[0].strip()}<br>{card['name']}{orientation_suffix}</div><div class="entry-copy"><h2>{card['title']}</h2>{card['content']}</div></article>'''
+    return f'''        <article class="entry"><div class="entry-marker">{card['position'].split('·')[0].strip()}<span>{card['name']}{orientation_suffix}</span></div><div class="entry-copy"><h2>{card['title']}</h2>{card['content']}</div></article>'''
 
 
 def _render_list_items(items: list[str]) -> str:
@@ -118,11 +125,11 @@ def build(*, skill_dir: Path, output: Path, data: dict) -> Path:
     html = template_path.read_text(encoding="utf-8")
 
     # Replace cover section
-    cover_html = f'''    <header class="cover"><div class="vertical-mark">{data['spread_type']}</div><h1>{data['title']}</h1><div class="cover-meta">{data['date']}<br>{data['positions']}</div></header>'''
+    cover_html = f'''    <header class="cover"><div class="cover-inner"><p class="eyebrow">{data['spread_type']} · 风把线索带回来了</p><h1>{data['title']}</h1><p class="cover-meta">{data['date']}<br>{data['positions']}</p></div></header>'''
     html = _replace_section(html, '<header class="cover">', '</header>', cover_html)
 
     # Replace summary section
-    summary_html = f'''      <section class="summary"><div class="label">所问之事</div><p>{data['question']}</p></section>'''
+    summary_html = f'''      <section class="summary"><div class="section-kicker">你带来的问题</div><p>{data['question']}</p></section>'''
     html = _replace_section(html, '<section class="summary">', '</section>', summary_html)
 
     # Replace spread section
@@ -134,13 +141,13 @@ def build(*, skill_dir: Path, output: Path, data: dict) -> Path:
 
     # Replace reading-axis section
     entries_html = "\n".join(_render_entry(card) for card in data["cards"])
-    reading_html = f'''      <section class="reading-axis"><div class="qi-line" aria-hidden="true"></div>
+    reading_html = f'''      <section class="reading-axis">
 {entries_html}
       </section>'''
     html = _replace_section(html, '<section class="reading-axis">', '</section>', reading_html)
 
     # Replace synthesis section
-    synthesis_html = f'''      <section class="synthesis"><div class="label">三牌合观</div><div><h2>{data['synthesis']['title']}</h2>{data['synthesis']['content']}</div></section>'''
+    synthesis_html = f'''      <section class="synthesis"><div class="section-kicker">风里的共同方向</div><div><h2>{data['synthesis']['title']}</h2>{data['synthesis']['content']}</div></section>'''
     html = _replace_section(html, '<section class="synthesis">', '</section>', synthesis_html)
 
     # Replace closing section
@@ -150,11 +157,8 @@ def build(*, skill_dir: Path, output: Path, data: dict) -> Path:
       </section>'''
     html = _replace_section(html, '<section class="closing">', '</section>', closing_html)
 
-    # Replace disclaimer
-    html = html.replace(
-        '<footer class="boundary">这份阅读把塔罗作为整理问题的象征工具，不是对职业结果的保证。涉及收入、合同和重大职业决策时，请同时参考真实数据与专业建议。</footer>',
-        f'<footer class="boundary">{data["disclaimer"]}</footer>'
-    )
+    disclaimer_html = f'''      <footer class="boundary">{data["disclaimer"]}</footer>'''
+    html = _replace_section(html, '<footer class="boundary">', '</footer>', disclaimer_html)
 
     # Inline after dynamic card sections are rendered. Otherwise the newly
     # inserted spread cards retain relative paths and disappear when the file

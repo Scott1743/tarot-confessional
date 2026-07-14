@@ -63,7 +63,17 @@ class BuildReadingPageTests(unittest.TestCase):
             MODULE.build(skill_dir=SKILL, output=output, data=reading_data())
             html = output.read_text(encoding="utf-8")
             self.assertNotIn('url("images/', html)
-            self.assertEqual(html.count("data:image/jpeg;base64,"), 3)
+            self.assertEqual(html.count("data:image/jpeg;base64,"), 4)
+
+    def test_generated_page_uses_forest_whispers_language_and_layout(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            output = Path(tmp) / "reading.html"
+            MODULE.build(skill_dir=SKILL, output=output, data=reading_data())
+            html = output.read_text(encoding="utf-8")
+            self.assertIn("森林密语 · 林间回信", html)
+            self.assertIn("风里的共同方向", html)
+            self.assertIn('class="entry-marker"', html)
+            self.assertNotIn("塔罗树洞 · 阅读档案", html)
 
     def test_closing_sections_render_one_heading_when_title_matches_label(self):
         with tempfile.TemporaryDirectory() as tmp:

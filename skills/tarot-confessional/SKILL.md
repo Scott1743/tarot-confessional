@@ -68,6 +68,7 @@ python3 scripts/tarot_codec.py decode "<TC1 code>" --deck references/deck.json
 3. 连接牌与牌之间的模式，而不是孤立地列出牌义
 4. 分离观察和可能性，使用"这可能映照出"和"你可以留意"等短语
 5. 以一个简洁的总结和一两个反思问题结束
+6. 遵守「森林密语」文案语法：每段至多一个自然隐喻，然后回到事实、边界或可验证的小行动
 
 ### 第六步：生成并提供 reading.html（必须！）
 
@@ -80,7 +81,7 @@ python3 scripts/tarot_codec.py decode "<TC1 code>" --deck references/deck.json
 ```json
 {
   "spread_type": "三张行动牌阵",
-  "title": "关于下一步的三张牌",
+  "title": "沿着风，看看下一步",
   "date": "二〇二六年七月十二日",
   "positions": "现状 · 阻力 · 方向",
   "question": "用户的问题",
@@ -90,20 +91,20 @@ python3 scripts/tarot_codec.py decode "<TC1 code>" --deck references/deck.json
       "name": "魔术师",
       "orientation": "正位",
       "position": "现状 · 此刻之势",
-      "title": "解读标题",
+      "title": "你手里已经有可以开始的东西",
       "content": "<p>解读内容...</p>"
     }
   ],
   "synthesis": {
-    "title": "合观标题",
+    "title": "变化可以开始，但第一步不是仓促离开",
     "content": "<blockquote>合观内容...</blockquote>"
   },
   "actions": {
-    "title": "可行之事标题",
+    "title": "带回现实的小事",
     "items": ["事项1", "事项2"]
   },
   "questions": {
-    "title": "留待自问标题",
+    "title": "留给风的问题",
     "items": ["问题1", "问题2"]
   },
   "disclaimer": "免责声明..."
