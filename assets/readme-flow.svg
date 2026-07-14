@@ -1,96 +1,127 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
-  <title id="title">塔罗树洞技术流程</title>
-  <desc id="desc">用户对话经过 Agent 理解与选择牌阵，进入离线抽牌和解读页面，再由确定性脚本完成编码、解码与页面构建。</desc>
+  <title id="title">森林密语使用与技术流程</title>
+  <desc id="desc">从带着心事进入森林，到在本地抽三张牌、回到对话获得解读、生成可回看的阅读档案，并可选交给 MNEME 在本地整理。</desc>
   <defs>
-    <linearGradient id="night" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#130b20"/>
-      <stop offset=".52" stop-color="#241133"/>
-      <stop offset="1" stop-color="#100919"/>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#55c4e8"/>
+      <stop offset=".56" stop-color="#c9f1f5"/>
+      <stop offset="1" stop-color="#fffdf2"/>
     </linearGradient>
-    <linearGradient id="panel" x1="0" y1="0" x2="1" y2="1">
-      <stop stop-color="#392047" stop-opacity=".96"/>
-      <stop offset="1" stop-color="#20112c" stop-opacity=".96"/>
+    <linearGradient id="meadow" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#b9ed74"/>
+      <stop offset="1" stop-color="#76c958"/>
     </linearGradient>
-    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="0">
-      <stop stop-color="#8d6831"/><stop offset=".48" stop-color="#e3c477"/><stop offset="1" stop-color="#8d6831"/>
+    <linearGradient id="paper" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#fffef5"/>
+      <stop offset="1" stop-color="#eef9dc"/>
     </linearGradient>
-    <pattern id="stars" width="84" height="84" patternUnits="userSpaceOnUse">
-      <circle cx="12" cy="18" r="1" fill="#ead99f" opacity=".28"/><circle cx="62" cy="34" r="1.3" fill="#ead99f" opacity=".2"/><circle cx="38" cy="72" r=".8" fill="#fff4c9" opacity=".22"/>
-    </pattern>
-    <filter id="shadow" x="-20%" y="-30%" width="140%" height="170%">
-      <feDropShadow dx="0" dy="14" stdDeviation="18" flood-color="#07040b" flood-opacity=".55"/>
+    <filter id="soft-shadow" x="-30%" y="-30%" width="160%" height="180%">
+      <feDropShadow dx="0" dy="12" stdDeviation="14" flood-color="#1c6b55" flood-opacity=".15"/>
     </filter>
-    <filter id="glow" x="-200%" y="-200%" width="400%" height="400%">
-      <feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
-    </filter>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+      <path d="M0 0L8 4L0 8Z" fill="#2e8c62"/>
+    </marker>
   </defs>
 
-  <rect width="1200" height="760" rx="28" fill="url(#night)"/>
-  <rect width="1200" height="760" rx="28" fill="url(#stars)"/>
-  <path d="M0 604 Q210 528 410 620 T820 602 T1200 574 V760 H0Z" fill="#4d2b65" opacity=".25"/>
-  <path d="M0 650 Q210 566 420 662 T830 640 T1200 618" fill="none" stroke="#b18a4b" stroke-opacity=".2"/>
+  <rect width="1200" height="760" rx="28" fill="url(#sky)"/>
 
-  <g transform="translate(72 70)">
-    <text x="0" y="0" fill="#e2c06a" font-family="Songti SC, STSong, serif" font-size="19" letter-spacing="6">塔 罗 树 洞 · 技 术 流 程</text>
-    <text x="0" y="44" fill="#fff8e8" font-family="Songti SC, STSong, serif" font-size="40" font-weight="600">从一句心事，到一份可验证的解读</text>
-    <line x1="0" y1="70" x2="1056" y2="70" stroke="url(#gold)" stroke-opacity=".55"/>
+  <g fill="#fff" opacity=".86" stroke="#8ecfe2" stroke-width="2">
+    <path d="M62 108c8-31 52-36 68-10 17-32 72-22 73 15 34-5 49 34 21 51H73c-30-9-35-45-11-56Z"/>
+    <path d="M893 87c11-32 58-38 75-9 21-35 77-18 74 21 37-4 49 39 18 53H891c-29-11-29-50 2-65Z"/>
+    <path d="M452 142c5-20 35-26 47-8 12-21 45-12 45 13 22-2 30 24 11 33h-98c-20-6-22-29-5-38Z" opacity=".72"/>
   </g>
 
-  <!-- A single golden thread links every deterministic step. -->
-  <path d="M174 262 C224 262 224 262 274 262 S414 262 464 262 S604 262 654 262 S794 262 844 262" fill="none" stroke="#d6b463" stroke-width="2" stroke-dasharray="5 10" opacity=".75"/>
-  <g fill="#e6c979" filter="url(#glow)"><circle cx="174" cy="262" r="5"/><circle cx="464" cy="262" r="5"/><circle cx="754" cy="262" r="5"/><circle cx="1044" cy="262" r="5"/></g>
+  <path d="M0 474C165 404 287 446 429 420c152-28 252-12 382 26 154 45 258-10 389-44v358H0Z" fill="#dff5a7"/>
+  <path d="M0 525c134-67 255-44 381-8 150 43 258-13 394-35 161-26 278 16 425 54v224H0Z" fill="url(#meadow)"/>
+  <path d="M0 564c160-42 290-8 427 28 174 46 319-30 470-43 111-10 205 10 303 44v167H0Z" fill="#3f9c5d" opacity=".55"/>
 
-  <g font-family="PingFang SC, Noto Sans CJK SC, sans-serif">
-    <g transform="translate(72 214)" filter="url(#shadow)">
-      <rect width="204" height="330" rx="18" fill="url(#panel)" stroke="#8c6a38"/>
-      <circle cx="102" cy="48" r="25" fill="#d7b665"/><text x="102" y="56" text-anchor="middle" fill="#211229" font-family="Georgia, serif" font-size="22">壹</text>
-      <text x="102" y="112" text-anchor="middle" fill="#fff7e7" font-family="Songti SC, STSong, serif" font-size="26">用户对话</text>
-      <line x1="38" y1="136" x2="166" y2="136" stroke="#9d7a42" opacity=".5"/>
-      <text x="102" y="179" text-anchor="middle" fill="#cbbfd1" font-size="16">说出问题或心事</text>
-      <text x="102" y="210" text-anchor="middle" fill="#cbbfd1" font-size="16">不要求隐私信息</text>
-      <path d="M67 258 Q102 232 137 258 Q102 290 67 258Z" fill="none" stroke="#d7b665" opacity=".8"/><circle cx="102" cy="258" r="8" fill="#d7b665"/>
-      <text x="102" y="305" text-anchor="middle" fill="#957fa0" font-size="13" letter-spacing="2">你的问题</text>
+  <g fill="#1f7253" opacity=".86">
+    <path d="M38 505l22-50 22 50h-13l18 36H33l18-36Z"/>
+    <path d="M106 486l17-40 17 40h-10l15 30h-44l14-30Z"/>
+    <path d="M1102 470l24-56 24 56h-14l20 40h-60l20-40Z"/>
+    <path d="M1048 495l18-43 18 43h-10l15 31h-46l15-31Z"/>
+  </g>
+
+  <g transform="translate(64 54)">
+    <text x="0" y="0" fill="#17624f" font-family="PingFang SC, Hiragino Sans GB, sans-serif" font-size="16" font-weight="700" letter-spacing="4">森林密语 · 如何工作</text>
+    <text x="0" y="51" fill="#10483f" font-family="STKaiti, KaiTi, Songti SC, serif" font-size="42" font-weight="700">从一段心事，到一份可以回看的阅读</text>
+    <text x="0" y="83" fill="#3f746c" font-family="PingFang SC, Hiragino Sans GB, sans-serif" font-size="16">直觉负责选择，代码守住真实，最后仍由你决定。</text>
+  </g>
+
+  <g fill="none" stroke="#2e8c62" stroke-width="3" stroke-linecap="round" opacity=".72" marker-end="url(#arrow)">
+    <path d="M308 367C318 367 322 379 332 379"/>
+    <path d="M576 379C586 379 590 355 600 355"/>
+    <path d="M844 355C854 355 858 372 868 372"/>
+  </g>
+
+  <g font-family="PingFang SC, Hiragino Sans GB, sans-serif">
+    <g transform="translate(64 214)" filter="url(#soft-shadow)">
+      <rect width="244" height="324" rx="18" fill="url(#paper)"/>
+      <circle cx="38" cy="38" r="21" fill="#f0ad4d"/>
+      <text x="38" y="44" text-anchor="middle" fill="#164d40" font-size="14" font-weight="700">一</text>
+      <path d="M174 29h38a12 12 0 0 1 12 12v24a12 12 0 0 1-12 12h-17l-12 12 2-12h-11a12 12 0 0 1-12-12V41a12 12 0 0 1 12-12Z" fill="#dff5fb" stroke="#318e73" stroke-width="2"/>
+      <text x="28" y="113" fill="#10483f" font-family="STKaiti, KaiTi, Songti SC, serif" font-size="28" font-weight="700">带着心事来</text>
+      <text x="28" y="157" fill="#47756d" font-size="16">不必先把一切想明白</text>
+      <text x="28" y="187" fill="#47756d" font-size="16">也不必在页面里说出口</text>
+      <path d="M28 231c35-22 67-22 101 0" fill="none" stroke="#8bcf62" stroke-width="3" stroke-linecap="round"/>
+      <path d="M72 222c9-14 22-15 29-3-10 6-20 7-29 3Z" fill="#4d9b60"/>
+      <text x="28" y="286" fill="#2c715e" font-size="14" font-weight="700">问题留在心里</text>
     </g>
 
-    <g transform="translate(362 214)" filter="url(#shadow)">
-      <rect width="204" height="330" rx="18" fill="url(#panel)" stroke="#8c6a38"/>
-      <circle cx="102" cy="48" r="25" fill="#d7b665"/><text x="102" y="56" text-anchor="middle" fill="#211229" font-family="Georgia, serif" font-size="22">贰</text>
-      <text x="102" y="112" text-anchor="middle" fill="#fff7e7" font-family="Songti SC, STSong, serif" font-size="26">Agent</text>
-      <line x1="38" y1="136" x2="166" y2="136" stroke="#9d7a42" opacity=".5"/>
-      <text x="102" y="179" text-anchor="middle" fill="#cbbfd1" font-size="16">理解问题 · 选择牌阵</text>
-      <text x="102" y="210" text-anchor="middle" fill="#cbbfd1" font-size="16">连接牌意 · 生成解读</text>
-      <g transform="translate(72 238) rotate(-8)"><rect width="38" height="58" rx="4" fill="#160c24" stroke="#d7b665"/><path d="M8 29h22M19 12v34" stroke="#d7b665" opacity=".65"/></g>
-      <g transform="translate(95 236) rotate(8)"><rect width="38" height="58" rx="4" fill="#2b1538" stroke="#d7b665"/><circle cx="19" cy="29" r="9" fill="none" stroke="#d7b665" opacity=".7"/></g>
-      <text x="102" y="305" text-anchor="middle" fill="#957fa0" font-size="13" letter-spacing="2">温和引导</text>
+    <g transform="translate(332 238)" filter="url(#soft-shadow)">
+      <rect width="244" height="324" rx="18" fill="url(#paper)"/>
+      <circle cx="38" cy="38" r="21" fill="#55bde0"/>
+      <text x="38" y="44" text-anchor="middle" fill="#123f3a" font-size="14" font-weight="700">二</text>
+      <g transform="translate(168 23)">
+        <rect width="35" height="55" rx="5" fill="#246b55" transform="rotate(-8 17 27)"/>
+        <rect x="22" y="2" width="35" height="55" rx="5" fill="#55a96b" transform="rotate(8 39 29)"/>
+        <circle cx="39" cy="29" r="8" fill="none" stroke="#f7e58c" stroke-width="2"/>
+      </g>
+      <text x="28" y="113" fill="#10483f" font-family="STKaiti, KaiTi, Songti SC, serif" font-size="28" font-weight="700">凭直觉抽三张</text>
+      <text x="28" y="157" fill="#47756d" font-size="16">完整牌组在浏览器里洗牌</text>
+      <text x="28" y="187" fill="#47756d" font-size="16">正逆位与牌面由代码确定</text>
+      <rect x="28" y="222" width="188" height="42" rx="8" fill="#e1f3cb"/>
+      <text x="122" y="248" text-anchor="middle" fill="#23634f" font-family="ui-monospace, SFMono-Regular, monospace" font-size="14">TC1 抽牌码</text>
+      <text x="28" y="294" fill="#2c715e" font-size="14" font-weight="700">本地完成</text>
     </g>
 
-    <g transform="translate(652 214)" filter="url(#shadow)">
-      <rect width="204" height="330" rx="18" fill="url(#panel)" stroke="#8c6a38"/>
-      <circle cx="102" cy="48" r="25" fill="#d7b665"/><text x="102" y="56" text-anchor="middle" fill="#211229" font-family="Georgia, serif" font-size="22">叁</text>
-      <text x="102" y="112" text-anchor="middle" fill="#fff7e7" font-family="Songti SC, STSong, serif" font-size="26">离线页面</text>
-      <line x1="38" y1="136" x2="166" y2="136" stroke="#9d7a42" opacity=".5"/>
-      <text x="102" y="179" text-anchor="middle" fill="#cbbfd1" font-size="16">draw.html · 安全抽牌</text>
-      <text x="102" y="210" text-anchor="middle" fill="#cbbfd1" font-size="16">reading.html · 解读报告</text>
-      <rect x="61" y="238" width="82" height="51" rx="5" fill="#140b1d" stroke="#d7b665"/><circle cx="102" cy="263" r="10" fill="none" stroke="#d7b665"/><path d="M102 246v34M85 263h34" stroke="#d7b665" opacity=".55"/>
-      <text x="102" y="305" text-anchor="middle" fill="#957fa0" font-size="13" letter-spacing="2">本地完成</text>
+    <g transform="translate(600 202)" filter="url(#soft-shadow)">
+      <rect width="244" height="324" rx="18" fill="url(#paper)"/>
+      <circle cx="38" cy="38" r="21" fill="#94d95c"/>
+      <text x="38" y="44" text-anchor="middle" fill="#123f3a" font-size="14" font-weight="700">三</text>
+      <g transform="translate(163 24)" fill="none" stroke="#2f8568" stroke-width="2">
+        <path d="M8 4h46a10 10 0 0 1 10 10v24a10 10 0 0 1-10 10H30L17 60l3-12H8A10 10 0 0 1-2 38V14A10 10 0 0 1 8 4Z" fill="#dff5fb"/>
+        <path d="M14 19h34M14 31h25"/>
+      </g>
+      <text x="28" y="113" fill="#10483f" font-family="STKaiti, KaiTi, Songti SC, serif" font-size="28" font-weight="700">回到对话</text>
+      <text x="28" y="157" fill="#47756d" font-size="16">Agent 连接牌面与你的处境</text>
+      <text x="28" y="187" fill="#47756d" font-size="16">把象征说成能理解的话</text>
+      <rect x="28" y="222" width="188" height="42" rx="8" fill="#e6f6f8"/>
+      <text x="122" y="248" text-anchor="middle" fill="#23634f" font-size="14">不预测，也不替你决定</text>
+      <text x="28" y="294" fill="#2c715e" font-size="14" font-weight="700">温柔解读</text>
     </g>
 
-    <g transform="translate(942 214)" filter="url(#shadow)">
-      <rect width="204" height="330" rx="18" fill="url(#panel)" stroke="#8c6a38"/>
-      <circle cx="102" cy="48" r="25" fill="#d7b665"/><text x="102" y="56" text-anchor="middle" fill="#211229" font-family="Georgia, serif" font-size="22">肆</text>
-      <text x="102" y="112" text-anchor="middle" fill="#fff7e7" font-family="Songti SC, STSong, serif" font-size="26">确定性脚本</text>
-      <line x1="38" y1="136" x2="166" y2="136" stroke="#9d7a42" opacity=".5"/>
-      <text x="102" y="179" text-anchor="middle" fill="#cbbfd1" font-size="16">编码 · 解码 · 校验</text>
-      <text x="102" y="210" text-anchor="middle" fill="#cbbfd1" font-size="16">构建自包含 HTML</text>
-      <path d="M68 255h68M68 274h68" stroke="#d7b665" stroke-width="2"/><circle cx="82" cy="255" r="5" fill="#d7b665"/><circle cx="122" cy="274" r="5" fill="#d7b665"/>
-      <text x="102" y="305" text-anchor="middle" fill="#957fa0" font-size="13" letter-spacing="2">可验证结果</text>
+    <g transform="translate(868 228)" filter="url(#soft-shadow)">
+      <rect width="244" height="324" rx="18" fill="url(#paper)"/>
+      <circle cx="38" cy="38" r="21" fill="#f0ad4d"/>
+      <text x="38" y="44" text-anchor="middle" fill="#164d40" font-size="14" font-weight="700">四</text>
+      <g transform="translate(174 19)">
+        <path d="M0 0h42l15 15v50H0Z" fill="#e3f5cd" stroke="#318e73" stroke-width="2"/>
+        <path d="M42 0v15h15M11 28h34M11 40h34M11 52h24" fill="none" stroke="#318e73" stroke-width="2"/>
+      </g>
+      <text x="28" y="113" fill="#10483f" font-family="STKaiti, KaiTi, Songti SC, serif" font-size="28" font-weight="700">留下阅读</text>
+      <text x="28" y="157" fill="#47756d" font-size="16">生成可离线保存的阅读档案</text>
+      <text x="28" y="187" fill="#47756d" font-size="16">带走一件能去做的小事</text>
+      <rect x="28" y="222" width="188" height="42" rx="8" fill="#fff0cf"/>
+      <text x="122" y="248" text-anchor="middle" fill="#23634f" font-size="14">可选交给 MNEME 整理</text>
+      <text x="28" y="294" fill="#2c715e" font-size="14" font-weight="700">由你决定是否保存</text>
     </g>
   </g>
 
-  <g transform="translate(72 604)" font-family="PingFang SC, Noto Sans CJK SC, sans-serif">
-    <rect width="1056" height="92" rx="16" fill="#130b1c" stroke="#725330" opacity=".94"/>
-    <text x="32" y="37" fill="#d7b665" font-size="14" letter-spacing="3">隐私边界</text>
-    <text x="32" y="65" fill="#d5cbd8" font-size="16">牌面与问题留在本地；随机抽牌与 TC1 校验由代码完成，Agent 不臆测结果。</text>
-    <text x="1024" y="55" text-anchor="end" fill="#7f6988" font-family="Georgia, serif" font-size="14">LOCAL · VERIFIABLE · PRIVATE</text>
+  <g transform="translate(64 622)" font-family="PingFang SC, Hiragino Sans GB, sans-serif">
+    <rect width="1072" height="86" rx="18" fill="#155746" opacity=".96"/>
+    <path d="M30 48c12-22 30-25 43-7-15 11-29 13-43 7Z" fill="#a9df69"/>
+    <text x="92" y="34" fill="#dff5b5" font-size="14" font-weight="700" letter-spacing="2">隐私与边界</text>
+    <text x="92" y="61" fill="#f5fff2" font-size="16">抽牌、TC1 编解码与校验由确定性脚本完成；只有你主动确认，MNEME 才会保存值得留下的内容。</text>
   </g>
 </svg>

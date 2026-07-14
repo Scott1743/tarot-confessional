@@ -91,6 +91,12 @@ class BuildDrawPageUnitTests(unittest.TestCase):
                 with self.subTest(marker=marker):
                     self.assertIn(marker, html)
 
+    def test_draw_stage_keeps_explicit_clearance_above_position_labels(self):
+        html = (SKILL / "assets" / "draw.html").read_text(encoding="utf-8")
+        self.assertIn("--table-clearance: clamp(24px, 3dvh, 36px)", html)
+        self.assertIn("margin: var(--table-clearance) auto 0", html)
+        self.assertIn("--table-clearance: clamp(18px, 2.5dvh, 24px)", html)
+
     def test_dynamic_card_src_uses_resolver_expression_not_literal_text(self):
         with tempfile.TemporaryDirectory() as tmp:
             out = Path(tmp) / "draw.html"

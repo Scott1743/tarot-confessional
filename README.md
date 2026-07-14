@@ -7,7 +7,7 @@
 *今晚就给自己一场不被打扰的小小仪式。*
 
 [![MIT License](https://img.shields.io/badge/license-MIT-purple.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-1.0.0-pink.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-1.1.0-pink.svg)](CHANGELOG.md)
 [![Skills.sh](https://img.shields.io/badge/skills.sh-available-blue.svg)](https://www.skills.sh/?q=tarot-confessional)
 
 </div>
@@ -63,7 +63,7 @@ npx skills add Scott1743/tarot-confessional/skills/tarot-confessional
 
 ### 方式二：手动安装
 
-1. 下载最新版本：[tarot-confessional-1.0.0.zip](https://github.com/Scott1743/tarot-confessional/releases/download/v1.0.0/tarot-confessional-1.0.0.zip)
+1. 下载最新版本：[tarot-confessional-1.1.0.zip](https://github.com/Scott1743/tarot-confessional/releases/download/v1.1.0/tarot-confessional-1.1.0.zip)
 2. 解压到你的 Agent skills 目录
 3. 在对话中触发塔罗功能
 
@@ -107,7 +107,7 @@ npx skills add Scott1743/tarot-confessional/skills/tarot-confessional
 
 ##   技术架构
 
-![塔罗树洞技术流程：从用户对话到可验证的本地解读](assets/readme-flow.svg)
+![森林密语流程：从一段心事到一份可以回看的阅读](assets/readme-flow.svg)
 
 ---
 
@@ -157,7 +157,7 @@ git clone https://github.com/Scott1743/tarot-confessional.git
 cd tarot-confessional
 
 # 打包 Skill
-python3 scripts/package_skill.py --version 1.0.0
+python3 scripts/package_skill.py --version 1.1.0
 
 # 运行测试
 python3 -m pytest tests/

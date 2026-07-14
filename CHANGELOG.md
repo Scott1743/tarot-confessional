@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2026-07-14
+
+### Changed
+
+- 抽牌页牌桌高度改为跟随牌背实际尺寸，为牌组、三张牌位和文字标签保留稳定间距。
+- 宽而矮的桌面视口使用独立紧凑布局，统一收紧标题、牌槽、操作区和页脚的纵向节奏。
+
+### Fixed
+
+- 修复 `16:9` 宽屏下中央牌组压住下方牌位文字的问题。
+- 修复短视口中扇形牌组展开后可能侵入牌位标签的问题。
+
 ## [1.0.0] - 2026-07-14
 
 ### Added
