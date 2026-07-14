@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="color-scheme" content="light">
 <title>森林密语 | 把心事带进森林</title>
-<meta name="description" content="森林密语是一场温柔、私密的塔罗自我探索。抽三张牌，从新的角度看见正在困扰你的事。">
+<meta name="description" content="森林密语是一场温柔、私密的塔罗自我探索。抽三张牌，也可以在明确同意后让 Mneme 把值得留下的感受带到未来。">
 <link rel="preload" as="image" href="assets/forest-whisper-bg.jpg">
 <style>
   :root {
@@ -112,6 +112,25 @@
   .screen-frame figcaption { padding: 10px 13px; color: var(--muted); font-size: 12px; }
   .draw-ready, .archive-cover { grid-column: 1 / -1; }
 
+  .echo { position: relative; width: 100%; padding: clamp(92px, 12vw, 152px) max(20px, calc((100% - var(--max)) / 2)); overflow: hidden; color: #efffdc; background: var(--forest-deep); }
+  .echo::before { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(118deg, transparent 0 46%, rgb(53 181 223 / .12) 46% 64%, transparent 64%), linear-gradient(180deg, rgb(145 217 76 / .08), transparent 38%); }
+  .echo-inner { position: relative; display: grid; grid-template-columns: .82fr 1.18fr; gap: clamp(48px, 9vw, 120px); align-items: start; }
+  .echo-copy { position: sticky; top: 40px; }
+  .echo-kicker { margin: 0 0 14px; color: #bde78a; font-family: ui-monospace, "SFMono-Regular", Menlo, monospace; font-size: 12px; text-transform: uppercase; }
+  .echo h2 { color: #fff; }
+  .echo .section-copy { color: rgb(239 255 220 / .74); }
+  .echo-path { position: relative; margin: 4px 0 0; padding: 0; list-style: none; }
+  .echo-path::before { content: ""; position: absolute; top: 18px; bottom: 18px; left: 11px; width: 1px; background: linear-gradient(#bde78a, #55bdd9, #efa84b); }
+  .echo-path li { position: relative; display: grid; grid-template-columns: 108px 1fr; gap: 24px; padding: 0 0 42px 42px; }
+  .echo-path li:last-child { padding-bottom: 0; }
+  .echo-path li::before { content: ""; position: absolute; top: 9px; left: 6px; width: 11px; height: 11px; border: 2px solid var(--forest-deep); border-radius: 50%; background: #bde78a; box-shadow: 0 0 0 1px rgb(239 255 220 / .55); }
+  .echo-path li:nth-child(2)::before { background: #55bdd9; }
+  .echo-path li:nth-child(3)::before { background: #efa84b; }
+  .echo-stage { padding-top: 1px; color: #bde78a; font-family: ui-monospace, "SFMono-Regular", Menlo, monospace; font-size: 12px; }
+  .echo-path h3 { color: #fff; font-size: clamp(25px, 2.8vw, 35px); }
+  .echo-path p { margin: 8px 0 0; color: rgb(239 255 220 / .7); }
+  .echo-boundary { margin-top: 34px; padding-top: 20px; border-top: 1px solid rgb(239 255 220 / .2); color: rgb(239 255 220 / .7); font-size: 13px; }
+
   .install { padding-top: clamp(80px, 11vw, 140px); padding-bottom: clamp(80px, 11vw, 140px); text-align: center; }
   .install h2, .install .section-copy { margin-left: auto; margin-right: auto; }
   .install-panel { max-width: 860px; margin: 42px auto 0; padding: clamp(24px, 5vw, 48px); border-radius: var(--radius); background: linear-gradient(145deg, var(--paper-blue), #eff8dc); box-shadow: 0 28px 85px rgb(25 100 79 / .13); text-align: left; }
@@ -140,8 +159,8 @@
   @keyframes leaf-flight { 0% { translate: -12vw -14vh; rotate: 0deg; opacity: 0; } 12% { opacity: .75; } 56% { translate: 62vw 52vh; rotate: 330deg; } 100% { translate: 124vw 116vh; rotate: 760deg; opacity: 0; } }
   @media (hover: none) { .card-media video { opacity: 1; } }
   @media (max-width: 800px) {
-    .promise, .journey-layout, .reading-intro { grid-template-columns: 1fr; }
-    .journey-copy { position: static; }
+    .promise, .journey-layout, .reading-intro, .echo-inner { grid-template-columns: 1fr; }
+    .journey-copy, .echo-copy { position: static; }
     .reading-intro { gap: 48px; }
     .archive-gallery { grid-template-columns: 1fr; }
     .draw-gallery { grid-template-columns: 1fr; }
@@ -162,6 +181,8 @@
     .card-figure:nth-child(2) { margin-top: 20px; }
     .card-figure figcaption { font-size: 14px; }
     .command-row, .prompt-item { grid-template-columns: 1fr; }
+    .command { overflow-wrap: anywhere; white-space: pre-wrap; }
+    .echo-path li { grid-template-columns: 1fr; gap: 4px; padding-left: 36px; }
     .copy-button { width: 100%; }
   }
   @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { animation-duration: .001ms !important; transition-duration: .001ms !important; } .breeze-layer { display: none; } .motion-ready .reveal { opacity: 1; transform: none; filter: none; } }
@@ -174,6 +195,7 @@
   <ul class="nav-links">
     <li><a href="#journey">抽牌旅程</a></li>
     <li><a href="#reading">阅读档案</a></li>
+    <li><a href="#echo">密语回响</a></li>
     <li><a class="nav-start" href="#install">开始使用</a></li>
   </ul>
 </nav>
@@ -221,7 +243,7 @@
   <section class="band reading" id="reading">
     <div class="reading-intro">
       <div class="reading-copy"><h2>留下一份可以回看的阅读</h2><p class="section-copy">牌阵、理解与一件能去做的小事，会成为你的私人阅读档案。</p><p class="reading-note">塔罗不替你决定，只陪你把心里的结松一松。</p></div>
-      <aside class="mneme-note"><h3>想留住时，再交给 MNEME</h3><p>MNEME 是可选的本地记忆能力。只有你主动确认，它才会把阅读与之后的日记、梦境串联起来。</p></aside>
+      <aside class="mneme-note"><h3>想留住时，再交给 Mneme</h3><p>2.1.0 会自动发现常见 Agent 目录里的 Mneme。只有你主动确认，它才会保存或参考过去的记录。</p></aside>
     </div>
     <div class="screen-story" aria-label="森林密语使用流程">
       <div class="draw-gallery">
@@ -237,19 +259,35 @@
     </div>
   </section>
 
+  <section class="echo" id="echo" aria-labelledby="echo-title">
+    <div class="echo-inner">
+      <div class="echo-copy">
+        <p class="echo-kicker">2.1.0 · 密语回响</p>
+        <h2 id="echo-title">记忆不是默认开启的门</h2>
+        <p class="section-copy">它更像一条由你决定是否留下的路。没有 Mneme，阅读依然完整；连接以后，也只有得到允许的内容会被带到下一次对话。</p>
+        <p class="echo-boundary">本地保存 · 来源可见 · 随时可删 · 不做心理画像</p>
+      </div>
+      <ol class="echo-path">
+        <li><span class="echo-stage">这一次</span><div><h3>先看当下的牌</h3><p>当前问题、牌面与此刻的感受始终优先。历史不会改变抽到的牌，也不会替你定义现在。</p></div></li>
+        <li><span class="echo-stage">由你确认</span><div><h3>只留下愿意留下的</h3><p>保存前会说明影响范围。问题摘要、牌面与解读可以进入本地知识库，完整聊天不会被默认收走。</p></div></li>
+        <li><span class="echo-stage">未来某天</span><div><h3>带着来源，再次照面</h3><p>相关记忆只在授权后被查询，并标明日期与文件来源。整理按钮会先验证整条本地链路，再交到你手中。</p></div></li>
+      </ol>
+    </div>
+  </section>
+
   <section class="band install" id="install">
     <h2>从一句话开始</h2>
     <p class="section-copy">安装后，直接对 Agent 说出下面任意一句，它会带你完成抽牌。</p>
     <div class="install-panel">
-      <h3>安装森林密语</h3>
-      <div class="command-row"><pre class="command">npx skills add Scott1743/tarot-confessional</pre><button class="copy-button" type="button" data-copy="npx skills add Scott1743/tarot-confessional">复制命令</button></div>
+      <h3>安装森林密语 2.1.0</h3>
+      <div class="command-row"><pre class="command">npx skills add Scott1743/tarot-confessional/skills/tarot-confessional</pre><button class="copy-button" type="button" data-copy="npx skills add Scott1743/tarot-confessional/skills/tarot-confessional">复制命令</button></div>
       <div class="prompt-grid" aria-label="可复制的塔罗提示词">
         <div class="prompt-item"><p>我想抽一次塔罗，请带我开始。</p><button class="copy-button" type="button" data-copy="我想抽一次塔罗，请带我开始。">复制</button></div>
         <div class="prompt-item"><p>我想用三张牌梳理最近的情绪，请帮我抽牌。</p><button class="copy-button" type="button" data-copy="我想用三张牌梳理最近的情绪，请帮我抽牌。">复制</button></div>
         <div class="prompt-item"><p>我有个选择想从塔罗的角度看看，请为我开启一场三张牌阵。</p><button class="copy-button" type="button" data-copy="我有个选择想从塔罗的角度看看，请为我开启一场三张牌阵。">复制</button></div>
       </div>
     </div>
-    <div class="install-links"><a href="https://github.com/Scott1743/tarot-confessional/releases/latest">下载最新版</a><a href="https://github.com/Scott1743/tarot-confessional">查看项目</a></div>
+    <div class="install-links"><a href="https://github.com/Scott1743/tarot-confessional/releases/download/v2.1.0/tarot-confessional-2.1.0.zip">下载 2.1.0</a><a href="https://github.com/Scott1743/tarot-confessional/releases/latest">查看最新发布</a><a href="https://github.com/Scott1743/tarot-confessional">查看项目</a></div>
     <p class="install-alt">只想安静抽一次牌？也可以下载 <a href="https://github.com/Scott1743/tarot-confessional/releases/download/v1.2.0/tarot-confessional-1.2.0.zip">无记忆版本 v1.2.0</a></p>
   </section>
 </main>
@@ -259,7 +297,7 @@
 <script>
   (() => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    const targets = document.querySelectorAll('.promise > div > h2, .promise > div > .section-copy, .promise-list > div, .promise-aside, .journey-copy, .card-figure, .journey-path > li, .reading-copy, .mneme-note, .screen-frame, .install > h2, .install > .section-copy, .install-panel, .install-links');
+    const targets = document.querySelectorAll('.promise > div > h2, .promise > div > .section-copy, .promise-list > div, .promise-aside, .journey-copy, .card-figure, .journey-path > li, .reading-copy, .mneme-note, .screen-frame, .echo-copy, .echo-path > li, .install > h2, .install > .section-copy, .install-panel, .install-links');
     document.documentElement.classList.add('motion-ready');
     targets.forEach((target, index) => {
       target.classList.add('reveal');

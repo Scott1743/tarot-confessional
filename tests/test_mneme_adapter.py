@@ -3,8 +3,10 @@
 from __future__ import annotations
 
 import importlib.util
+import io
 import tempfile
 import unittest
+from contextlib import redirect_stdout
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -27,6 +29,45 @@ class MnemeAdapterTests(unittest.TestCase):
             cli.parent.mkdir()
             cli.write_text("# test", encoding="utf-8")
             self.assertEqual(MODULE.find_cli(root), cli)
+
+    def test_find_cli_discovers_workbuddy_installation(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            home = Path(tmp)
+            cli = home / ".workbuddy" / "skills" / "mneme" / "scripts" / "mneme.py"
+            cli.parent.mkdir(parents=True)
+            cli.write_text("# test", encoding="utf-8")
+            self.assertEqual(MODULE.find_cli(home=home), cli)
+
+    def test_find_cli_discovers_agents_installation(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            home = Path(tmp)
+            cli = home / ".agents" / "skills" / "mneme" / "scripts" / "mneme.py"
+            cli.parent.mkdir(parents=True)
+            cli.write_text("# test", encoding="utf-8")
+            self.assertEqual(MODULE.find_cli(home=home), cli)
+
+    def test_resolve_bundle_reads_mneme_config(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            bundle = root / "wiki"
+            bundle.mkdir()
+            config = root / "config.toml"
+            config.write_text(f'bundle_path = "{bundle}"\n', encoding="utf-8")
+            self.assertEqual(MODULE.resolve_bundle(config=config), bundle)
+
+    def test_runtime_options_work_before_or_after_subcommand(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            cli = root / "scripts" / "mneme.py"
+            cli.parent.mkdir()
+            cli.write_text("# test", encoding="utf-8")
+            for argv in (
+                ["--skill-dir", str(root), "capabilities"],
+                ["capabilities", "--skill-dir", str(root)],
+            ):
+                with self.subTest(argv=argv), redirect_stdout(io.StringIO()) as output:
+                    self.assertEqual(MODULE.main(argv), 0)
+                    self.assertIn('"status": "available"', output.getvalue())
 
 
 if __name__ == "__main__":

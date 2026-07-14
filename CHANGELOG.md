@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.0] - 2026-07-14
+
+### Changed
+
+- introduction 页面新增「密语回响」路径段，明确展示当下阅读、保存授权与未来引用的关系，并区分 2.1.0 当前版和 1.2.0 无记忆版。
+- 安装命令改为指向仓库中的完整 Skill 路径，当前发行下载链接升级至 `2.1.0`。
+
+### Fixed
+
+- Mneme 适配器现在可默认发现 `~/.workbuddy/skills/mneme` 与 `~/.agents/skills/mneme`，并允许运行参数放在子命令前后。
+- 阅读服务会从 Mneme 配置自动解析 bundle，在 CLI 与 bundle 都可用时为现有报告自动激活“整理这次回响”，避免接口已启动但 HTML 没有按钮。
+- 服务端激活兼容 2.0.0 已生成的 `memory-invite` 与 `memory-echo` 报告，不要求重新构建 HTML。
+- Mneme 联动流程新增交付前端到端验证与准确汇报规则，禁止在未检查实际 HTML/端点时宣称按钮可用，也禁止把一次阅读保存授权扩张为额外过程记忆。
+
 ## [2.0.0] - 2026-07-14
 
 ### Added

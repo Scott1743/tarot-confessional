@@ -31,7 +31,30 @@ from http.server import HTTPServer, SimpleHTTPRequestHandler
 from pathlib import Path
 
 from build_draw_page import build as build_draw_page
+from mneme_adapter import capabilities as mneme_capabilities
 from mneme_adapter import dream as mneme_dream
+
+
+MNEME_ACTION_MARKER = "<!-- mneme-dream-action -->"
+MNEME_ACTION_HTML = '<button class="memory-action" type="button" data-mneme-dream>整理这次回响</button>'
+
+
+def enable_mneme_action(html: str) -> str:
+    """Activate the report action when the server has a usable Mneme setup."""
+    if "data-mneme-dream" in html:
+        return html
+    if MNEME_ACTION_MARKER in html:
+        return html.replace(MNEME_ACTION_MARKER, MNEME_ACTION_HTML, 1)
+
+    # Backward compatibility for reports built before the action-slot marker.
+    for section_class in ("memory-invite", "memory-echo"):
+        section_start = html.find(f'<section class="{section_class}">')
+        section_end = html.find("</section>", section_start)
+        closing_div = html.rfind("</div>", section_start, section_end)
+        if section_start != -1 and section_end != -1 and closing_div != -1:
+            action = f'<div data-mneme-action-slot>{MNEME_ACTION_HTML}</div><p class="memory-status" data-mneme-status aria-live="polite"></p>'
+            return html[:closing_div] + action + html[closing_div:]
+    return html
 
 
 def find_free_port(host: str = "0.0.0.0", preferred: int | None = None) -> int:
@@ -139,6 +162,11 @@ def main() -> int:
         print(f"error: assets directory not found: {assets_dir}", file=sys.stderr)
         return 1
 
+    mneme = mneme_capabilities(args.mneme_skill_dir, bundle=args.mneme_bundle)
+    mneme_enabled = mneme["status"] == "available" and mneme["bundle_available"]
+    mneme_bundle = mneme["bundle"] if mneme_enabled else None
+    mneme_skill_dir = str(Path(mneme["cli"]).parents[1]) if mneme_enabled else None
+
     # Load reading HTML if provided
     reading_content = None
     if args.reading:
@@ -146,6 +174,8 @@ def main() -> int:
             print(f"error: reading file not found: {args.reading}", file=sys.stderr)
             return 1
         reading_content = args.reading.read_text(encoding="utf-8")
+        if mneme_enabled:
+            reading_content = enable_mneme_action(reading_content)
 
     # Always serve a self-contained draw page so card images do not depend on
     # the caller's current directory, a temporary asset mount, or URL rewriting.
@@ -174,8 +204,8 @@ def main() -> int:
     TarotHandler.draw_html = draw_content
     TarotHandler.serve_dir = str(assets_dir)
     TarotHandler.last_activity = time.monotonic()
-    TarotHandler.mneme_bundle = args.mneme_bundle
-    TarotHandler.mneme_skill_dir = args.mneme_skill_dir
+    TarotHandler.mneme_bundle = mneme_bundle
+    TarotHandler.mneme_skill_dir = mneme_skill_dir
 
     server = HTTPServer(("0.0.0.0", port), TarotHandler)
     server.timeout = 1
@@ -188,7 +218,7 @@ def main() -> int:
     if reading_content:
         urls["reading"] = f"http://localhost:{port}/reading"
         urls["reading_lan"] = f"http://{local_ip}:{port}/reading"
-    if args.mneme_bundle:
+    if mneme_enabled:
         urls["mneme_dream"] = f"http://localhost:{port}/mneme/dream"
 
     # Print JSON so Agent can parse

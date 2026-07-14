@@ -124,11 +124,11 @@ def _render_memory_echo(memory: dict | None) -> str:
             for source in sources
         )
         sources_block = f'<ol class="memory-sources">{source_html}</ol>' if source_html else ""
-        action = '<button class="memory-action" type="button" data-mneme-dream>整理这次回响</button>' if memory.get("dream_enabled") else ""
+        action = '<button class="memory-action" type="button" data-mneme-dream>整理这次回响</button>' if memory.get("dream_enabled") else '<div data-mneme-action-slot><!-- mneme-dream-action --></div>'
         title = html_lib.escape(str(memory.get("title", "这次阅读与旧日的轻轻照面")))
         guidance = html_lib.escape(str(memory.get("guidance", "把今天的感受放回你自己手中；过去的记录只作参照，不替你定义现在。")))
         return f'''      <section class="memory-echo"><div class="section-kicker">密语回响</div><div><h2>{title}</h2><p>{guidance}</p>{sources_block}{action}<p class="memory-status" data-mneme-status aria-live="polite"></p></div></section>'''
-    return '''      <section class="memory-invite"><div class="section-kicker">让回响留下</div><div><h2>想把这次的感受留给未来的自己吗？</h2><p>Mneme 是可选的本地记忆。下次对话时说“帮我记住这次阅读”，我会先征求你的同意，再帮你把值得留下的部分放进自己的本地树洞。</p></div></section>'''
+    return '''      <section class="memory-invite"><div class="section-kicker">让回响留下</div><div><h2>想把这次的感受留给未来的自己吗？</h2><p>Mneme 是可选的本地记忆。下次对话时说“帮我记住这次阅读”，我会先征求你的同意，再帮你把值得留下的部分放进自己的本地树洞。</p><div data-mneme-action-slot><!-- mneme-dream-action --></div><p class="memory-status" data-mneme-status aria-live="polite"></p></div></section>'''
 
 
 def build(*, skill_dir: Path, output: Path, data: dict) -> Path:

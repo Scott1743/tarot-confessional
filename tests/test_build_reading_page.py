@@ -91,6 +91,7 @@ class BuildReadingPageTests(unittest.TestCase):
             html = output.read_text(encoding="utf-8")
             self.assertIn("想把这次的感受留给未来的自己吗？", html)
             self.assertNotIn('<button class="memory-action" type="button" data-mneme-dream>', html)
+            self.assertIn("<!-- mneme-dream-action -->", html)
 
     def test_mneme_reading_renders_sources_and_dream_button(self):
         with tempfile.TemporaryDirectory() as tmp:

@@ -37,6 +37,13 @@ class SubstitutionCollectionTests(unittest.TestCase):
 
 
 class RenderTests(unittest.TestCase):
+    def test_introduction_presents_2_1_memory_flow_and_install(self):
+        template = TEMPLATE.read_text(encoding="utf-8")
+        self.assertIn('id="echo"', template)
+        self.assertIn("记忆不是默认开启的门", template)
+        self.assertIn("tarot-confessional-2.1.0.zip", template)
+        self.assertIn("Scott1743/tarot-confessional/skills/tarot-confessional", template)
+
     def test_template_placeholders_match_substitution_keys(self):
         template = TEMPLATE.read_text(encoding="utf-8")
         placeholders = set(re.findall(r"\{\{([A-Z_]+)\}\}", template))

@@ -7,7 +7,7 @@
 *今晚就给自己一场不被打扰的小小仪式。*
 
 [![MIT License](https://img.shields.io/badge/license-MIT-purple.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-2.0.0-pink.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-2.1.0-pink.svg)](CHANGELOG.md)
 [![Skills.sh](https://img.shields.io/badge/skills.sh-available-blue.svg)](https://www.skills.sh/?q=tarot-confessional)
 
 </div>
@@ -63,7 +63,7 @@ npx skills add Scott1743/tarot-confessional/skills/tarot-confessional
 
 ### 方式二：手动安装
 
-1. 下载最新版本：[tarot-confessional-2.0.0.zip](https://github.com/Scott1743/tarot-confessional/releases/download/v2.0.0/tarot-confessional-2.0.0.zip)
+1. 下载最新版本：[tarot-confessional-2.1.0.zip](https://github.com/Scott1743/tarot-confessional/releases/download/v2.1.0/tarot-confessional-2.1.0.zip)
 2. 解压到你的 Agent skills 目录
 3. 在对话中触发塔罗功能
 
@@ -101,9 +101,9 @@ npx skills add Scott1743/tarot-confessional/skills/tarot-confessional
 
 ##   密语回响
 
-2.0.0 的「密语回响」可选联动 [Mneme](https://github.com/Scott1743/mneme)。首次使用时可以选择安装；安装后，只有在你允许时，解读才会参考相关的本地记录，并在报告后单独给出带来源的温和回应。未安装时抽牌与报告保持完整，报告最后只留一段可跳过的提示。
+2.1.0 的「密语回响」可选联动 [Mneme](https://github.com/Scott1743/mneme)。首次使用时可以选择安装；安装后，只有在你允许时，解读才会参考相关的本地记录，并在报告后单独给出带来源的温和回应。未安装时抽牌与报告保持完整，报告最后只留一段可跳过的提示。
 
-Mneme 的轻量安装包地址可通过 `FOREST_WHISPERS_MNEME_RELEASE_URL` 配置，默认指向 `mneme-2.0.0.zip`。所有保存都需当次确认；“整理这次回响”只会运行只读审阅，不会自动写入你的记忆。
+Mneme 的轻量安装包地址可通过 `FOREST_WHISPERS_MNEME_RELEASE_URL` 配置，默认指向 `mneme-2.0.0.zip`。2.1.0 可自动发现 Codex、Claude、WorkBuddy 与 `.agents` 的标准 Skill 目录，并在本地服务确认 Mneme 和 bundle 都可用后自动激活整理按钮。所有保存仍需当次确认；“整理这次回响”只会运行只读审阅，不会自动写入你的记忆。
 
 ---
 
@@ -159,7 +159,7 @@ git clone https://github.com/Scott1743/tarot-confessional.git
 cd tarot-confessional
 
 # 打包 Skill
-python3 scripts/package_skill.py --version 2.0.0
+python3 scripts/package_skill.py --version 2.1.0
 
 # 运行测试
 python3 -m pytest tests/
