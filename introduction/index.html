@@ -106,12 +106,11 @@
   .mneme-note h3 { font-size: clamp(28px, 3.2vw, 41px); }
   .mneme-note p { margin: 12px 0 0; color: var(--muted); }
   .screen-story { display: grid; gap: 18px; margin-top: clamp(48px, 8vw, 82px); }
-  .draw-gallery { display: grid; grid-template-columns: 1.4fr .6fr .6fr; gap: 14px; align-items: start; }
-  .archive-gallery { display: grid; grid-template-columns: 1.35fr .65fr; gap: 14px; align-items: start; }
+  .draw-gallery, .archive-gallery { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(12px, 1.6vw, 18px); align-items: start; }
   .screen-frame { margin: 0; overflow: hidden; border-radius: var(--radius); background: var(--paper-blue); box-shadow: 0 16px 42px rgb(25 100 79 / .12); }
   .screen-frame img { width: 100%; height: auto; }
   .screen-frame figcaption { padding: 10px 13px; color: var(--muted); font-size: 12px; }
-  .archive-cover { grid-row: 1 / span 2; }
+  .draw-ready, .archive-cover { grid-column: 1 / -1; }
 
   .install { padding-top: clamp(80px, 11vw, 140px); padding-bottom: clamp(80px, 11vw, 140px); text-align: center; }
   .install h2, .install .section-copy { margin-left: auto; margin-right: auto; }
@@ -142,10 +141,9 @@
     .promise, .journey-layout, .reading-intro { grid-template-columns: 1fr; }
     .journey-copy { position: static; }
     .reading-intro { gap: 48px; }
-    .draw-gallery { grid-template-columns: 1fr 1fr; }
-    .draw-ready { grid-column: 1 / -1; }
     .archive-gallery { grid-template-columns: 1fr; }
-    .archive-cover { grid-row: auto; }
+    .draw-gallery { grid-template-columns: 1fr; }
+    .draw-ready, .archive-cover { grid-column: auto; }
   }
   @media (max-width: 560px) {
     .site-nav { width: calc(100% - 32px); height: 62px; }
@@ -226,11 +224,11 @@
     <div class="screen-story" aria-label="森林密语使用流程">
       <div class="draw-gallery">
         <figure class="screen-frame draw-ready"><img src="assets/screenshots/draw-ready.jpg" alt="抽牌页面准备状态" width="3600" height="2016" loading="lazy"><figcaption>把问题留在心里</figcaption></figure>
-        <figure class="screen-frame"><img src="assets/screenshots/draw-picking.jpg" alt="正在选择三张塔罗牌" width="1406" height="1952" loading="lazy"><figcaption>凭直觉选择</figcaption></figure>
-        <figure class="screen-frame"><img src="assets/screenshots/draw-revealed.jpg" alt="三张塔罗牌翻开后的牌阵" width="1412" height="1950" loading="lazy"><figcaption>翻牌并带回抽牌码</figcaption></figure>
+        <figure class="screen-frame"><img src="assets/screenshots/draw-picking.jpg" alt="正在选择三张塔罗牌" width="3600" height="2016" loading="lazy"><figcaption>凭直觉选择</figcaption></figure>
+        <figure class="screen-frame"><img src="assets/screenshots/draw-revealed.jpg" alt="三张塔罗牌翻开后的牌阵" width="3600" height="2016" loading="lazy"><figcaption>翻牌并带回抽牌码</figcaption></figure>
       </div>
       <div class="archive-gallery">
-        <figure class="screen-frame archive-cover"><img src="assets/screenshots/reading-cover.jpg" alt="私人阅读档案封面" width="3600" height="2016" loading="lazy"><figcaption>一份属于当下的阅读</figcaption></figure>
+        <figure class="screen-frame archive-cover"><img src="assets/screenshots/reading-cover.jpg" alt="私人阅读档案封面" width="3598" height="1698" loading="lazy"><figcaption>一份属于当下的阅读</figcaption></figure>
         <figure class="screen-frame"><img src="assets/screenshots/reading-spread.jpg" alt="阅读档案中的三牌牌阵" width="3600" height="2016" loading="lazy"><figcaption>三张牌放在一起看</figcaption></figure>
         <figure class="screen-frame"><img src="assets/screenshots/reading-body.jpg" alt="阅读档案中的解读正文" width="3600" height="2016" loading="lazy"><figcaption>把感受慢慢说清</figcaption></figure>
       </div>
