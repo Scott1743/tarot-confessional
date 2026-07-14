@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] - 2026-07-14
+
+### Changed
+
+- 阅读报告完整切换为「森林密语 · 林间回信」，包含明亮森林背景、微风动效、段落入场和同一套文案语法。
+- 介绍页截图为宽屏展示做了紧凑优化，并压缩素材以改善网页加载。
+- 发布版本升级至 `1.2.0`。
+
+### Fixed
+
+- 抽牌舞台在 `16:9` 宽屏和低高度视口不再让牌组遮住牌位文字。
+
 ## [1.1.0] - 2026-07-14
 
 ### Changed
