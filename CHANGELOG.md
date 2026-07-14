@@ -178,6 +178,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+- Updated the pinned Mneme integration to v2.2.0 and aligned approved writes with the dream workflow.
+
 ### Added
 
 - Interactive offline draw-page prototype with secure local shuffling, three-card selection, reversals, and a copyable prototype draw code.

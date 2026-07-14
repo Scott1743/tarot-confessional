@@ -28,7 +28,7 @@ Treat tarot as a symbolic reflection tool. Keep the experience gentle, private, 
 ```
 
 - 用户拒绝或暂不决定：立即继续普通流程；不要在同一次会话重复推销。
-- 用户说“下次提醒我记住”“帮我记忆”或同意：引导安装 Mneme 轻量 Skill。安装包地址读取环境变量 `FOREST_WHISPERS_MNEME_RELEASE_URL`；未设置时使用：`https://github.com/Scott1743/mneme/releases/download/v2.0.0/mneme-2.0.0.zip`。
+- 用户说“下次提醒我记住”“帮我记忆”或同意：引导安装 Mneme 轻量 Skill。安装包地址读取环境变量 `FOREST_WHISPERS_MNEME_RELEASE_URL`；未设置时使用：`https://github.com/Scott1743/mneme/releases/download/v2.2.0/mneme-2.2.0.zip`。
 - 安装必须由用户明确同意后进行。不要假设 Skill 已安装；用 `scripts/mneme_adapter.py capabilities` 无副作用检查。适配器会依次发现 `MNEME_SKILL_DIR`、`~/.codex/skills/mneme`、`~/.claude/skills/mneme`、`~/.workbuddy/skills/mneme` 和 `~/.agents/skills/mneme`，并从 `MNEME_BUNDLE` 或 `~/.config/mneme/config.toml` 解析 bundle。显式参数既可放在子命令前，也可放在子命令后。
 - 安装 Mneme 或开启“未来可参考记忆”不等于允许保存本次阅读。保存仍需本次明确授权。
 
@@ -179,7 +179,7 @@ python3 scripts/serve.py --skill-dir <path-to-tarot-confessional> --reading <wor
 用户点击按钮或明确说“帮我记住这次阅读”后：
 
 1. 先说明将保存的最小内容（问题摘要、牌面、解读摘要和用户主动补充），询问是否保存；不保存完整聊天。
-2. 得到明确同意后，由 Agent 依 Mneme 的 ingest 工作流写入用户本地 bundle，再执行 `mneme reindex`。写入前准确说明影响范围：阅读概念页、`index.md`、`log.md`（若 Mneme 工作流要求）以及可重建的 `.mneme/index.db`；不要声称“只会动一篇文件”。
+2. 得到明确同意后，由 Agent 加载 Mneme 批准后的 dream 写侧工作流写入用户本地 bundle，再执行 `mneme reindex`。写入前准确说明影响范围：阅读概念页、`index.md`、`log.md`（若 Mneme 工作流要求）以及可重建的 `.mneme/index.db`；不要声称“只会动一篇文件”。
 3. `dream` 的候选仅供整理参考。任何合并、主题页或写入，都要向用户展示并得到确认；不能把 dream 结果当作心理判断。
 
 #### 联动验证与用户汇报

@@ -103,7 +103,7 @@ npx skills add Scott1743/tarot-confessional/skills/tarot-confessional
 
 2.1.0 的「密语回响」可选联动 [Mneme](https://github.com/Scott1743/mneme)。首次使用时可以选择安装；安装后，只有在你允许时，解读才会参考相关的本地记录，并在报告后单独给出带来源的温和回应。未安装时抽牌与报告保持完整，报告最后只留一段可跳过的提示。
 
-Mneme 的轻量安装包地址可通过 `FOREST_WHISPERS_MNEME_RELEASE_URL` 配置，默认指向 `mneme-2.0.0.zip`。2.1.0 可自动发现 Codex、Claude、WorkBuddy 与 `.agents` 的标准 Skill 目录，并在本地服务确认 Mneme 和 bundle 都可用后自动激活整理按钮。所有保存仍需当次确认；“整理这次回响”只会运行只读审阅，不会自动写入你的记忆。
+Mneme 的轻量安装包地址可通过 `FOREST_WHISPERS_MNEME_RELEASE_URL` 配置，默认指向 `mneme-2.2.0.zip`。2.1.0 可自动发现 Codex、Claude、WorkBuddy 与 `.agents` 的标准 Skill 目录，并在本地服务确认 Mneme 和 bundle 都可用后自动激活整理按钮。所有保存仍需当次确认；“整理这次回响”只会运行只读审阅，不会自动写入你的记忆。Mneme 对本地文件的可选转换只使用用户已有的工具，从不在这条流程里自动安装软件。
 
 ---
 
