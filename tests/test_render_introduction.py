@@ -32,7 +32,7 @@ class SubstitutionCollectionTests(unittest.TestCase):
         # When the requested version isn't in CHANGELOG yet, fall back to the
         # most recent entry so the dist page is never missing required fields.
         date, bullets = latest_release_entry((ROOT / "CHANGELOG.md").read_text(encoding="utf-8"), "9.9.9")
-        self.assertEqual(date, "2026-07-14")
+        self.assertEqual(date, "2026-07-15")
         self.assertTrue(bullets)
 
 
@@ -41,7 +41,7 @@ class RenderTests(unittest.TestCase):
         template = TEMPLATE.read_text(encoding="utf-8")
         self.assertIn('id="echo"', template)
         self.assertIn("记忆不是默认开启的门", template)
-        self.assertIn("tarot-confessional-2.1.0.zip", template)
+        self.assertIn("tarot-confessional-2.1.1.zip", template)
         self.assertIn("Scott1743/tarot-confessional/skills/tarot-confessional", template)
 
     def test_template_placeholders_match_substitution_keys(self):

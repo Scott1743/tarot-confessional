@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.1] - 2026-07-15
+
+### Changed
+
+- Mneme 轻量联动默认指向 v2.2.0，写入流程改为加载 Mneme 批准后的 dream 写侧工作流；明确本地文件转换只使用用户已有的工具，不在此流程自动安装软件。
+- 安装命令、下载链接、介绍页与 README 同步升级至 `2.1.1`。
+
 ## [2.1.0] - 2026-07-14
 
 ### Changed
@@ -177,8 +184,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Single-file CLI decoder verified from the staged and archived packages.
 
 ## [Unreleased]
-
-- Updated the pinned Mneme integration to v2.2.0 and aligned approved writes with the dream workflow.
 
 ### Added
 
