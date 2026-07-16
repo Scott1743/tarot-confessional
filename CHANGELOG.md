@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.2.0] - 2026-07-16
+
+### Changed
+
+- 解读流程要求先对用户原问题给出相对明确的“核心答复”，再展开逐牌依据、关键条件和现实验证点。
+- 是非、选择、关系和开放式问题分别采用可执行的倾向性答复；牌面冲突时判断主次，证据不足时明确说明暂不能下结论。
+- 明确答复仍保持反思工具边界：不预测第三方隐秘事实，不把牌面包装成确定预言，高风险问题直接说明不应依据牌面行动。
+- README、介绍页、测试与发行产物同步升级至 `2.2.0`。
+
 ## [2.1.1] - 2026-07-15
 
 ### Changed
